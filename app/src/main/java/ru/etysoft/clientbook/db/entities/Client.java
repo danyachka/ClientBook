@@ -6,12 +6,12 @@ public class Client {
 
     private String name;
 
-    private String telephoneNumber;
+    private String phoneNumber;
 
     public Client(String id, String name, String telephoneNumber) {
         this.id = id;
         this.name = name;
-        this.telephoneNumber = telephoneNumber;
+        this.phoneNumber = telephoneNumber;
     }
 
     public String getId() {
@@ -30,11 +30,11 @@ public class Client {
         this.name = name;
     }
 
-    public String getTelephoneNumber() {
-        return telephoneNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

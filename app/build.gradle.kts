@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "ru.etysoft.clientbook"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "ru.etysoft.clientbook"
@@ -22,6 +22,11 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -39,4 +44,7 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-process:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    implementation("com.google.android.material:material:1.8.0")
+
 }

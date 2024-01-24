@@ -12,6 +12,10 @@ public class Appointment {
 
     private NotificationStatus notificationStatus = NotificationStatus.ENABLED;
 
+    private int value;
+
+    private String text;
+
     public Appointment(String id, String clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
         this.id = id;
         this.clientId = clientId;
