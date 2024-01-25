@@ -1,5 +1,6 @@
 package ru.etysoft.clientbook.ui.activities
 
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.etysoft.clientbook.R
@@ -57,11 +58,11 @@ class MainActivity : AppCompatActivity(), ListFragmentListener {
 
             supportFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragment_container, CalendarFragment::class.java, bundle)
+                    .replace(R.id.fragment_container, CalendarFragment::class.java, bundle)
                     .commit()
 
-            binding!!.listButton.setColorFilter(R.color.accent_dark)
-            binding!!.calendarButton.setColorFilter(R.color.accent)
+            binding!!.listButton.setColorFilter(R.color.accent_dark, PorterDuff.Mode.SRC_ATOP)
+            binding!!.calendarButton.setColorFilter(R.color.accent, PorterDuff.Mode.SRC_ATOP)
         }
 
     }

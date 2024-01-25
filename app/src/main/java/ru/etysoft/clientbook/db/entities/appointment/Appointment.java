@@ -1,7 +1,12 @@
 package ru.etysoft.clientbook.db.entities.appointment;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Appointment {
 
+    @PrimaryKey
     private String id;
 
     private String clientId;
