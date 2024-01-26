@@ -13,10 +13,10 @@ public class Client {
 
     private String phoneNumber;
 
-    public Client(String id, String name, String telephoneNumber) {
+    public Client(String id, String name, String phoneNumber) {
         this.id = id;
         this.name = name;
-        this.phoneNumber = telephoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getId() {

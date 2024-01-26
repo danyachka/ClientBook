@@ -2,10 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#C1C1C1</color>
+    <color name="dark_gray">#8F8F8F</color>
+
 
     <color name="accent">#FF7F7F</color>
     <color name="accent_text">#F57D7D</color>
     <color name="accent_medium">#B87070</color>
     <color name="accent_dark">#663F3F</color>
     <color name="accent_light">#E4C4C4</color>
+    <color name="accent_light_light">#FFEBEB</color>
 </resources>

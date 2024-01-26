@@ -5,4 +5,7 @@
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="yesterday">Вчера</string>
+    <string name="selector_bottomsheet_title">Что Вы хотите сказать?</string>
+    <string name="selector_bottomsheet_appointment">Создать запись</string>
+    <string name="selector_bottomsheet_client">Создать Клиентку</string>
 </resources>
