@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.FragmentListBinding
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
+import ru.etysoft.clientbook.ui.activities.MainActivity
+import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
 
 class ListFragment: Fragment(R.layout.fragment_list), ListFragmentContract.View {
 
@@ -25,6 +28,11 @@ class ListFragment: Fragment(R.layout.fragment_list), ListFragmentContract.View 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentListBinding.inflate(inflater, container, false)
+
+        binding!!.buttonAdd.setOnClickListener {
+            var selectorBottomSheet = SelectorBottomSheet();
+            selectorBottomSheet.show((activity as MainActivity).supportFragmentManager, "selector_bottom_sheet")
+        }
 
         return binding!!.root
     }

@@ -21,15 +21,17 @@ abstract class AppDatabase: RoomDatabase() {
         var db: AppDatabase? = null
     }
 
-    open fun getDatabase(applicationContext: Context?): AppDatabase? {
+    open fun getDatabase(applicationContext: Context?): AppDatabase {
         if (db == null) {
-            db = Room.databaseBuilder(
+            val database = Room.databaseBuilder(
                     applicationContext!!,
                     AppDatabase::class.java, DB_NAME
             ).build()
+
+            db = database
         }
 
-        return db
+        return db as AppDatabase
     }
 
     abstract fun getAppointmentDao(): AppointmentDao
