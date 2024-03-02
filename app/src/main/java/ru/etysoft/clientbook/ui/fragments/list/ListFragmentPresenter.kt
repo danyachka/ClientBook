@@ -5,8 +5,6 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 
 class ListFragmentPresenter: ListFragmentContract.Presenter {
 
-    private lateinit var model: ListFragmentContract.Model
-
     private lateinit var view: ListFragmentContract.View
 
     private var context: Context?
@@ -14,8 +12,6 @@ class ListFragmentPresenter: ListFragmentContract.Presenter {
     constructor(context: Context?, view: ListFragmentContract.View) {
         this.context = context
         this.view = view
-
-        model = ListFragmentModel(context)
     }
 
 

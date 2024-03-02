@@ -1,6 +1,7 @@
 package ru.etysoft.clientbook.ui.fragments.list
 
-interface ListFragmentListener {
+import androidx.fragment.app.FragmentManager
 
-    fun setLastScroll(scrollTime: Long)
+interface ListFragmentListener {
+    fun showCreateBottomSheet()
 }

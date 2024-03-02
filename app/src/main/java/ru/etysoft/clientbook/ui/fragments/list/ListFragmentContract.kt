@@ -31,11 +31,4 @@ interface ListFragmentContract {
         fun updateAppointment(appointment: Appointment)
 
     }
-
-    interface Model {
-
-        fun deleteAppointment(appointment: Appointment)
-
-        fun updateAppointment(appointment: Appointment)
-    }
 }

@@ -12,7 +12,8 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.activities.MainActivity
 import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
 
-class ListFragment: Fragment(R.layout.fragment_list), ListFragmentContract.View {
+class ListFragment(private final var listener: ListFragmentListener) :
+        Fragment(R.layout.fragment_list), ListFragmentContract.View {
 
     companion object {
         const val TIME_TO_SCROLL = "TIME_TO_SCROLL"
@@ -22,16 +23,13 @@ class ListFragment: Fragment(R.layout.fragment_list), ListFragmentContract.View 
 
     private var binding: FragmentListBinding? = null
 
-    private var listener: ListFragmentListener? = null
-
     private lateinit var presenter: ListFragmentContract.Presenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentListBinding.inflate(inflater, container, false)
 
         binding!!.buttonAdd.setOnClickListener {
-            var selectorBottomSheet = SelectorBottomSheet();
-            selectorBottomSheet.show((activity as MainActivity).supportFragmentManager, "selector_bottom_sheet")
+            listener.showCreateBottomSheet()
         }
 
         return binding!!.root
@@ -46,8 +44,6 @@ class ListFragment: Fragment(R.layout.fragment_list), ListFragmentContract.View 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        listener = activity as ListFragmentListener
-
         presenter = ListFragmentPresenter(this.context, this)
 
     }
@@ -55,7 +51,6 @@ class ListFragment: Fragment(R.layout.fragment_list), ListFragmentContract.View 
     override fun onDestroy() {
         super.onDestroy()
 
-        listener = null
     }
 
     override fun notifyItemsInserted(from: Int, count: Int) {

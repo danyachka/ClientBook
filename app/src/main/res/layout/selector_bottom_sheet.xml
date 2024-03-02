@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:paddingHorizontal="48dp"
+    android:paddingHorizontal="36dp"
 
     android:background="@drawable/top_rounded">
 
@@ -59,7 +59,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_next"
-            app:tint="@color/accent_dark" />
+            app:tint="@color/accent" />
 
 
     </LinearLayout>
@@ -94,7 +94,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_next"
-            app:tint="@color/accent_dark" />
+            app:tint="@color/accent" />
 
     </LinearLayout>
 
