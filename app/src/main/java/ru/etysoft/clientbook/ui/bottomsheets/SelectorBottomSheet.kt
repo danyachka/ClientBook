@@ -1,12 +1,17 @@
 package ru.etysoft.clientbook.ui.bottomsheets
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.etysoft.clientbook.R
+import ru.etysoft.clientbook.ui.activities.ClientCreationActivity
+import ru.etysoft.clientbook.ui.activities.MainActivity
 
 class SelectorBottomSheet: BottomSheetDialogFragment() {
 
@@ -31,6 +36,11 @@ class SelectorBottomSheet: BottomSheetDialogFragment() {
     private fun initButtons() {
         view.findViewById<LinearLayout>(R.id.create_client).setOnClickListener {
             //Start activity for result
+            val mainActivity = activity as MainActivity
+
+            var intent = Intent(mainActivity, ClientCreationActivity::class.java)
+            mainActivity.startActivityForResult(intent, MainActivity.CLIENT_CREATION_CODE)
+
             dismiss()
         }
 

@@ -12,9 +12,13 @@ import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
 import ru.etysoft.clientbook.ui.fragments.list.ListFragmentListener
 import ru.etysoft.clientbook.utils.Logger
 
-class MainActivity : AppCompatActivity(), ListFragmentListener {
+class MainActivity : AppActivity(), ListFragmentListener {
 
-    private var binding: ActivityMainBinding? = null
+    companion object {
+        const val CLIENT_CREATION_CODE = 12
+    }
+
+    private lateinit var binding: ActivityMainBinding
 
     private var isListShowed = true
 
@@ -23,23 +27,23 @@ class MainActivity : AppCompatActivity(), ListFragmentListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+        setContentView(binding.root)
 
         createPager()
     }
 
     private fun initBar() {
 
-        binding?.listButton?.setOnClickListener {
+        binding.listButton.setOnClickListener {
             if (isListShowed) return@setOnClickListener
-            binding!!.pager.currentItem = 1
+            binding.pager.currentItem = 1
 
             isListShowed = true
         }
 
-        binding?.calendarButton?.setOnClickListener {
+        binding.calendarButton.setOnClickListener {
             if (!isListShowed) return@setOnClickListener
-            binding!!.pager.currentItem = 0
+            binding.pager.currentItem = 0
 
             isListShowed = false
         }
@@ -47,7 +51,7 @@ class MainActivity : AppCompatActivity(), ListFragmentListener {
     }
 
     private fun createPager() {
-        var viewPager = binding!!.pager
+        var viewPager = binding.pager
 
         var pagerAdapter = PagerAdapter(supportFragmentManager, lifecycle, this)
         viewPager.adapter = pagerAdapter
@@ -75,15 +79,15 @@ class MainActivity : AppCompatActivity(), ListFragmentListener {
     }
 
     private fun colorListButton() {
-        binding?.listButton?.setColorFilter(R.color.accent_dark)
-        binding?.calendarButton?.setColorFilter(R.color.accent)
+        binding.listButton.setColorFilter(R.color.accent_dark)
+        binding.calendarButton.setColorFilter(R.color.accent)
 
         Logger.logDebug(MainActivity::class.java.simpleName + "_bar", "List is shown")
     }
 
     private fun colorCalendarButton() {
-        binding?.listButton?.setColorFilter(R.color.accent_dark)
-        binding?.calendarButton?.setColorFilter(R.color.accent)
+        binding.listButton.setColorFilter(R.color.accent_dark)
+        binding.calendarButton.setColorFilter(R.color.accent)
 
         Logger.logDebug(MainActivity::class.java.simpleName + "_bar", "Calendar is shown")
     }

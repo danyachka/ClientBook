@@ -7,10 +7,20 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="yesterday">Yesterday</string>
-    
-    
+
+
     <string name="selector_bottomsheet_title">What do you want to create?</string>
     <string name="selector_bottomsheet_appointment">Create an appointment</string>
     <string name="selector_bottomsheet_client">Create a client</string>
+
+    <string name="client_creation">New client</string>
+    <string name="client_creation_image">Choose image</string>
+    <string name="client_creation_name">Client name</string>
+    <string name="client_creation_phone_number">Phone number</string>
+    <string name="client_creation_name_error">You\'ve created client with this name</string>
+    <string name="client_creation_phone_number_error">You\'ve created client with this phone number yet</string>
+
+
+    <string name="client_appointment">New appointment</string>
 
 </resources>

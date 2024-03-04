@@ -16,22 +16,22 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 abstract class AppDatabase: RoomDatabase() {
 
     companion object {
-        const val DB_NAME = "app_db"
+        private const val DB_NAME = "app_db"
 
-        var db: AppDatabase? = null
-    }
+        private var db: AppDatabase? = null
 
-    open fun getDatabase(applicationContext: Context?): AppDatabase {
-        if (db == null) {
-            val database = Room.databaseBuilder(
-                    applicationContext!!,
-                    AppDatabase::class.java, DB_NAME
-            ).build()
+        public fun getDatabase(applicationContext: Context?): AppDatabase {
+            if (db == null) {
+                val database = Room.databaseBuilder(
+                        applicationContext!!,
+                        AppDatabase::class.java, DB_NAME
+                ).build()
 
-            db = database
+                db = database
+            }
+
+            return db as AppDatabase
         }
-
-        return db as AppDatabase
     }
 
     abstract fun getAppointmentDao(): AppointmentDao

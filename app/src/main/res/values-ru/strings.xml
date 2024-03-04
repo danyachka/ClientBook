@@ -8,4 +8,11 @@
     <string name="selector_bottomsheet_title">Что Вы хотите сказать?</string>
     <string name="selector_bottomsheet_appointment">Создать запись</string>
     <string name="selector_bottomsheet_client">Создать Клиентку</string>
+    <string name="client_creation">Новая клиентка</string>
+    <string name="client_creation_name_error">Вы уже создавали клиентку с таким именем</string>
+    <string name="client_creation_phone_number_error">Вы уже создавали клиентку с таким номером телефона</string>
+    <string name="client_appointment">Новая запись</string>
+    <string name="client_creation_image">Выберите картинку</string>
+    <string name="client_creation_name">Имя</string>
+    <string name="client_creation_phone_number">Номер телефона</string>
 </resources>

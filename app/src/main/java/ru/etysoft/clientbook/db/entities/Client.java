@@ -19,6 +19,11 @@ public class Client {
         this.phoneNumber = phoneNumber;
     }
 
+    public Client(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getId() {
         return id;
     }
