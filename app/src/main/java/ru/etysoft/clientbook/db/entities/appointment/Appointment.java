@@ -1,6 +1,7 @@
 package ru.etysoft.clientbook.db.entities.appointment;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,19 +12,22 @@ public class Appointment {
     @NonNull
     private long id;
 
-    private String clientId;
+    private long clientId;
 
     private long startTime;
 
     private long endTime;
 
+    @ColumnInfo(defaultValue = "ENABLED")
     private NotificationStatus notificationStatus = NotificationStatus.ENABLED;
 
+    @ColumnInfo(defaultValue = "0")
     private int value;
 
+    @ColumnInfo(defaultValue = "")
     private String text;
 
-    public Appointment(@NonNull long id, String clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
+    public Appointment(@NonNull long id, long clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
         this.id = id;
         this.clientId = clientId;
         this.startTime = startTime;
@@ -39,11 +43,11 @@ public class Appointment {
         this.id = id;
     }
 
-    public String getClientId() {
+    public long getClientId() {
         return clientId;
     }
 
-    public void setClientId(String clientId) {
+    public void setClientId(long clientId) {
         this.clientId = clientId;
     }
 

@@ -38,8 +38,9 @@ class SelectorBottomSheet: BottomSheetDialogFragment() {
             //Start activity for result
             val mainActivity = activity as MainActivity
 
-            var intent = Intent(mainActivity, ClientCreationActivity::class.java)
-            mainActivity.startActivityForResult(intent, MainActivity.CLIENT_CREATION_CODE)
+            val intent = Intent(mainActivity, ClientCreationActivity::class.java)
+
+            mainActivity.startActivity(intent)
 
             dismiss()
         }

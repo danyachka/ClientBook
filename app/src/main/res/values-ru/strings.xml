@@ -16,4 +16,6 @@
     <string name="client_creation_name">Имя</string>
     <string name="client_creation_phone_number">Номер телефона</string>
     <string name="client_creation_name_error_no_text">Введите имя пользователя</string>
+    <string name="search_by_name">Поиск по имени</string>
+    <string name="search_by_phone_number">Поиск по номеру телефона</string>
 </resources>

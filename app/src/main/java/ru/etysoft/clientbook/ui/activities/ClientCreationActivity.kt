@@ -8,6 +8,7 @@ import ru.etysoft.clientbook.databinding.ActivityClentCreationBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
 import ru.etysoft.clientbook.db.entities.Client
+import ru.etysoft.clientbook.utils.Logger
 
 
 class ClientCreationActivity : AppActivity() {
@@ -24,13 +25,19 @@ class ClientCreationActivity : AppActivity() {
         binding.confirm.setOnClickListener {
             onFinishClicked()
         }
+
+        binding.buttonBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun onFinishClicked() {
         val clientDao = AppDatabase.getDatabase(this).getClientDao()
 
         val newName: String = binding.name.text.toString()
-        val newPhoneNumber: String = binding.phoneNumber.text.toString()
+
+        val phoneString = binding.phoneNumber.text.toString();
+        val newPhoneNumber: String = phoneString.replace("[^0-9]".toRegex(), "")
 
         if (newName == "") {
             binding.nameError.visibility = View.VISIBLE

@@ -5,6 +5,8 @@
     <color name="gray">#C1C1C1</color>
     <color name="dark_gray">#8F8F8F</color>
 
+    <color name="gray_trans">#3DC1C1C1</color>
+
 
     <color name="accent">#FF7F7F</color>
     <color name="accent_text">#F57D7D</color>
