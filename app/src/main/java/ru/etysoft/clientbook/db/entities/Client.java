@@ -1,34 +1,38 @@
 package ru.etysoft.clientbook.db.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class Client {
 
-    @PrimaryKey
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private long id;
 
     private String name;
 
     private String phoneNumber;
 
-    public Client(String id, String name, String phoneNumber) {
+    public Client(@NonNull long id, String name, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
 
+    @Ignore
     public Client(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

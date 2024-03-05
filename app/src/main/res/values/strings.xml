@@ -18,6 +18,7 @@
     <string name="client_creation_name">Client name</string>
     <string name="client_creation_phone_number">Phone number</string>
     <string name="client_creation_name_error">You\'ve created client with this name</string>
+    <string name="client_creation_name_error_no_text">You must define client name</string>
     <string name="client_creation_phone_number_error">You\'ve created client with this phone number yet</string>
 
 

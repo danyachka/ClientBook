@@ -1,13 +1,15 @@
 package ru.etysoft.clientbook.db.entities.appointment;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class Appointment {
 
-    @PrimaryKey
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private long id;
 
     private String clientId;
 
@@ -21,7 +23,7 @@ public class Appointment {
 
     private String text;
 
-    public Appointment(String id, String clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
+    public Appointment(@NonNull long id, String clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
         this.id = id;
         this.clientId = clientId;
         this.startTime = startTime;
@@ -29,11 +31,11 @@ public class Appointment {
         this.notificationStatus = notificationStatus;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -59,6 +61,22 @@ public class Appointment {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public NotificationStatus getNotificationStatus() {

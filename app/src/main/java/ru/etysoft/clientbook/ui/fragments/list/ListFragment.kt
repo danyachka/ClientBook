@@ -12,7 +12,7 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.activities.MainActivity
 import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
 
-class ListFragment(private final var listener: ListFragmentListener) :
+class ListFragment(private var listener: ListFragmentListener) :
         Fragment(R.layout.fragment_list), ListFragmentContract.View {
 
     companion object {

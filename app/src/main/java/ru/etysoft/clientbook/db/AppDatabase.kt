@@ -11,7 +11,8 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 
 @Database(
         version = 1,
-        entities = [ Appointment::class, Client::class ]
+        entities = [ Appointment::class, Client::class ],
+        exportSchema = true
 )
 abstract class AppDatabase: RoomDatabase() {
 
@@ -22,10 +23,11 @@ abstract class AppDatabase: RoomDatabase() {
 
         public fun getDatabase(applicationContext: Context?): AppDatabase {
             if (db == null) {
-                val database = Room.databaseBuilder(
+                val database = androidx.room.Room.databaseBuilder(
                         applicationContext!!,
                         AppDatabase::class.java, DB_NAME
-                ).build()
+                ).enableMultiInstanceInvalidation()
+                        .build()
 
                 db = database
             }

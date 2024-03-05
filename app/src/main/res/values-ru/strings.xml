@@ -15,4 +15,5 @@
     <string name="client_creation_image">Выберите картинку</string>
     <string name="client_creation_name">Имя</string>
     <string name="client_creation_phone_number">Номер телефона</string>
+    <string name="client_creation_name_error_no_text">Введите имя пользователя</string>
 </resources>

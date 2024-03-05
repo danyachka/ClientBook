@@ -3,6 +3,7 @@ package ru.etysoft.clientbook.ui.activities
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
+import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClentCreationBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
@@ -31,22 +32,29 @@ class ClientCreationActivity : AppActivity() {
         val newName: String = binding.name.text.toString()
         val newPhoneNumber: String = binding.phoneNumber.text.toString()
 
+        if (newName == "") {
+            binding.nameError.visibility = View.VISIBLE
+            binding.nameError.setText(R.string.client_creation_name_error_no_text)
+            return
+        }
+
         runBackground {
 
-            var nameClient = clientDao.getByName(newName)
-            var phoneClient = clientDao.getByPhone(newPhoneNumber)
+            val nameClient = clientDao.getByName(newName)
+            val phoneClient = clientDao.getByPhone(newPhoneNumber)
 
             runOnUiThread {
                 var isFinishAvailable = true
 
                 if (nameClient != null) {
                     binding.nameError.visibility = View.VISIBLE
+                    binding.nameError.setText(R.string.client_creation_name_error)
                     isFinishAvailable = false
                 } else {
                     binding.nameError.visibility = View.GONE
                 }
 
-                if (phoneClient != null) {
+                if (phoneClient != null && newPhoneNumber != "") {
                     binding.phoneError.visibility = View.VISIBLE
                     isFinishAvailable = false
                 } else {
