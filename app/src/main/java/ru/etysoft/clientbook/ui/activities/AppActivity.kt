@@ -12,6 +12,10 @@ open class AppActivity: AppCompatActivity() {
 
     companion object {
         private val staticThreadPoolExecutor = Executors.newFixedThreadPool(8)
+
+        fun runBackground(runnable: Runnable?) {
+            staticThreadPoolExecutor.execute(runnable)
+        }
     }
 
     fun runBackground(runnable: Runnable?) {

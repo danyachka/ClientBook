@@ -22,7 +22,7 @@
     <string name="client_creation_name_error_no_text">You must define client name</string>
     <string name="client_creation_phone_number_error">You\'ve created client with this phone number yet</string>
 
-
+    <string name="search_client">Search client</string>
     <string name="search_by_name">Search by name</string>
     <string name="search_by_phone_number">Search by phone number</string>
 

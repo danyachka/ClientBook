@@ -4,11 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
-import java.util.zip.Inflater
 
 class ClientAdapter : RecyclerView.Adapter<ClientViewHolder> {
 
@@ -32,9 +30,7 @@ class ClientAdapter : RecyclerView.Adapter<ClientViewHolder> {
         return ClientViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        return clientList.size
-    }
+    override fun getItemCount(): Int = clientList.size
 
     override fun onBindViewHolder(holder: ClientViewHolder, position: Int) {
         val client = clientList[position]
@@ -42,7 +38,7 @@ class ClientAdapter : RecyclerView.Adapter<ClientViewHolder> {
         if (position == 0) {
             scrollListener.onFirstScrolled(client)
         } else if (position == clientList.size - 1) {
-            scrollListener.onLastBottomScrolled(client)
+            scrollListener.onLastScrolled(client)
         }
 
         holder.bind(client)

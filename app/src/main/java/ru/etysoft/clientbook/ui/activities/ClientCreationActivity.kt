@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import ru.etysoft.clientbook.R
-import ru.etysoft.clientbook.databinding.ActivityClentCreationBinding
+import ru.etysoft.clientbook.databinding.ActivityClientCreationBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
 import ru.etysoft.clientbook.db.entities.Client
@@ -13,11 +13,11 @@ import ru.etysoft.clientbook.utils.Logger
 
 class ClientCreationActivity : AppActivity() {
 
-    private lateinit var binding: ActivityClentCreationBinding
+    private lateinit var binding: ActivityClientCreationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityClentCreationBinding.inflate(layoutInflater)
+        binding = ActivityClientCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())

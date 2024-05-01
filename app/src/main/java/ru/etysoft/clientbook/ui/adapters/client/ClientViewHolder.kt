@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.Client
 
-class ClientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ClientViewHolder(itemView: View) : ViewHolder(itemView) {
 
     private val imageView: ImageView
     private val nameText: TextView
@@ -22,7 +22,7 @@ class ClientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         phoneText = itemView.findViewById(R.id.client_phone)
     }
 
-    public fun bind(client: Client) {
+    fun bind(client: Client) {
         nameText.text = client.name
         phoneText.text = client.phoneNumber
     }

@@ -6,6 +6,7 @@
     <color name="dark_gray">#8F8F8F</color>
 
     <color name="gray_trans">#3DC1C1C1</color>
+    <color name="black_trans">#E6303030</color>
 
 
     <color name="accent">#FF7F7F</color>
@@ -14,6 +15,8 @@
     <color name="accent_dark">#663F3F</color>
     <color name="accent_light">#E4C4C4</color>
     <color name="accent_light_light">#FFEBEB</color>
+
+    <color name="accent_light_light_trans">#26FFEBEB</color>
 
     <color name="red">#FF2222</color>
 </resources>

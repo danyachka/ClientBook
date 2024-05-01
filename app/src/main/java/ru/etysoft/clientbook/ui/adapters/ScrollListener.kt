@@ -4,5 +4,5 @@ interface ScrollListener<DataHolder> {
 
     fun onFirstScrolled(dataHolder: DataHolder)
 
-    fun onLastBottomScrolled(dataHolder: DataHolder)
+    fun onLastScrolled(dataHolder: DataHolder)
 }
