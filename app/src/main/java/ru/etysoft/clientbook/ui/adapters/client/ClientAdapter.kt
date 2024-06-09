@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
-
+import ru.etysoft.clientbook.utils.Logger
 class ClientAdapter : RecyclerView.Adapter<ClientViewHolder> {
 
     private val clientList: List<Client>
@@ -30,7 +30,11 @@ class ClientAdapter : RecyclerView.Adapter<ClientViewHolder> {
         return ClientViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = clientList.size
+    override fun getItemCount() : Int {
+        Logger.logDebug(this.javaClass.simpleName, "Clients item count = ${clientList.size}")
+
+        return clientList.size
+    }
 
     override fun onBindViewHolder(holder: ClientViewHolder, position: Int) {
         val client = clientList[position]
@@ -41,6 +45,10 @@ class ClientAdapter : RecyclerView.Adapter<ClientViewHolder> {
             scrollListener.onLastScrolled(client)
         }
 
+        Logger.logDebug(ClientAdapter::class.java.simpleName, "Holder bound (size = " +
+                "$itemCount)")
+
         holder.bind(client)
     }
 }
+

@@ -15,6 +15,7 @@
     <color name="accent_dark">#663F3F</color>
     <color name="accent_light">#E4C4C4</color>
     <color name="accent_light_light">#FFEBEB</color>
+    <color name="accent_light_light_light">#E4A4A4</color>
 
     <color name="accent_light_light_trans">#26FFEBEB</color>
 

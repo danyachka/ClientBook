@@ -7,7 +7,9 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientListBinding
 import ru.etysoft.clientbook.db.AppDatabase
@@ -41,6 +43,7 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
         clientDao = AppDatabase.getDatabase(this).getClientDao()
 
+        binding.recycler.layoutManager = LinearLayoutManager(this)
         adapter = ClientAdapter(clientList, this, this)
 
         binding.recycler.adapter = adapter
@@ -74,8 +77,11 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
         }
 
         binding.search.setOnEditorActionListener { _: TextView, actionId: Int, _: KeyEvent? ->
+            Logger.logDebug(this.javaClass.simpleName, "Action0 = $actionId")
             if (actionId != EditorInfo.IME_ACTION_SEARCH) return@setOnEditorActionListener false
+            Logger.logDebug(this.javaClass.simpleName, "Action1 = $actionId")
             if (isLoadingNow) return@setOnEditorActionListener false
+            Logger.logDebug(this.javaClass.simpleName, "Action2 = $actionId")
 
             onNewSearch()
             hideKeyboard()
@@ -86,6 +92,7 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
     private fun onNewSearch() {
         runBackground {
+            val type = searchType
             val text = binding.search.text.toString()
 
             isLoadingNow = true
@@ -95,11 +102,14 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
                 clientDao.getLatestByPhone(text)
             }
 
+            isLoadingNow = false
+
             Logger.logDebug(ClientListActivity::class.java.simpleName, "Answer size = " + answer.size)
 
             isAllLoaded = answer.isEmpty()
 
             runOnUiThread {
+                if (searchType != type) return@runOnUiThread
                 if (clientList.isNotEmpty()) {
                     val size = clientList.size
                     clientList.clear()
@@ -107,9 +117,9 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
                 }
 
                 clientList.addAll(answer)
-                adapter.notifyItemRangeInserted(0, answer.size)
-
-                isLoadingNow = false
+                adapter.notifyItemRangeInserted(0, clientList.size)
+                Logger.logDebug(ClientListActivity::class.java.simpleName,
+                        "Items inserted (0, ${adapter.itemCount})")
             }
         }
     }
@@ -130,6 +140,7 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
         if (isAllLoaded) return
 
         runBackground {
+            val type = searchType
             isLoadingNow = true
             val answer = if (searchType == SearchType.BY_NAME) {
                 clientDao.getNextByName(binding.search.text.toString(), dataHolder.id)
@@ -137,17 +148,19 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
                 clientDao.getNextByPhone(binding.search.text.toString(), dataHolder.id)
             }
 
+            isLoadingNow = false
+
             if (answer.isEmpty()) {
                 isAllLoaded = true
                 return@runBackground
             }
 
             runOnUiThread {
+                if (searchType != type) return@runOnUiThread
                 val size = clientList.size
                 clientList.addAll(answer)
                 adapter.notifyItemRangeInserted(size, answer.size)
 
-                isLoadingNow = false
             }
         }
     }
