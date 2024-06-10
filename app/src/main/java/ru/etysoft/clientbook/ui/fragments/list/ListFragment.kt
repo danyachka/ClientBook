@@ -21,24 +21,31 @@ class ListFragment(private var listener: ListFragmentListener) :
         const val DO_NOT_SCROLL: Long = 1
     }
 
-    private var binding: FragmentListBinding? = null
+    private var _binding: FragmentListBinding? = null
+
+    private val binding: FragmentListBinding
+        get() = _binding!!
 
     private lateinit var presenter: ListFragmentContract.Presenter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentListBinding.inflate(inflater, container, false)
+    private val appointmentList = ArrayList<Appointment>()
 
-        binding!!.buttonAdd.setOnClickListener {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentListBinding.inflate(inflater, container, false)
+
+        binding.buttonAdd.setOnClickListener {
             listener.showCreateBottomSheet()
         }
 
-        return binding!!.root
+
+
+        return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
-        binding = null
+        _binding = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

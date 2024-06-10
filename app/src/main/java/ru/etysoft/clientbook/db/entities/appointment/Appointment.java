@@ -1,9 +1,13 @@
 package ru.etysoft.clientbook.db.entities.appointment;
 
+import android.text.format.DateUtils;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import java.util.Calendar;
 
 @Entity
 public class Appointment {
@@ -89,5 +93,18 @@ public class Appointment {
 
     public void setNotificationStatus(NotificationStatus notificationStatus) {
         this.notificationStatus = notificationStatus;
+    }
+
+    public boolean isSameDay(Appointment appointment) {
+        // TODO: fill methods
+        return true;
+    }
+
+    public String getDateText() {
+        return "Сегодня";
+    }
+
+    public String getTimeText() {
+        return "14:00";
     }
 }

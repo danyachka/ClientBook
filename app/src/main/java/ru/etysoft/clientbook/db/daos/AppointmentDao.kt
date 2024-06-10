@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
+import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 
 @Dao
@@ -25,6 +27,21 @@ interface AppointmentDao {
 
     @Query("SELECT * FROM appointment WHERE id = :id")
     fun getById(id: String): Appointment
+
+    @Query("SELECT * FROM appointment WHERE id = :id")
+    fun getACById(id: String): AppointmentClient
+
+    @Transaction
+    @Query("SELECT * FROM appointment WHERE clientId = :clientId")
+    fun getACAllByClientId(clientId: String): List<AppointmentClient>
+
+    @Transaction
+    @Query("SELECT * FROM appointment WHERE startTime < :beforeTime ORDER BY startTime DESC LIMIT $LOADING_COUNT_HALF")
+    fun getACOlder(beforeTime: Long): List<AppointmentClient>
+
+    @Transaction
+    @Query("SELECT * FROM appointment WHERE startTime > :time ORDER BY startTime LIMIT $LOADING_COUNT_HALF")
+    fun getACNewer(time: Long): List<AppointmentClient>
 
     @Query("SELECT * FROM appointment WHERE clientId = :clientId")
     fun getAllByClientId(clientId: String): List<Appointment>
