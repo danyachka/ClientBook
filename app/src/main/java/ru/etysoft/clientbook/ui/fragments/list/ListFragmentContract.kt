@@ -6,10 +6,6 @@ interface ListFragmentContract {
 
     interface View {
 
-        fun notifyItemsInserted(from: Int, count: Int)
-
-        fun notifyItemDeleted(pos: Int)
-
         fun onAppointmentAdded(appointment: Appointment)
 
         fun onAppointmentDeleted(appointment: Appointment)
@@ -19,12 +15,6 @@ interface ListFragmentContract {
     }
 
     interface Presenter {
-
-        fun loadOlder(time: Long)
-
-        fun loadNewer(time: Long)
-
-        fun loadNear(time: Long)
 
         fun deleteAppointment(appointment: Appointment)
 

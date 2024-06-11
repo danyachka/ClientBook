@@ -60,14 +60,6 @@ class ListFragment(private var listener: ListFragmentListener) :
 
     }
 
-    override fun notifyItemsInserted(from: Int, count: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun notifyItemDeleted(pos: Int) {
-        TODO("Not yet implemented")
-    }
-
     override fun onAppointmentAdded(appointment: Appointment) {
         TODO("Not yet implemented")
     }

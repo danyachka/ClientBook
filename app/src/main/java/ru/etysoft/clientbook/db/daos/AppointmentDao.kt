@@ -26,31 +26,36 @@ interface AppointmentDao {
     fun delete(appointment: Appointment)
 
     @Query("SELECT * FROM appointment WHERE id = :id")
-    fun getById(id: String): Appointment
+    fun getById(id: Long): Appointment
+
+    @Query("SELECT * FROM appointment WHERE id < :id and clientId = :clientId ORDER BY id DESC LIMIT $LOADING_COUNT_HALF")
+    fun getOlderByClient(id: Long, clientId: Long): List<Appointment>
+
+    @Query("SELECT * FROM appointment WHERE id > :id and clientId = :clientId ORDER BY id LIMIT $LOADING_COUNT_HALF")
+    fun getNewerClient(id: Long, clientId: Long): List<Appointment>
+
+    // AppointmentClient
+    @Query("SELECT * FROM appointment ORDER BY ABS(startTime - :time) LIMIT 1")
+    fun getClosestACByTime(time: Long): AppointmentClient
+
+    @Query("SELECT * FROM appointment WHERE clientId = :clientId ORDER BY ABS(startTime - :time) LIMIT 1")
+    fun getClosestACByTimeAndClient(time: Long, clientId: Long): AppointmentClient
 
     @Query("SELECT * FROM appointment WHERE id = :id")
-    fun getACById(id: String): AppointmentClient
+    fun getACById(id: Long): AppointmentClient
 
     @Transaction
     @Query("SELECT * FROM appointment WHERE clientId = :clientId")
-    fun getACAllByClientId(clientId: String): List<AppointmentClient>
+    fun getACAllByClientId(clientId: Long): List<AppointmentClient>
 
     @Transaction
-    @Query("SELECT * FROM appointment WHERE startTime < :beforeTime ORDER BY startTime DESC LIMIT $LOADING_COUNT_HALF")
-    fun getACOlder(beforeTime: Long): List<AppointmentClient>
+    @Query("SELECT * FROM appointment WHERE id < :id ORDER BY id DESC LIMIT $LOADING_COUNT_HALF")
+    fun getACOlder(id: Long): List<AppointmentClient>
 
     @Transaction
-    @Query("SELECT * FROM appointment WHERE startTime > :time ORDER BY startTime LIMIT $LOADING_COUNT_HALF")
-    fun getACNewer(time: Long): List<AppointmentClient>
+    @Query("SELECT * FROM appointment WHERE id > :id ORDER BY id LIMIT $LOADING_COUNT_HALF")
+    fun getACNewer(id: Long): List<AppointmentClient>
 
     @Query("SELECT * FROM appointment WHERE clientId = :clientId")
-    fun getAllByClientId(clientId: String): List<Appointment>
-
-    @Query("SELECT * FROM appointment WHERE startTime < :beforeTime ORDER BY startTime DESC LIMIT $LOADING_COUNT_HALF")
-    fun getOlder(beforeTime: Long): List<Appointment>
-
-    @Query("SELECT * FROM appointment WHERE startTime > :time ORDER BY startTime LIMIT $LOADING_COUNT_HALF")
-    fun getNewer(time: Long): List<Appointment>
-
-
+    fun getAllByClientId(clientId: Long): List<Appointment>
 }

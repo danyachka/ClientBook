@@ -1,12 +1,14 @@
 package ru.etysoft.clientbook.ui.activities
 
 import android.animation.ValueAnimator
+import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.AppCompatActivity
 import java.util.concurrent.Executors
+import java.util.logging.Handler
 
 open class AppActivity: AppCompatActivity() {
 
@@ -16,9 +18,13 @@ open class AppActivity: AppCompatActivity() {
         fun runBackground(runnable: Runnable?) {
             staticThreadPoolExecutor.execute(runnable)
         }
+
+        fun runOnUIThread(runnable: Runnable) {
+            android.os.Handler(Looper.getMainLooper()).post(runnable)
+        }
     }
 
-    fun runBackground(runnable: Runnable?) {
+    fun runBackground(runnable: Runnable) {
         staticThreadPoolExecutor.execute(runnable)
     }
 

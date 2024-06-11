@@ -14,19 +14,6 @@ class ListFragmentPresenter: ListFragmentContract.Presenter {
         this.view = view
     }
 
-
-    override fun loadOlder(time: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadNewer(time: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadNear(time: Long) {
-        TODO("Not yet implemented")
-    }
-
     override fun deleteAppointment(appointment: Appointment) {
         TODO("Not yet implemented")
     }

@@ -28,5 +28,6 @@
 
 
     <string name="client_appointment">New appointment</string>
+    <string name="title_activity_appointment_creation">AppointmentCreationActivity</string>
 
 </resources>
