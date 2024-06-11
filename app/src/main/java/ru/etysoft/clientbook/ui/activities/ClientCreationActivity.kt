@@ -3,6 +3,8 @@ package ru.etysoft.clientbook.ui.activities
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientCreationBinding
 import ru.etysoft.clientbook.db.AppDatabase
@@ -45,7 +47,7 @@ class ClientCreationActivity : AppActivity() {
             return
         }
 
-        runBackground {
+        lifecycleScope.launch {
 
             val nameClient = clientDao.getByName(newName)
             val phoneClient = clientDao.getByPhone(newPhoneNumber)
@@ -75,7 +77,7 @@ class ClientCreationActivity : AppActivity() {
     }
 
     private fun saveAndFinish(newName: String, newPhone: String, clientDao: ClientDao) {
-        runBackground {
+        lifecycleScope.launch {
             val client = Client(newName, newPhone)
 
             clientDao.insertAll(client)

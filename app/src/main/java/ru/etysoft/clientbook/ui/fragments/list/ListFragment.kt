@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.FragmentListBinding
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
@@ -37,8 +38,6 @@ class ListFragment(private var listener: ListFragmentListener) :
             listener.showCreateBottomSheet()
         }
 
-
-
         return binding.root
     }
 
@@ -51,7 +50,7 @@ class ListFragment(private var listener: ListFragmentListener) :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = ListFragmentPresenter(this.context, this)
+        presenter = ListFragmentPresenter(this.requireContext(), this, lifecycleScope)
 
     }
 

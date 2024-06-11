@@ -16,41 +16,41 @@ interface ClientDao {
     }
 
     @Insert
-    fun insertAll(vararg client: Client)
+    suspend fun insertAll(vararg client: Client)
 
     @Update
-    fun update(client: Client)
+    suspend fun update(client: Client)
 
     @Delete
-    fun delete(client: Client)
+    suspend fun delete(client: Client)
 
     @Query("SELECT * FROM client WHERE id = :id")
-    fun getById(id: String): Client?
+    suspend fun getById(id: String): Client?
 
     @Query("SELECT * FROM client WHERE name = :name")
-    fun getByName(name: String): Client?
+    suspend fun getByName(name: String): Client?
 
     @Query("SELECT * FROM client WHERE phoneNumber = :phone")
-    fun getByPhone(phone: String): Client?
+    suspend fun getByPhone(phone: String): Client?
 
     // ClientListActivity
     // By phone
     @Query("SELECT * FROM client WHERE phoneNumber LIKE '%' || :phonePart || '%' ORDER BY id DESC LIMIT $LOADING_COUNT")
-    fun getLatestByPhone(phonePart: String): List<Client>
+    suspend fun getLatestByPhone(phonePart: String): List<Client>
 
     @Query("SELECT * FROM client WHERE phoneNumber LIKE '%' || :phonePart || '%' AND id < :id ORDER BY id DESC LIMIT $LOADING_COUNT")
-    fun getNextByPhone(phonePart: String, id: Long): List<Client>
+    suspend fun getNextByPhone(phonePart: String, id: Long): List<Client>
 
     @Query("SELECT * FROM client WHERE phoneNumber LIKE '%' || :phonePart || '%' AND id > :id ORDER BY id LIMIT $LOADING_COUNT")
-    fun getPreviousByPhone(phonePart: String, id: Long): List<Client>
+    suspend fun getPreviousByPhone(phonePart: String, id: Long): List<Client>
 
     // By name
     @Query("SELECT * FROM client WHERE name LIKE '%'||:name||'%'  ORDER BY id DESC LIMIT $LOADING_COUNT")
-    fun getLatestByName(name: String): List<Client>
+    suspend fun getLatestByName(name: String): List<Client>
 
     @Query("SELECT * FROM client WHERE name LIKE '%'||:name||'%' AND id < :id ORDER BY id DESC LIMIT $LOADING_COUNT")
-    fun getNextByName(name: String, id: Long): List<Client>
+    suspend fun getNextByName(name: String, id: Long): List<Client>
 
     @Query("SELECT * FROM client WHERE name LIKE '%'||:name||'%' AND id > :id ORDER BY id LIMIT $LOADING_COUNT")
-    fun getPreviousByName(name: String, id: Long): List<Client>
+    suspend fun getPreviousByName(name: String, id: Long): List<Client>
 }

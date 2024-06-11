@@ -12,22 +12,6 @@ import java.util.logging.Handler
 
 open class AppActivity: AppCompatActivity() {
 
-    companion object {
-        private val staticThreadPoolExecutor = Executors.newFixedThreadPool(8)
-
-        fun runBackground(runnable: Runnable?) {
-            staticThreadPoolExecutor.execute(runnable)
-        }
-
-        fun runOnUIThread(runnable: Runnable) {
-            android.os.Handler(Looper.getMainLooper()).post(runnable)
-        }
-    }
-
-    fun runBackground(runnable: Runnable) {
-        staticThreadPoolExecutor.execute(runnable)
-    }
-
     fun performScaleAnimation(fromScale: Float, toScale: Float, view: View): ScaleAnimation? {
         val scaleOut = ScaleAnimation(fromScale, toScale,
                 fromScale, toScale, Animation.RELATIVE_TO_SELF, 0.5f,

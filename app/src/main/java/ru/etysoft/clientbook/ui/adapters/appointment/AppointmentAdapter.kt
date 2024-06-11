@@ -11,13 +11,15 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolder
 
-class AppointmentAdapter: RecyclerView.Adapter<AppointmentViewHolder> {
+class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
 
     private val list: List<AppointmentClient>
 
     private val inflater: LayoutInflater
 
     private val scrollListener: ScrollListener<AppointmentClient>
+
+    lateinit var loader: AppointmentLoader
 
     constructor(list: List<AppointmentClient>,
                 scrollListener: ScrollListener<AppointmentClient>,
@@ -39,12 +41,18 @@ class AppointmentAdapter: RecyclerView.Adapter<AppointmentViewHolder> {
         val appointment = list[position]
         val previous = if (position == 0) appointment else list[position - 1]
 
-        if (position == 0) {
-            scrollListener.onFirstScrolled(appointment)
-        } else if (position == list.size - 1) {
-            scrollListener.onLastScrolled(appointment)
-        }
+        notifyListeners(position, appointment)
 
         holder.bind(appointment, previous)
+    }
+
+    private fun notifyListeners(position: Int, element: AppointmentClient) {
+        if (position == 0) {
+            scrollListener.onFirstScrolled(element)
+            loader.loadOlder()
+        } else if (position == list.size - 1) {
+            scrollListener.onLastScrolled(element)
+            loader.loadNewer()
+        }
     }
 }

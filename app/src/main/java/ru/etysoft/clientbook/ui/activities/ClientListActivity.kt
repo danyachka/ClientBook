@@ -9,7 +9,9 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientListBinding
 import ru.etysoft.clientbook.db.AppDatabase
@@ -91,7 +93,7 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
     }
 
     private fun onNewSearch() {
-        runBackground {
+        lifecycleScope.launch {
             val type = searchType
             val text = binding.search.text.toString()
 
@@ -139,7 +141,7 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
     override fun onLastScrolled(dataHolder: Client) {
         if (isAllLoaded) return
 
-        runBackground {
+        lifecycleScope.launch {
             val type = searchType
             isLoadingNow = true
             val answer = if (searchType == SearchType.BY_NAME) {
@@ -152,7 +154,7 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
             if (answer.isEmpty()) {
                 isAllLoaded = true
-                return@runBackground
+                return@launch
             }
 
             runOnUiThread {

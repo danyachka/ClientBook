@@ -1,5 +1,6 @@
 package ru.etysoft.clientbook.ui.adapters.client
 
+import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -24,6 +25,8 @@ class ClientViewHolder(itemView: View) : ViewHolder(itemView) {
 
     fun bind(client: Client) {
         nameText.text = client.name
-        phoneText.text = client.phoneNumber
+
+        val formattedPhoneNumber = PhoneNumberUtils.formatNumber(client.phoneNumber)
+        phoneText.text = formattedPhoneNumber
     }
 }
