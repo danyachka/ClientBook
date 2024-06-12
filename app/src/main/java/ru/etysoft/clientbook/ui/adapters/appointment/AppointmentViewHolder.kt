@@ -1,7 +1,5 @@
 package ru.etysoft.clientbook.ui.adapters.appointment
 
-import android.media.Image
-import android.opengl.Visibility
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -11,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.AppointmentClient
-import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
 
 class AppointmentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -27,7 +24,7 @@ class AppointmentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     init {
         dateText = itemView.findViewById(R.id.date_text)
         timeText = itemView.findViewById(R.id.time_text)
-        nameText = itemView.findViewById(R.id.name)
+        nameText = itemView.findViewById(R.id.text)
         clientNameText = itemView.findViewById(R.id.client_name)
         valueText= itemView.findViewById(R.id.value)
         notificationIcon = itemView.findViewById(R.id.notification_indicator)

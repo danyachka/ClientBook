@@ -6,9 +6,11 @@ import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
+import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoaderListener
 import ru.etysoft.clientbook.ui.adapters.appointment.MainFragmentLoader
 
-class ListFragmentPresenter: ListFragmentContract.Presenter, ScrollListener<AppointmentClient> {
+class ListFragmentPresenter: ListFragmentContract.Presenter,
+        ScrollListener<AppointmentClient>, AppointmentLoaderListener {
 
     private val view: ListFragmentContract.View
 
@@ -32,7 +34,7 @@ class ListFragmentPresenter: ListFragmentContract.Presenter, ScrollListener<Appo
                 context = context
         )
 
-        val loader = MainFragmentLoader(list, context, adapter, scope)
+        val loader = MainFragmentLoader(list, context, adapter, scope, this)
         adapter.loader = loader
         loader.loadNear(System.currentTimeMillis())
     }
@@ -51,5 +53,17 @@ class ListFragmentPresenter: ListFragmentContract.Presenter, ScrollListener<Appo
 
     override fun onLastScrolled(dataHolder: AppointmentClient) {
 
+    }
+
+    override fun onLoaded() {
+
+    }
+
+    override fun onOlderLoaded() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onNewerLoaded() {
+        TODO("Not yet implemented")
     }
 }

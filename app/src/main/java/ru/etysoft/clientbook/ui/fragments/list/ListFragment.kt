@@ -70,4 +70,12 @@ class ListFragment(private var listener: ListFragmentListener) :
     override fun onAppointmentChanged(appointment: Appointment) {
         TODO("Not yet implemented")
     }
+
+    override fun updatePlaceHolder(isEmpty: Boolean) {
+        if (isEmpty) {
+            binding.recycler.visibility = View.GONE
+        } else {
+            binding.placeholder.visibility = View.GONE
+        }
+    }
 }

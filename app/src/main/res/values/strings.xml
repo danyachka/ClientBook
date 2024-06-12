@@ -37,4 +37,16 @@
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
 
+
+    <string name="no_appointments">At the moment there is no appointments</string>
+
+
+    <string name="appointment_creation_title">New Task</string>
+    <string name="appointment_creation_text">Task name</string>
+    <string name="appointment_creation_cost">Task cost</string>
+    <string name="appointment_creation_cost_error">Enter value</string>
+    <string name="appointment_creation_choose_client">Choose client</string>
+    <string name="appointment_creation_start">Start time</string>
+    <string name="appointment_creation_duration">Task duration</string>
+
 </resources>

@@ -15,7 +15,8 @@ abstract class AppointmentLoader(
         private val list: ArrayList<AppointmentClient>,
         context: Context,
         private val adapter: AppointmentAdapter,
-        private val scope: LifecycleCoroutineScope
+        private val scope: LifecycleCoroutineScope,
+        private val listener: AppointmentLoaderListener
 ) {
 
     companion object {
@@ -50,6 +51,7 @@ abstract class AppointmentLoader(
 
         withContext(Dispatchers.Main) {
             adapter.notifyDataSetChanged()
+            listener.onLoaded()
         }
     }
 
@@ -70,6 +72,7 @@ abstract class AppointmentLoader(
             list.subList(list.size - AppointmentDao.LOADING_COUNT_HALF, list.size).clear()
             adapter.notifyItemRangeRemoved(
                     list.size - AppointmentDao.LOADING_COUNT_HALF, AppointmentDao.LOADING_COUNT_HALF)
+            listener.onOlderLoaded()
         }
 
     }
@@ -91,6 +94,7 @@ abstract class AppointmentLoader(
             list.subList(0, AppointmentDao.LOADING_COUNT_HALF).clear()
             adapter.notifyItemRangeRemoved(
                     0, AppointmentDao.LOADING_COUNT_HALF)
+            listener.onNewerLoaded()
         }
 
     }
@@ -102,9 +106,10 @@ class MainFragmentLoader(
         list: ArrayList<AppointmentClient>,
         context: Context,
         adapter: AppointmentAdapter,
-        scope: LifecycleCoroutineScope
+        scope: LifecycleCoroutineScope,
+        listener: AppointmentLoaderListener
 ) :
-        AppointmentLoader(list, context, adapter, scope) {
+        AppointmentLoader(list, context, adapter, scope, listener) {
 
     override suspend fun loadNewer(id: Long): ArrayList<AppointmentClient> {
         return ArrayList(appointmentDao.getACNewer(id))
@@ -124,9 +129,10 @@ class ClientActivityLoader(
         context: Context,
         adapter: AppointmentAdapter,
         private val client: Client,
-        scope: LifecycleCoroutineScope
+        scope: LifecycleCoroutineScope,
+        listener: AppointmentLoaderListener
 ) :
-        AppointmentLoader(list, context, adapter, scope) {
+        AppointmentLoader(list, context, adapter, scope, listener) {
 
     override suspend fun loadNewer(id: Long): ArrayList<AppointmentClient> {
         val answer = appointmentDao.getNewerClient(id, client.id)
@@ -150,4 +156,13 @@ class ClientActivityLoader(
         for (appointment in answer) result.add(AppointmentClient(appointment, client))
         return result
     }
+}
+
+interface AppointmentLoaderListener {
+
+    fun onLoaded()
+
+    fun onOlderLoaded()
+
+    fun onNewerLoaded()
 }

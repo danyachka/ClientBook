@@ -1,7 +1,5 @@
 package ru.etysoft.clientbook.ui.components
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +27,7 @@ import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.utils.Logger
 import java.time.LocalDate
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 
 interface CalendarWidgetListener {
@@ -44,6 +43,7 @@ fun CalendarWidget(
         modifier: Modifier = Modifier
 ) {
     Logger.logDebug("CalendarWidget", "CalendarWidget's been created")
+    val localNow = LocalDate.now()
     var calendar by remember { mutableStateOf(LocalDate.now()) }
     var animateContentSize by remember { mutableStateOf(0) }
 
@@ -104,19 +104,22 @@ fun CalendarWidget(
 
                     CreateDayElement(day = d,
                             isCurrent = false,
-                            localDate = firstDayInMonth.minusDays(abs(day) + 1L),
+                            buttonDate = firstDayInMonth.minusDays(abs(day) + 1L),
+                            localDate = localNow,
                             listener = listener)
                 } else if (day > daysInMonth) {
                     val d = day - daysInMonth
 
                     CreateDayElement(day = d,
                             isCurrent = false,
-                            localDate = firstDayInMonth.plusDays(day - 1L),
+                            buttonDate = firstDayInMonth.plusDays(day - 1L),
+                            localDate = localNow,
                             listener = listener)
                 } else {
                     CreateDayElement(day = day,
                             isCurrent = true,
-                            localDate = firstDayInMonth.plusDays(day - 1L),
+                            buttonDate = firstDayInMonth.plusDays(day - 1L),
+                            localDate = localNow,
                             listener = listener)
                 }
             }
@@ -126,17 +129,23 @@ fun CalendarWidget(
 
 
 @Composable
-fun CreateDayElement(day: Int, isCurrent: Boolean, localDate: LocalDate,
+fun CreateDayElement(day: Int, isCurrent: Boolean, buttonDate: LocalDate, localDate: LocalDate,
                      listener: CalendarWidgetListener) {
+    Logger.logDebug("CalendarWidget", "Bound date: $buttonDate, $localDate")
     Box (
             contentAlignment = Alignment.Center,
             modifier = Modifier
                     .padding(4.dp)
                     .background(
-                            if (isCurrent) colorResource(id = R.color.accent_dark_dark)
+                            if (buttonDate.isEqual(localDate)) colorResource(id = R.color.accent_light_light_light)
+                            else if (isCurrent) colorResource(id = R.color.accent_dark_dark)
                             else colorResource(id = R.color.accent_dark),
                             shape = RoundedCornerShape(8.dp))
-                    .clickable { listener.onClick(localDate) }
+                    .border(width = 4.dp,
+                            color = if (isCurrent) colorResource(id = R.color.accent_dark_dark)
+                                    else colorResource(id = R.color.accent_dark),
+                            shape = RoundedCornerShape(8.dp))
+                    .clickable { listener.onClick(buttonDate) }
     ) {
 
         Text(
@@ -144,8 +153,10 @@ fun CreateDayElement(day: Int, isCurrent: Boolean, localDate: LocalDate,
                 fontSize = 13.sp,
                 fontFamily = montserrat,
                 modifier = Modifier.padding(4.dp),
-                fontWeight = FontWeight.SemiBold,
-                color = if (isCurrent) colorResource(id = R.color.white_trans)
+                fontWeight = if (buttonDate.isEqual(localDate)) FontWeight.ExtraBold
+                                else FontWeight.SemiBold,
+                color = if (buttonDate.isEqual(localDate)) colorResource(id = R.color.accent_dark_dark)
+                        else if (isCurrent) colorResource(id = R.color.white_trans)
                         else colorResource(id = R.color.white_trans)
 
         )

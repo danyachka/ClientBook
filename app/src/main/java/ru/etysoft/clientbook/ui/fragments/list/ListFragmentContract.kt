@@ -12,6 +12,7 @@ interface ListFragmentContract {
 
         fun onAppointmentChanged(appointment: Appointment)
 
+        fun updatePlaceHolder(isEmpty: Boolean)
     }
 
     interface Presenter {
