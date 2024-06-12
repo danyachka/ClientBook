@@ -51,11 +51,7 @@ fun CalendarWidget(
             modifier = modifier
                     .fillMaxWidth()
                     .padding(6.dp)
-                    .border(
-                            width = 2.dp,
-                            color = colorResource(id = R.color.accent),
-                            shape = RoundedCornerShape(16.dp)
-                    )
+                    .background(colorResource(id = R.color.accent), shape = RoundedCornerShape(16.dp))
                     .padding(10.dp)
                     .animateContentSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -137,18 +133,19 @@ fun CreateDayElement(day: Int, isCurrent: Boolean, localDate: LocalDate,
             modifier = Modifier
                     .padding(4.dp)
                     .background(
-                            if (isCurrent) colorResource(id = R.color.accent)
-                            else colorResource(id = R.color.accent_medium),
-                                shape = RoundedCornerShape(8.dp))
+                            if (isCurrent) colorResource(id = R.color.accent_dark_dark)
+                            else colorResource(id = R.color.accent_dark),
+                            shape = RoundedCornerShape(8.dp))
                     .clickable { listener.onClick(localDate) }
     ) {
 
         Text(
                 day.toString(),
-                fontSize = 15.sp,
+                fontSize = 13.sp,
                 fontFamily = montserrat,
+                modifier = Modifier.padding(4.dp),
                 fontWeight = FontWeight.SemiBold,
-                color = if (isCurrent) colorResource(id = R.color.white)
+                color = if (isCurrent) colorResource(id = R.color.white_trans)
                         else colorResource(id = R.color.white_trans)
 
         )
@@ -178,9 +175,10 @@ fun ShowHeaderRow() {
                     stringResource(id),
                     fontSize = 15.sp,
                     fontFamily = montserrat,
-                    fontWeight = FontWeight.Normal,
+                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    color = colorResource(id = R.color.accent_dark_dark)
             )
         }
     }
@@ -193,7 +191,7 @@ fun TopButton(toFuture: Boolean, runnable: Runnable) {
             modifier = Modifier
                     .width(30.dp)
                     .height(24.dp)
-                    .background(color = colorResource(id = R.color.accent),
+                    .background(color = colorResource(id = R.color.accent_dark_dark),
                             shape = RoundedCornerShape(16.dp))
                     .padding(2.dp)
                     .clickable { runnable.run() },
@@ -204,14 +202,14 @@ fun TopButton(toFuture: Boolean, runnable: Runnable) {
             Icon(
                     imageVector = drawable,
                     contentDescription = "",
-                    tint = colorResource(id = R.color.white)
+                    tint = colorResource(id = R.color.white_trans)
             )
         else
             Icon(
                     imageVector = drawable,
                     modifier = Modifier.scale(scaleX = -1f, scaleY = 1f),
                     contentDescription = "",
-                    tint = colorResource(id = R.color.white)
+                    tint = colorResource(id = R.color.white_trans)
             )
     }
 

@@ -5,7 +5,7 @@
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="yesterday">Вчера</string>
-    <string name="selector_bottomsheet_title">Что Вы хотите сказать?</string>
+    <string name="selector_bottomsheet_title">Что Вы хотите создать?</string>
     <string name="selector_bottomsheet_appointment">Создать запись</string>
     <string name="selector_bottomsheet_client">Создать Клиентку</string>
     <string name="client_creation">Новая клиентка</string>
@@ -17,8 +17,8 @@
     <string name="client_creation_phone_number">Номер телефона</string>
     <string name="client_creation_name_error_no_text">Введите имя пользователя</string>
     <string name="search_client">Искать клиентку</string>
-    <string name="search_by_name">Поиск по имени</string>
-    <string name="search_by_phone_number">Поиск по номеру телефона</string>
+    <string name="search_by_name">По имени</string>
+    <string name="search_by_phone_number">По номеру</string>
     <string name="monday">Пн</string>
     <string name="tuesday">Вт</string>
     <string name="wednesday">Ср</string>

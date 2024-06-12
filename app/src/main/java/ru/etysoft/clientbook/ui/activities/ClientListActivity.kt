@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.client.ClientAdapter
 import ru.etysoft.clientbook.utils.Logger
+import kotlin.concurrent.thread
 
 
 class ClientListActivity : AppActivity(), ScrollListener<Client> {
@@ -40,6 +42,7 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val start = System.currentTimeMillis()
         binding = ActivityClientListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -52,30 +55,26 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
         onNewSearch()
 
-        binding.searchTypeName.setOnClickListener {
-            if (searchType == SearchType.BY_NAME) return@setOnClickListener
-
-            val res = onTypeSwitched(SearchType.BY_NAME)
+        binding.searchType.setOnClickListener {
+            val res = onTypeSwitched(searchType)
 
             if (!res) return@setOnClickListener
 
             hideKeyboard()
 
-            binding.searchTypeName.setColorFilter(R.color.accent, PorterDuff.Mode.SRC_ATOP)
-            binding.searchTypePhone.setColorFilter(R.color.accent_medium, PorterDuff.Mode.SRC_ATOP)
-        }
+            if (searchType == SearchType.BY_NAME) {
+                searchType = SearchType.BY_PHONE
+                binding.searchType.setImageDrawable(ContextCompat.getDrawable(
+                        applicationContext, R.drawable.ic_phone))
 
-        binding.searchTypePhone.setOnClickListener {
-            if (searchType == SearchType.BY_PHONE) return@setOnClickListener
+                binding.search.setHint(R.string.search_by_phone_number)
+            } else {
+                searchType = SearchType.BY_NAME
+                binding.searchType.setImageDrawable(ContextCompat.getDrawable(
+                        applicationContext, R.drawable.ic_person))
 
-            val res = onTypeSwitched(SearchType.BY_PHONE)
-
-            if (!res) return@setOnClickListener
-
-            hideKeyboard()
-
-            binding.searchTypeName.setColorFilter(R.color.accent_medium, PorterDuff.Mode.SRC_ATOP)
-            binding.searchTypePhone.setColorFilter(R.color.accent, PorterDuff.Mode.SRC_ATOP)
+                binding.search.setHint(R.string.search_by_name)
+            }
         }
 
         binding.search.setOnEditorActionListener { _: TextView, actionId: Int, _: KeyEvent? ->
@@ -90,39 +89,39 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
             return@setOnEditorActionListener true
         }
+
+        Logger.logDebug(javaClass.simpleName, "Launch time: ${System.currentTimeMillis() - start}")
     }
 
-    private fun onNewSearch() {
-        lifecycleScope.launch {
-            val type = searchType
-            val text = binding.search.text.toString()
+    private fun onNewSearch() = lifecycleScope.launch {
+        val type = searchType
+        val text = binding.search.text.toString()
 
-            isLoadingNow = true
-            val answer = if (searchType == SearchType.BY_NAME) {
-                clientDao.getLatestByName(text)
-            } else {
-                clientDao.getLatestByPhone(text)
+        isLoadingNow = true
+        val answer = if (searchType == SearchType.BY_NAME) {
+            clientDao.getLatestByName(text)
+        } else {
+            clientDao.getLatestByPhone(text)
+        }
+
+        isLoadingNow = false
+
+        Logger.logDebug(ClientListActivity::class.java.simpleName, "Answer size = " + answer.size)
+
+        isAllLoaded = answer.isEmpty()
+
+        runOnUiThread {
+            if (searchType != type) return@runOnUiThread
+            if (clientList.isNotEmpty()) {
+                val size = clientList.size
+                clientList.clear()
+                adapter.notifyItemRangeRemoved(0, size)
             }
 
-            isLoadingNow = false
-
-            Logger.logDebug(ClientListActivity::class.java.simpleName, "Answer size = " + answer.size)
-
-            isAllLoaded = answer.isEmpty()
-
-            runOnUiThread {
-                if (searchType != type) return@runOnUiThread
-                if (clientList.isNotEmpty()) {
-                    val size = clientList.size
-                    clientList.clear()
-                    adapter.notifyItemRangeRemoved(0, size)
-                }
-
-                clientList.addAll(answer)
-                adapter.notifyItemRangeInserted(0, clientList.size)
-                Logger.logDebug(ClientListActivity::class.java.simpleName,
-                        "Items inserted (0, ${adapter.itemCount})")
-            }
+            clientList.addAll(answer)
+            adapter.notifyItemRangeInserted(0, clientList.size)
+            Logger.logDebug(ClientListActivity::class.java.simpleName,
+                    "Items inserted (0, ${adapter.itemCount})")
         }
     }
 

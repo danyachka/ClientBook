@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.ClientListActivity"
 
-    android:background="@color/white"
+    style="@style/AppSlideTheme"
+
+    android:background="@color/black_black_trans"
 
     android:paddingHorizontal="36dp">
 
@@ -30,9 +32,7 @@
             android:clipToPadding="false"
 
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:background="@color/white" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
@@ -53,7 +53,8 @@
             android:layout_height="52dp"
             android:layout_weight="1"
 
-            android:background="@drawable/rect_bordered"
+            android:background="@drawable/high_rounded"
+            android:backgroundTint="@color/accent"
             android:fontFamily="@font/montserratsemibold"
 
             android:hint="@string/search_by_name"
@@ -64,8 +65,8 @@
             android:maxLines="1"
 
             android:paddingHorizontal="16sp"
-            android:textColor="@color/accent_medium"
-            android:textColorHint="@color/accent_medium" />
+            android:textColor="@color/accent_dark_dark"
+            android:textColorHint="@color/accent_dark" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -76,25 +77,17 @@
 
             android:layout_marginStart="6dp"
             android:padding="11dp"
-            android:background="@drawable/rect_bordered">
+
+            android:background="@drawable/high_rounded"
+            android:backgroundTint="@color/accent">
 
             <ImageView
-                android:id="@+id/search_type_name"
+                android:id="@+id/search_type"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
 
                 android:src="@drawable/ic_person"
-                app:tint="@color/accent"/>
-
-            <ImageView
-                android:id="@+id/search_type_phone"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-
-                android:layout_marginStart="6dp"
-
-                android:src="@drawable/ic_phone"
-                app:tint="@color/accent_medium"/>
+                app:tint="@color/accent_dark"/>
 
         </LinearLayout>
 

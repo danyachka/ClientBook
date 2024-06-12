@@ -3,6 +3,7 @@ package ru.etysoft.clientbook.ui.activities
 import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import ru.etysoft.clientbook.R
@@ -79,15 +80,15 @@ class MainActivity : AppActivity(), ListFragmentListener {
     }
 
     private fun colorListButton() {
-        binding.listButton.setColorFilter(R.color.accent_dark)
-        binding.calendarButton.setColorFilter(R.color.accent)
+        binding.listButton.setColorFilter(ContextCompat.getColor(applicationContext, R.color.accent))
+        binding.calendarButton.setColorFilter(ContextCompat.getColor(applicationContext, R.color.accent_dark))
 
         Logger.logDebug(MainActivity::class.java.simpleName + "_bar", "List is shown")
     }
 
     private fun colorCalendarButton() {
-        binding.listButton.setColorFilter(R.color.accent_dark)
-        binding.calendarButton.setColorFilter(R.color.accent)
+        binding.listButton.setColorFilter(ContextCompat.getColor(applicationContext, R.color.accent_dark))
+        binding.calendarButton.setColorFilter(ContextCompat.getColor(applicationContext, R.color.accent))
 
         Logger.logDebug(MainActivity::class.java.simpleName + "_bar", "Calendar is shown")
     }

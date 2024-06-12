@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="light_black">#191919</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_trans">#CCFFFFFF</color>
     <color name="gray">#C1C1C1</color>
     <color name="dark_gray">#8F8F8F</color>
+    <color name="dark_dark_gray">#222222</color>
 
     <color name="gray_trans">#3DC1C1C1</color>
-    <color name="black_trans">#E6303030</color>
+    <color name="black_trans">#F0303030</color>
+    <color name="black_black_trans">#E6000000</color>
 
 
     <color name="accent">#FF7F7F</color>
     <color name="accent_text">#F57D7D</color>
     <color name="accent_medium">#B87070</color>
     <color name="accent_dark">#663F3F</color>
+    <color name="accent_dark_dark">#391D1D</color>
     <color name="accent_light">#E4C4C4</color>
     <color name="accent_light_light">#FFEBEB</color>
-    <color name="accent_light_light_light">#E4A4A4</color>
+    <color name="accent_light_light_light">#D79B9B</color>
 
     <color name="accent_light_light_trans">#26FFEBEB</color>
 
