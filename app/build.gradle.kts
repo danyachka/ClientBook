@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "ru.etysoft.clientbook"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -88,5 +88,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    implementation("androidx.compose.material:material:1.1.1")
 
 }

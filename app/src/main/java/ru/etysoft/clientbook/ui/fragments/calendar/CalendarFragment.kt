@@ -5,12 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.FragmentCalendarBinding
 import ru.etysoft.clientbook.ui.activities.ClientListActivity
+import ru.etysoft.clientbook.ui.components.CalendarWidget
+import ru.etysoft.clientbook.ui.components.CalendarWidgetListener
+import ru.etysoft.clientbook.utils.Logger
+import java.time.LocalDate
 
-class CalendarFragment: Fragment(R.layout.fragment_calendar) {
+class CalendarFragment: Fragment(R.layout.fragment_calendar), CalendarWidgetListener {
 
     private var _binding: FragmentCalendarBinding? = null
 
@@ -26,6 +34,17 @@ class CalendarFragment: Fragment(R.layout.fragment_calendar) {
             startActivity(intent)
         }
 
+        binding.calendarWidget.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+            setContent {
+                CalendarWidget(this@CalendarFragment)
+            }
+        }
+
+        Logger.logDebug(javaClass.simpleName, "Fragment view created")
+
+
         return binding.root
     }
 
@@ -33,5 +52,9 @@ class CalendarFragment: Fragment(R.layout.fragment_calendar) {
         super.onDestroyView()
 
         _binding = null
+    }
+
+    override fun onClick(selectedLocalDate: LocalDate) {
+        TODO("Not yet implemented")
     }
 }

@@ -19,4 +19,12 @@
     <string name="search_client">Искать клиентку</string>
     <string name="search_by_name">Поиск по имени</string>
     <string name="search_by_phone_number">Поиск по номеру телефона</string>
+    <string name="monday">Пн</string>
+    <string name="tuesday">Вт</string>
+    <string name="wednesday">Ср</string>
+    <string name="thursday">Чт</string>
+    <string name="friday">Пт</string>
+    <string name="saturday">Сб</string>
+    <string name="sunday">Вс</string>
+
 </resources>

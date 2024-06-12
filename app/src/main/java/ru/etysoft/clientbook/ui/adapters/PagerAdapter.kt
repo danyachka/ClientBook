@@ -12,15 +12,19 @@ import ru.etysoft.clientbook.utils.Logger
 
 class PagerAdapter: FragmentStateAdapter {
 
-    private lateinit var listFragment: ListFragment
+    private val listFragment: ListFragment
 
-    private lateinit var calendarFragment: CalendarFragment
+    private val calendarFragment: CalendarFragment
 
-    private final var listFragmentListener: ListFragmentListener
+    private val listFragmentListener: ListFragmentListener
 
     constructor(fragmentManager: FragmentManager,
                 lifecycle: Lifecycle, listener: ListFragmentListener) : super(fragmentManager, lifecycle) {
-                    listFragmentListener = listener
+        listFragmentListener = listener
+
+        calendarFragment = CalendarFragment()
+
+        listFragment = ListFragment(listFragmentListener)
     }
 
     override fun getItemCount(): Int {
@@ -29,15 +33,13 @@ class PagerAdapter: FragmentStateAdapter {
 
     override fun createFragment(position: Int): Fragment {
 
-        val fragment: Fragment
-
-        if (position == 0) {
-            calendarFragment = CalendarFragment()
-            fragment = calendarFragment
+        val fragment = if (position == 0) {
+            calendarFragment
         } else {
-            listFragment = ListFragment(listFragmentListener)
-            fragment = listFragment
+            listFragment
         }
+
+        Logger.logDebug(javaClass.simpleName, "Fragment created")
 
         return fragment
     }
