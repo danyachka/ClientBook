@@ -1,16 +1,17 @@
 package ru.etysoft.clientbook.ui.fragments.list
 
+import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 
 interface ListFragmentContract {
 
     interface View {
 
-        fun onAppointmentAdded(appointment: Appointment)
+        fun onAppointmentAdded(appointmentClient: AppointmentClient)
 
-        fun onAppointmentDeleted(appointment: Appointment)
+        fun onAppointmentDeleted(appointmentClient: AppointmentClient)
 
-        fun onAppointmentChanged(appointment: Appointment)
+        fun onAppointmentChanged(appointmentClient: AppointmentClient)
 
         fun updatePlaceHolder(isEmpty: Boolean)
     }

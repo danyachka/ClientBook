@@ -8,26 +8,21 @@ import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.utils.Logger
-class ClientAdapter : RecyclerView.Adapter<ClientViewHolder> {
-
-    private val clientList: List<Client>
+class ClientAdapter(private val clientList: List<Client>,
+                    private val scrollListener: ScrollListener<Client>,
+                    context: Context,
+                    private val viewHolderListener: ClientViewHolderListener
+) : RecyclerView.Adapter<ClientViewHolder>() {
 
     private val inflater: LayoutInflater
 
-    private val scrollListener: ScrollListener<Client>
-
-    constructor(clientList: List<Client>,
-                scrollListener: ScrollListener<Client>,
-                context: Context) {
-        this.clientList = clientList
-        this.scrollListener = scrollListener
-
+    init {
         inflater = LayoutInflater.from(context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientViewHolder {
         val itemView = inflater.inflate(R.layout.client_element, parent, false)
-        return ClientViewHolder(itemView)
+        return ClientViewHolder(itemView, viewHolderListener)
     }
 
     override fun getItemCount() : Int {

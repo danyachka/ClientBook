@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.FragmentListBinding
+import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.activities.MainActivity
 import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
@@ -59,15 +60,15 @@ class ListFragment(private var listener: ListFragmentListener) :
 
     }
 
-    override fun onAppointmentAdded(appointment: Appointment) {
+    override fun onAppointmentAdded(appointmentClient: AppointmentClient) {
         TODO("Not yet implemented")
     }
 
-    override fun onAppointmentDeleted(appointment: Appointment) {
+    override fun onAppointmentDeleted(appointmentClient: AppointmentClient) {
         TODO("Not yet implemented")
     }
 
-    override fun onAppointmentChanged(appointment: Appointment) {
+    override fun onAppointmentChanged(appointmentClient: AppointmentClient) {
         TODO("Not yet implemented")
     }
 

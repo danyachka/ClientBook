@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.Client
 
-class ClientViewHolder(itemView: View) : ViewHolder(itemView) {
+class ClientViewHolder(itemView: View,
+                       private val listener: ClientViewHolderListener
+) : ViewHolder(itemView) {
 
     private val imageView: ImageView
     private val nameText: TextView
@@ -28,5 +30,14 @@ class ClientViewHolder(itemView: View) : ViewHolder(itemView) {
 
         val formattedPhoneNumber = PhoneNumberUtils.formatNumber(client.phoneNumber)
         phoneText.text = formattedPhoneNumber
+
+        itemView.setOnClickListener {
+            listener.onViewHolderSelected(client, this)
+        }
     }
+}
+
+interface ClientViewHolderListener {
+    fun onViewHolderSelected(client: Client, clientViewHolder: ClientViewHolder)
+
 }

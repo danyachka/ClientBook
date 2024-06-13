@@ -1,6 +1,8 @@
 package ru.etysoft.clientbook.ui.activities
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.KeyEvent
@@ -9,22 +11,29 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientListBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
+import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
+import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.CLIENT_SELECTOR_RESULT
+import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.IS_CLIENT_SELECTOR
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.client.ClientAdapter
+import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolder
+import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolderListener
 import ru.etysoft.clientbook.utils.Logger
 import kotlin.concurrent.thread
 
 
-class ClientListActivity : AppActivity(), ScrollListener<Client> {
+class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHolderListener {
 
     private lateinit var binding: ActivityClientListBinding
 
@@ -40,16 +49,20 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
     private var isAllLoaded = false
 
+    private var isClientSelector = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val start = System.currentTimeMillis()
         binding = ActivityClientListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        isClientSelector = intent.getBooleanExtra(IS_CLIENT_SELECTOR, false)
+
         clientDao = AppDatabase.getDatabase(this).getClientDao()
 
         binding.recycler.layoutManager = LinearLayoutManager(this)
-        adapter = ClientAdapter(clientList, this, this)
+        adapter = ClientAdapter(clientList, this, this, this)
 
         binding.recycler.adapter = adapter
 
@@ -178,4 +191,51 @@ class ClientListActivity : AppActivity(), ScrollListener<Client> {
 
         BY_PHONE
     }
+
+    override fun onViewHolderSelected(client: Client, clientViewHolder: ClientViewHolder) {
+        if (isClientSelector) {
+            val resultIntent = Intent()
+            val gson = Gson()
+            resultIntent.putExtra(CLIENT_SELECTOR_RESULT, gson.toJson(client))
+
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+
+        } else {
+            TODO("Start client preview activity")
+        }
+    }
+}
+
+
+class ClientSelectorContract: ActivityResultContract<Client?, Client?>() {
+
+    companion object {
+        const val CLIENT_SELECTOR_RESULT = "CLIENT_SELECTOR_RESULT"
+
+        const val IS_CLIENT_SELECTOR = "IS_CLIENT_SELECTOR"
+    }
+
+    override fun createIntent(context: Context, input: Client?): Intent {
+        val intent = Intent(context, AppointmentCreationActivity::class.java)
+
+        val gson = Gson()
+        intent.putExtra(CLIENT_SELECTOR_RESULT, gson.toJson(input))
+        intent.putExtra(IS_CLIENT_SELECTOR, true)
+
+        return intent
+    }
+
+    override fun parseResult(resultCode: Int, intent: Intent?): Client? {
+
+        if (resultCode != Activity.RESULT_OK) return null
+
+        if (intent == null) return null
+
+        val gson = Gson()
+        val json = intent.getStringExtra(CLIENT_SELECTOR_RESULT)
+
+        return gson.fromJson(json, Client::class.java)
+    }
+
 }

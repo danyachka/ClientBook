@@ -18,6 +18,8 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
 
     private val adapter: AppointmentAdapter
 
+    private val loader: MainFragmentLoader
+
     private val list: ArrayList<AppointmentClient> = ArrayList()
 
     private val scope: LifecycleCoroutineScope
@@ -34,10 +36,12 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
                 context = context
         )
 
-        val loader = MainFragmentLoader(list, context, adapter, scope, this)
+        loader = MainFragmentLoader(list, context, adapter, scope, this)
         adapter.loader = loader
         loader.loadNear(System.currentTimeMillis())
     }
+
+
 
     override fun deleteAppointment(appointment: Appointment) {
         TODO("Not yet implemented")

@@ -12,10 +12,10 @@ import ru.etysoft.clientbook.utils.Logger
 
 class PagerAdapter: FragmentStateAdapter {
 
-    private val listFragment: ListFragment
+    val listFragment: ListFragment
 
     private val calendarFragment: CalendarFragment
-
+    
     private val listFragmentListener: ListFragmentListener
 
     constructor(fragmentManager: FragmentManager,

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityMainBinding
+import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.ui.adapters.PagerAdapter
 import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
 import ru.etysoft.clientbook.ui.fragments.list.ListFragmentListener
@@ -54,7 +55,7 @@ class MainActivity : AppActivity(), ListFragmentListener {
     private fun createPager() {
         var viewPager = binding.pager
 
-        var pagerAdapter = PagerAdapter(supportFragmentManager, lifecycle, this)
+        pagerAdapter = PagerAdapter(supportFragmentManager, lifecycle, this)
         viewPager.adapter = pagerAdapter
 
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -91,6 +92,10 @@ class MainActivity : AppActivity(), ListFragmentListener {
         binding.calendarButton.setColorFilter(ContextCompat.getColor(applicationContext, R.color.accent))
 
         Logger.logDebug(MainActivity::class.java.simpleName + "_bar", "Calendar is shown")
+    }
+
+    fun onNewAppointment(appointmentClient: AppointmentClient) {
+        pagerAdapter.listFragment.onAppointmentAdded(appointmentClient)
     }
 
 }

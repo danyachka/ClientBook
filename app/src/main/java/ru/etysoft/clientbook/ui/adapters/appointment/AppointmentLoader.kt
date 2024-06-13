@@ -26,9 +26,9 @@ abstract class AppointmentLoader(
     protected val appointmentDao: AppointmentDao = AppDatabase
             .getDatabase(context).getAppointmentDao()
 
-    private var isNewestLoaded = false
+    var isNewestLoaded = false
 
-    private var isOldestLoaded = false
+    var isOldestLoaded = false
 
     abstract suspend fun loadNewer(id: Long): ArrayList<AppointmentClient>
 
@@ -37,10 +37,15 @@ abstract class AppointmentLoader(
     abstract suspend fun getClosest(time: Long): AppointmentClient?
 
     fun loadNear(time: Long) = scope.launch {
-        val closest = getClosest(time) ?: return@launch
+        val result = getClosest(time)
+        val closest = if (result != null) result else {
+            isNewestLoaded = true
+            isOldestLoaded = true
+            return@launch
+        }
 
-        val newer = loadNewer(closest.appointment.id)
-        val older = loadOlder(closest.appointment.id).reversed()
+        val newer = loadNewer(closest.appointment.startTime)
+        val older = loadOlder(closest.appointment.startTime).reversed()
 
         isNewestLoaded = newer.size < AppointmentDao.LOADING_COUNT_HALF
         isOldestLoaded = older.size < AppointmentDao.LOADING_COUNT_HALF
@@ -59,7 +64,7 @@ abstract class AppointmentLoader(
         if (isOldestLoaded) return@launch
         if (list.isEmpty()) return@launch
 
-        val older = loadOlder(list.first().appointment.id).reversed()
+        val older = loadOlder(list.first().appointment.startTime).reversed()
 
         isOldestLoaded = older.size < AppointmentDao.LOADING_COUNT_HALF
 
@@ -81,7 +86,7 @@ abstract class AppointmentLoader(
         if (isNewestLoaded) return@launch
         if (list.isEmpty()) return@launch
 
-        val newer = loadNewer(list.last().appointment.id)
+        val newer = loadNewer(list.last().appointment.startTime)
 
         isNewestLoaded = newer.size < AppointmentDao.LOADING_COUNT_HALF
 
@@ -111,12 +116,12 @@ class MainFragmentLoader(
 ) :
         AppointmentLoader(list, context, adapter, scope, listener) {
 
-    override suspend fun loadNewer(id: Long): ArrayList<AppointmentClient> {
-        return ArrayList(appointmentDao.getACNewer(id))
+    override suspend fun loadNewer(startTime: Long): ArrayList<AppointmentClient> {
+        return ArrayList(appointmentDao.getACNewer(startTime))
     }
 
-    override suspend fun loadOlder(id: Long): ArrayList<AppointmentClient> {
-        return ArrayList(appointmentDao.getACOlder(id))
+    override suspend fun loadOlder(startTime: Long): ArrayList<AppointmentClient> {
+        return ArrayList(appointmentDao.getACOlder(startTime))
     }
 
     override suspend fun getClosest(time: Long): AppointmentClient? {
@@ -134,14 +139,14 @@ class ClientActivityLoader(
 ) :
         AppointmentLoader(list, context, adapter, scope, listener) {
 
-    override suspend fun loadNewer(id: Long): ArrayList<AppointmentClient> {
-        val answer = appointmentDao.getNewerClient(id, client.id)
+    override suspend fun loadNewer(startTime: Long): ArrayList<AppointmentClient> {
+        val answer = appointmentDao.getNewerClient(startTime, client.id)
 
         return convert(answer)
     }
 
-    override suspend fun loadOlder(id: Long): ArrayList<AppointmentClient> {
-        val answer = appointmentDao.getOlderByClient(id, client.id)
+    override suspend fun loadOlder(startTime: Long): ArrayList<AppointmentClient> {
+        val answer = appointmentDao.getOlderByClient(startTime, client.id)
 
         return convert(answer)
     }

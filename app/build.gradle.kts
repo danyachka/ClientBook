@@ -91,4 +91,6 @@ dependencies {
 
     implementation("androidx.compose.material:material:1.1.1")
 
+    implementation("com.google.code.gson:gson:2.10")
+
 }
