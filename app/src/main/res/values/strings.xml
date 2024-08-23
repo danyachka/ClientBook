@@ -47,6 +47,8 @@
     <string name="appointment_creation_cost_error">Enter value</string>
     <string name="appointment_creation_choose_client">Choose client</string>
     <string name="appointment_creation_start">Start time</string>
+    <string name="appointment_creation_time">Time</string>
     <string name="appointment_creation_duration">Task duration</string>
+    <string name="appointment_creation_date" translatable="false">%w, %d %m %y</string>
 
 </resources>

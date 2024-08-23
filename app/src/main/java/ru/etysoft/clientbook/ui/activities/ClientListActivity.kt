@@ -217,7 +217,7 @@ class ClientSelectorContract: ActivityResultContract<Client?, Client?>() {
     }
 
     override fun createIntent(context: Context, input: Client?): Intent {
-        val intent = Intent(context, AppointmentCreationActivity::class.java)
+        val intent = Intent(context, ClientListActivity::class.java)
 
         val gson = Gson()
         intent.putExtra(CLIENT_SELECTOR_RESULT, gson.toJson(input))

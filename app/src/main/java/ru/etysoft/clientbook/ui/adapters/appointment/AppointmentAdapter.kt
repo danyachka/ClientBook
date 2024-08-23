@@ -47,6 +47,8 @@ class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
     }
 
     private fun notifyListeners(position: Int, element: AppointmentClient) {
+        if (list.isEmpty()) return;
+
         if (position == 0) {
             scrollListener.onFirstScrolled(element)
             loader.loadOlder()

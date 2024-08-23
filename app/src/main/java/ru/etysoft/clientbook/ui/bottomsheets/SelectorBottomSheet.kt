@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.AppointmentClient
-import ru.etysoft.clientbook.ui.activities.AppointmentCreationContract
+import ru.etysoft.clientbook.ui.activities.appointment_creation.AppointmentCreationContract
 import ru.etysoft.clientbook.ui.activities.ClientCreationActivity
 import ru.etysoft.clientbook.ui.activities.MainActivity
 

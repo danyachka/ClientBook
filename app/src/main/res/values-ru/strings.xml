@@ -31,6 +31,7 @@
     <string name="appointment_creation_text">Название</string>
     <string name="appointment_creation_cost">Стоимость</string>
     <string name="appointment_creation_cost_error">Введите стоимость</string>
+    <string name="appointment_creation_time">Время</string>
     <string name="appointment_creation_duration">Продолжительность</string>
     <string name="appointment_creation_choose_client">Выберите клиента</string>
     <string name="appointment_creation_start">Время начала</string>

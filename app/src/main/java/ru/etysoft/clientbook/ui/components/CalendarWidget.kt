@@ -1,13 +1,11 @@
 package ru.etysoft.clientbook.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -26,13 +24,14 @@ import androidx.compose.ui.unit.sp
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.utils.Logger
 import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 import kotlin.math.abs
-import kotlin.math.absoluteValue
 
 
 interface CalendarWidgetListener {
 
-    fun onClick(selectedLocalDate: LocalDate)
+    fun onCalendarClicked(selectedLocalDate: LocalDate)
 
 }
 
@@ -40,87 +39,92 @@ interface CalendarWidgetListener {
 @Composable
 fun CalendarWidget(
         listener: CalendarWidgetListener,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        setBottomPadding: Boolean = true,
+        isVisible: Boolean = true
 ) {
     Logger.logDebug("CalendarWidget", "CalendarWidget's been created")
     val localNow = LocalDate.now()
     var calendar by remember { mutableStateOf(LocalDate.now()) }
     var animateContentSize by remember { mutableStateOf(0) }
 
-    Column(
-            modifier = modifier
-                    .fillMaxWidth()
-                    .padding(6.dp)
-                    .background(colorResource(id = R.color.accent), shape = RoundedCornerShape(16.dp))
-                    .padding(10.dp)
-                    .animateContentSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Row(
-                modifier = Modifier
+    AnimatedVisibility(visible = isVisible) {
+        Column(
+                modifier = modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(6.dp)
+                        .background(colorResource(id = R.color.accent), shape = RoundedCornerShape(16.dp))
+                        .padding(10.dp)
+                        .animateContentSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            TopButton(false) {
-                animateContentSize++
-                calendar = calendar.minusMonths(1)
+            Row(
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TopButton(false) {
+                    animateContentSize++
+                    calendar = calendar.minusMonths(1)
+                }
+
+                Text(
+                        "${calendar.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru"))} ${calendar.year}",
+                        fontSize = 18.sp,
+                        fontFamily = montserrat,
+                        fontWeight = FontWeight.SemiBold
+                )
+
+                TopButton(true) {
+                    animateContentSize++
+                    calendar = calendar.plusMonths(1)
+                }
             }
 
-            Text(
-                    "${calendar.month.name} ${calendar.year}",
-                    fontSize = 18.sp,
-                    fontFamily = montserrat,
-                    fontWeight = FontWeight.SemiBold
-            )
+            ShowHeaderRow()
 
-            TopButton(true) {
-                animateContentSize++
-                calendar = calendar.plusMonths(1)
-            }
-        }
+            val daysInMonth = calendar.lengthOfMonth()
+            val firstDayInMonth = calendar.withDayOfMonth(1)
+            val firstDayOfWeek = firstDayInMonth.dayOfWeek.value
+            val rows = kotlin.math.ceil((firstDayOfWeek + daysInMonth) / 7.0).toInt()
 
-        ShowHeaderRow()
+            val previousMonthLen = calendar.minusMonths(1).lengthOfMonth()
 
-        val daysInMonth = calendar.lengthOfMonth()
-        val firstDayInMonth = calendar.withDayOfMonth(1)
-        val firstDayOfWeek = firstDayInMonth.dayOfWeek.value
-        val rows = kotlin.math.ceil((firstDayOfWeek + daysInMonth) / 7.0).toInt()
+            Column(
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = if (setBottomPadding) 8.dp else 0.dp)
 
-        val previousMonthLen = calendar.minusMonths(1).lengthOfMonth()
+            ) {
+                for (week in 0..<rows) {
+                    Row(
+                            Modifier.fillMaxWidth(1f)
+                    ) {
+                        for (currentDay in 0..<7) {
+                            val day = week * 7 + currentDay - firstDayOfWeek + 2
 
-        LazyVerticalGrid(
-                columns = GridCells.Fixed(7),
-                modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
+                            val isCurrentMonth = (day in 1..daysInMonth)
+                            val d = if (day < 1) {
+                                previousMonthLen + day
+                            } else if (day > daysInMonth) {
+                                day - daysInMonth
+                            } else {
+                                day
+                            }
 
-        ) {
-            items((0 until rows * 7).toList()) { index ->
-                val day = index - firstDayOfWeek + 1
-
-                if (day < 1) {
-                    val d = previousMonthLen + day
-
-                    CreateDayElement(day = d,
-                            isCurrent = false,
-                            buttonDate = firstDayInMonth.minusDays(abs(day) + 1L),
-                            localDate = localNow,
-                            listener = listener)
-                } else if (day > daysInMonth) {
-                    val d = day - daysInMonth
-
-                    CreateDayElement(day = d,
-                            isCurrent = false,
-                            buttonDate = firstDayInMonth.plusDays(day - 1L),
-                            localDate = localNow,
-                            listener = listener)
-                } else {
-                    CreateDayElement(day = day,
-                            isCurrent = true,
-                            buttonDate = firstDayInMonth.plusDays(day - 1L),
-                            localDate = localNow,
-                            listener = listener)
+                            Row(
+                                    Modifier.weight(1f, true)
+                            ) {
+                                CreateDayElement(day = d,
+                                        isCurrent = isCurrentMonth,
+                                        buttonDate = if (day > 0) firstDayInMonth.plusDays(day - 1L)
+                                        else firstDayInMonth.minusDays(abs(day) + 1L),
+                                        localDate = localNow,
+                                        listener = listener)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -132,9 +136,11 @@ fun CalendarWidget(
 fun CreateDayElement(day: Int, isCurrent: Boolean, buttonDate: LocalDate, localDate: LocalDate,
                      listener: CalendarWidgetListener) {
     Logger.logDebug("CalendarWidget", "Bound date: $buttonDate, $localDate")
+
     Box (
             contentAlignment = Alignment.Center,
             modifier = Modifier
+                    .fillMaxWidth(1f)
                     .padding(4.dp)
                     .background(
                             if (buttonDate.isEqual(localDate)) colorResource(id = R.color.accent_light_light_light)
@@ -143,9 +149,9 @@ fun CreateDayElement(day: Int, isCurrent: Boolean, buttonDate: LocalDate, localD
                             shape = RoundedCornerShape(8.dp))
                     .border(width = 4.dp,
                             color = if (isCurrent) colorResource(id = R.color.accent_dark_dark)
-                                    else colorResource(id = R.color.accent_dark),
+                            else colorResource(id = R.color.accent_dark),
                             shape = RoundedCornerShape(8.dp))
-                    .clickable { listener.onClick(buttonDate) }
+                    .clickable { listener.onCalendarClicked(buttonDate) }
     ) {
 
         Text(
@@ -231,7 +237,7 @@ fun TopButton(toFuture: Boolean, runnable: Runnable) {
 @Composable
 fun Preview() {
     CalendarWidget(listener = object : CalendarWidgetListener {
-        override fun onClick(selectedLocalDate: LocalDate) {
+        override fun onCalendarClicked(selectedLocalDate: LocalDate) {
         }
     })
 }

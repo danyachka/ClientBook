@@ -54,7 +54,7 @@ class CalendarFragment: Fragment(R.layout.fragment_calendar), CalendarWidgetList
         _binding = null
     }
 
-    override fun onClick(selectedLocalDate: LocalDate) {
+    override fun onCalendarClicked(selectedLocalDate: LocalDate) {
         TODO("Not yet implemented")
     }
 }

@@ -23,7 +23,7 @@ open class AppActivity: AppCompatActivity() {
         return scaleOut
     }
 
-    fun performHeightAnimation(fromHeight: Int, toHeight: Int, view: View): ValueAnimator? {
+    fun performHeightAnimation(fromHeight: Int, toHeight: Int, view: View, duration: Long = 150): ValueAnimator? {
         val animator = ValueAnimator.ofInt(fromHeight, toHeight)
         animator.addUpdateListener { valueAnimator ->
             val value = valueAnimator.animatedValue as Int
@@ -32,7 +32,7 @@ open class AppActivity: AppCompatActivity() {
             view.layoutParams = params
         }
         animator.interpolator = DecelerateInterpolator(2f)
-        animator.duration = 150
+        animator.duration = duration
         animator.start()
         return animator
     }
