@@ -46,17 +46,18 @@
             <EditText
                 android:id="@+id/text"
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/rect"
                 android:backgroundTint="@color/accent"
                 android:fontFamily="@font/montserratsemibold"
-                android:gravity="center_vertical"
+                android:gravity="top|start"
                 android:hint="@string/appointment_creation_text"
-                android:inputType="text"
-                android:maxLength="24"
-                android:maxLines="1"
+                android:maxLines="5"
+                android:maxHeight="200dp"
+                android:inputType="textMultiLine"
                 android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 android:textColor="@color/accent_dark_dark"
                 android:textColorHint="@color/accent_dark"/>
 
@@ -75,7 +76,7 @@
             <EditText
                 android:id="@+id/value"
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:background="@drawable/rect"
                 android:backgroundTint="@color/accent"
@@ -85,6 +86,7 @@
                 android:inputType="number"
                 android:maxLength="24"
                 android:maxLines="1"
+                android:paddingVertical="8dp"
                 android:paddingHorizontal="16dp"
 
                 android:textColor="@color/accent_dark_dark"
@@ -388,7 +390,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="82dp"/>
+                android:layout_height="100dp"/>
 
 
         </LinearLayout>
@@ -411,6 +413,6 @@
         android:src="@drawable/ic_done"
         app:tint="@color/accent_dark_dark"
         android:background="@drawable/rect"
-        android:backgroundTint="@color/accent"/>
+        android:backgroundTint="@color/accent_light_light_light"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

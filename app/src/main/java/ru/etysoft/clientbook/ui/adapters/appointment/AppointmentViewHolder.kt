@@ -10,12 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
+import java.time.LocalDate
+import java.time.ZoneId
 
-class AppointmentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class AppointmentViewHolder(itemView: View,
+                            private val yesterday: LocalDate,
+                            private val today: LocalDate,
+                            private val tomorrow: LocalDate,
+                            private val zoneId: ZoneId): RecyclerView.ViewHolder(itemView) {
 
     private val dateText: TextView
     private val timeText: TextView
-    private val nameText: TextView
+    private val text: TextView
     private val clientNameText: TextView
     private val valueText: TextView
 
@@ -24,7 +30,7 @@ class AppointmentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     init {
         dateText = itemView.findViewById(R.id.date_text)
         timeText = itemView.findViewById(R.id.time_text)
-        nameText = itemView.findViewById(R.id.text)
+        text = itemView.findViewById(R.id.text)
         clientNameText = itemView.findViewById(R.id.client_name)
         valueText= itemView.findViewById(R.id.value)
         notificationIcon = itemView.findViewById(R.id.notification_indicator)
@@ -34,14 +40,17 @@ class AppointmentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         dateText.visibility =
                 if (previous == null) VISIBLE
-                else if (appointment.appointment.isSameDay(previous.appointment)) GONE
+                else if (appointment.appointment.isSameDay(previous.appointment, zoneId)) GONE
                 else VISIBLE
 
-        if (dateText.visibility == VISIBLE) dateText.text = appointment.appointment.dateText
+        if (dateText.visibility == VISIBLE) dateText.text = appointment.appointment
+                .getDateText(itemView.context, today, tomorrow, yesterday, zoneId)
 
-        timeText.text = appointment.appointment.timeText
+        timeText.text = appointment.appointment.getTimeText(zoneId)
 
-        nameText.text = appointment.client.name
+        text.text = appointment.appointment.text
+
+        clientNameText.text = appointment.client.name
 
         valueText.text = appointment.appointment.value.toString()
 

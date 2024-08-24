@@ -1,14 +1,26 @@
 package ru.etysoft.clientbook.db.entities.appointment;
 
+import android.content.Context;
+import android.icu.util.LocaleData;
 import android.text.format.DateUtils;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.Calendar;
+import java.util.Locale;
+
+import ru.etysoft.clientbook.R;
+import ru.etysoft.clientbook.ui.activities.appointment_creation.Time;
 
 @Entity
 public class Appointment {
@@ -108,17 +120,34 @@ public class Appointment {
         this.notificationStatus = notificationStatus;
     }
 
-    public boolean isSameDay(Appointment appointment) {
-        // TODO: fill methods
-        return true;
+    public boolean isSameDay(Appointment appointment, ZoneId zoneId) {
+        LocalDate thisTime = Instant.ofEpochMilli(startTime).atZone(zoneId).toLocalDate();
+        LocalDate other = Instant.ofEpochMilli(appointment.startTime).atZone(zoneId).toLocalDate();
+        return thisTime.isEqual(other);
     }
 
-    public String getDateText() {
-        return "Сегодня";
+    public String getDateText(Context context, LocalDate now, LocalDate tomorrow, LocalDate yesterday, ZoneId timeZoneId) {
+        LocalDate thisTime = Instant.ofEpochMilli(startTime).atZone(timeZoneId).toLocalDate();
+
+        if (thisTime.isEqual(yesterday)) {
+            return ContextCompat.getString(context, R.string.yesterday);
+        } else if (thisTime.isEqual(now)) {
+            return ContextCompat.getString(context, R.string.today);
+        } else if (thisTime.isEqual(tomorrow)) {
+            return ContextCompat.getString(context, R.string.tomorrow);
+        }
+
+        return ContextCompat.getString(context, R.string.date)
+                .replaceFirst("%d", String.valueOf(thisTime.getDayOfMonth()))
+                .replaceFirst("%m", String.valueOf(thisTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru"))));
     }
 
-    public String getTimeText() {
-        return "14:00";
+    public String getTimeText(ZoneId zoneId) {
+        LocalTime time = Instant.ofEpochMilli(startTime).atZone(zoneId).toLocalTime();
+        LocalTime end = Instant.ofEpochMilli(endTime).atZone(zoneId).toLocalTime();
+        return new StringBuilder(new Time(time.getHour(), time.getMinute()).toString())
+                .append(" - ")
+                .append(new Time(end.getHour(), end.getMinute())).toString();
     }
 
     @NonNull

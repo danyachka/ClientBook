@@ -79,13 +79,25 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
             }
         }
 
+        var isAdded: Boolean = false;
         for (i: Int in 0..<list.size) {
             val thisAppointment = list[i].appointment
 
             if (thisAppointment.startTime > appointment.startTime) {
                 list.add(i, appointmentClient)
                 adapter.notifyItemInserted(i)
+                isAdded = true
                 break
+            }
+        }
+
+        if (!isAdded) {
+            if (appointment.startTime < list.first().appointment.startTime) {
+                list.add(0, appointmentClient)
+                adapter.notifyItemInserted(0)
+            } else if (appointment.startTime > list.last().appointment.startTime) {
+                list.add(appointmentClient)
+                adapter.notifyItemInserted(list.size - 1)
             }
         }
 

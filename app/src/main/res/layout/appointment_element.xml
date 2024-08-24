@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
 
     android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+
+    android:layout_marginHorizontal="12dp"
 
     android:background="@android:color/transparent"
 
@@ -26,14 +30,13 @@
         android:id="@+id/time_text"
 
         android:layout_marginStart="20dp"
-        android:layout_marginTop="-2dp"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/montserratbold"
         android:text="13:00"
-        android:textColor="@color/accent"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
 
@@ -42,7 +45,7 @@
         android:layout_height="wrap_content"
 
         android:background="@drawable/high_rounded"
-        android:backgroundTint="@color/accent_light_light"
+        android:backgroundTint="@color/white"
 
         android:paddingHorizontal="32dp"
 
@@ -59,6 +62,9 @@
             <TextView
                 android:id="@+id/text"
 
+                android:ellipsize="end"
+                android:maxLines="4"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -73,10 +79,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:fontFamily="@font/montserratmedium"
+                android:fontFamily="@font/montserratbold"
                 android:text="людмила кековна"
-                android:textColor="@color/accent_dark"
-                android:textSize="12dp" />
+                android:textColor="@color/accent_medium"
+                android:textSize="16dp" />
 
         </LinearLayout>
 
@@ -98,16 +104,32 @@
                 android:src="@drawable/ic_notifications"
                 app:tint="@color/accent_dark" />
 
-            <TextView
-                android:id="@+id/value"
-
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/montserratsemibold"
-                android:text="15.000Р"
-                android:textColor="@color/accent_dark"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/value"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/montserratsemibold"
+                    android:text="15.000"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/accent_dark"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_money"
+                    app:tint="@color/accent_dark" />
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

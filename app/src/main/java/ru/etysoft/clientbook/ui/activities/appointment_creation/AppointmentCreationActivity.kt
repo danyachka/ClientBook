@@ -144,7 +144,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
         binding.valueError.visibility = View.GONE
         binding.timeError.visibility = View.GONE
 
-        val text: String = binding.text.text.toString()
+        val text: String = binding.text.text.toString().trim()
         val costString: String = binding.value.text.toString()
 
         if (text.isEmpty()) {

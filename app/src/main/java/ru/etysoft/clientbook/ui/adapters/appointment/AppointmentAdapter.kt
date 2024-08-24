@@ -11,6 +11,8 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolder
 import ru.etysoft.clientbook.utils.Logger
+import java.time.LocalDate
+import java.time.ZoneId
 
 class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
 
@@ -22,18 +24,32 @@ class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
 
     lateinit var loader: AppointmentLoader
 
+    private val yesterday: LocalDate
+    private val today: LocalDate
+    private val tomorrow: LocalDate
+    private val zoneId: ZoneId
+
     constructor(list: List<AppointmentClient>,
                 scrollListener: ScrollListener<AppointmentClient>,
                 context: Context) {
         this.list = list
         this.scrollListener = scrollListener
 
+        today = LocalDate.now()
+        yesterday = today.minusDays(1)
+        tomorrow = today.plusDays(1)
+        zoneId = ZoneId.systemDefault()
+
         inflater = LayoutInflater.from(context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
         val itemView = inflater.inflate(R.layout.appointment_element, parent, false)
-        return AppointmentViewHolder(itemView)
+        return AppointmentViewHolder(itemView,
+                yesterday = yesterday,
+                today = today,
+                tomorrow = tomorrow,
+                zoneId = zoneId)
     }
 
     override fun getItemCount(): Int {
