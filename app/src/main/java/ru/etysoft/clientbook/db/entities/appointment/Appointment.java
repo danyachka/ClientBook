@@ -5,6 +5,7 @@ import android.text.format.DateUtils;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Calendar;
@@ -14,7 +15,7 @@ public class Appointment {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    private long id;
+    private long id = 0;
 
     private long clientId;
 
@@ -31,8 +32,20 @@ public class Appointment {
     @ColumnInfo(defaultValue = "")
     private String text;
 
-    public Appointment(@NonNull long id, long clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
+    public Appointment(@NonNull long id, String text, int value, long clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
         this.id = id;
+        this.text = text;
+        this.value = value;
+        this.clientId = clientId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.notificationStatus = notificationStatus;
+    }
+
+    @Ignore
+    public Appointment(String text, int value, long clientId, long startTime, long endTime, NotificationStatus notificationStatus) {
+        this.text = text;
+        this.value = value;
         this.clientId = clientId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -106,5 +119,17 @@ public class Appointment {
 
     public String getTimeText() {
         return "14:00";
+    }
+
+    @NonNull
+    @Override
+    public  String toString() {
+        return new StringBuilder("Appointment(")
+                .append("id: ").append(id)
+                .append(", text: ").append(text)
+                .append(", value: ").append(value)
+                .append(", clientId: ").append(clientId)
+                .append(", startTime: ").append(startTime)
+                .append(", endTime: ").append(endTime).toString();
     }
 }

@@ -10,16 +10,26 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityAppointmentCreationBinding
+import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
+import ru.etysoft.clientbook.db.entities.appointment.Appointment
+import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
 import ru.etysoft.clientbook.ui.activities.AppActivity
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract
 import ru.etysoft.clientbook.ui.components.CalendarWidget
 import ru.etysoft.clientbook.ui.components.CalendarWidgetListener
+import ru.etysoft.clientbook.utils.Logger
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -33,7 +43,8 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
     private lateinit var resultLauncher: ActivityResultLauncher<Client?>
 
     private var startTime = Time(14, 0)
-    private var duration = Time(14, 0)
+    private var duration = Time(1, 0)
+    private var selectedLocalDate = LocalDate.now()
 
     private var pickedClient: Client? = null
 
@@ -83,6 +94,10 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
             finish()
         }
 
+        binding.confirm.setOnClickListener {
+            onConfirm()
+        }
+
     }
 
     private fun onClientPicked(client: Client) {
@@ -99,6 +114,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
         if (!isCalendarShown) return
         isCalendarShown = false
 
+        this.selectedLocalDate = selectedLocalDate
         updateCalendar()
 
         fillDateText(selectedLocalDate)
@@ -121,6 +137,82 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
 
     private fun fillTimeView(view: TextView, time: Time) {
         view.text = time.toString()
+    }
+
+    private fun onConfirm() {
+        binding.textError.visibility = View.GONE
+        binding.valueError.visibility = View.GONE
+        binding.timeError.visibility = View.GONE
+
+        val text: String = binding.text.text.toString()
+        val costString: String = binding.value.text.toString()
+
+        if (text.isEmpty()) {
+            binding.textError.visibility = View.VISIBLE
+            return
+        }
+
+        if (costString.isEmpty()) {
+            binding.valueError.visibility = View.VISIBLE
+            return
+        }
+
+        if (pickedClient == null) {
+            binding.clientError.visibility = View.VISIBLE
+            return
+        }
+
+        lifecycleScope.launch {
+            val startTime: Long = selectedLocalDate.atTime(startTime.hour, startTime.minutes).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            val endTime: Long = startTime + duration.toMillis()
+
+            val appointmentDao = AppDatabase.getDatabase(this@AppointmentCreationActivity).getAppointmentDao()
+            val closest = appointmentDao.getBetween(startTime, endTime)
+
+            // if exists
+            if (closest != null) {
+                runOnUiThread {
+                    // if exists
+                    showTimeError(closest)
+                }
+                return@launch
+            }
+
+            val cost: Int = costString.toInt()
+
+            val appointment = Appointment(text, cost, pickedClient!!.id, startTime, endTime, NotificationStatus.ENABLED)
+            val id: Long = appointmentDao.insert(appointment)
+            appointment.id = id
+
+            Logger.logDebug(AppointmentCreationActivity::class.java.simpleName, "Created an Appointment: $appointment")
+
+            runOnUiThread {
+                val resultIntent = Intent()
+                val gson = Gson()
+                resultIntent.putExtra(AppointmentCreationContract.APPOINTMENT_CLIENT_RESULT,
+                        gson.toJson(AppointmentClient(appointment = appointment, client = pickedClient!!)))
+
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            }
+        }
+    }
+
+    private fun showTimeError(appointmentClient: AppointmentClient) {
+        val zoneId = ZoneId.systemDefault() // or specify a specific zone, e.g., ZoneId.of("America/New_York")
+        val startDateTime: ZonedDateTime = Instant.ofEpochSecond(appointmentClient.appointment.startTime).atZone(zoneId)
+        val endDateTime: ZonedDateTime = Instant.ofEpochSecond(appointmentClient.appointment.endTime).atZone(zoneId)
+
+        val startTime = Time(startDateTime.hour, startDateTime.minute)
+        val endTime = Time(endDateTime.hour, endDateTime.minute)
+
+        val s = ContextCompat.getString(this, R.string.appointment_creation_date_error)
+                .replaceFirst("%t", appointmentClient.appointment.text)
+                .replaceFirst("%c", appointmentClient.client.name)
+                .replaceFirst("%s", startTime.toString())
+                .replaceFirst("%e", endTime.toString())
+
+        binding.timeError.text = s
     }
 }
 
@@ -156,5 +248,9 @@ class AppointmentCreationContract: ActivityResultContract<AppointmentClient?, Ap
 class Time(val hour: Int, val minutes: Int) {
     override fun toString(): String {
         return String.format("%02d:%02d", hour, minutes)
+    }
+
+    fun toMillis(): Long {
+        return  ((hour * 60 + minutes) * 60 * 1000).toLong()
     }
 }

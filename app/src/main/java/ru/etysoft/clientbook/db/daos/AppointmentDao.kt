@@ -17,7 +17,10 @@ interface AppointmentDao {
     }
 
     @Insert
-    suspend fun insertAll(vararg appointment: Appointment)
+    suspend fun insertAll(vararg appointment: Appointment): List<Long>
+
+    @Insert
+    suspend fun insert(appointment: Appointment): Long
 
     @Update
     suspend fun update(appointment: Appointment)
@@ -37,6 +40,9 @@ interface AppointmentDao {
     // AppointmentClient
     @Query("SELECT * FROM appointment ORDER BY ABS(startTime - :startTime) LIMIT 1")
     suspend fun getClosestACByTime(startTime: Long): AppointmentClient?
+
+    @Query("SELECT * FROM appointment WHERE startTime > :startTime AND endTime < :endTime")
+    suspend fun getBetween(startTime: Long, endTime: Long): AppointmentClient?
 
     @Query("SELECT * FROM appointment WHERE clientId = :clientId ORDER BY ABS(startTime - :startTime) LIMIT 1")
     suspend fun getClosestACByTimeAndClient(startTime: Long, clientId: Long): AppointmentClient?

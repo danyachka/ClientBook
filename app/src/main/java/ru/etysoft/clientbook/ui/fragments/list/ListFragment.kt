@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.FragmentListBinding
 import ru.etysoft.clientbook.db.entities.AppointmentClient
@@ -30,10 +31,11 @@ class ListFragment(private var listener: ListFragmentListener) :
 
     private lateinit var presenter: ListFragmentContract.Presenter
 
-    private val appointmentList = ArrayList<Appointment>()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentListBinding.inflate(inflater, container, false)
+
+        binding.recycler.layoutManager = LinearLayoutManager(context)
+        presenter = ListFragmentPresenter(this.requireContext(), this, lifecycleScope, binding.recycler)
 
         binding.buttonAdd.setOnClickListener {
             listener.showCreateBottomSheet()
@@ -48,20 +50,8 @@ class ListFragment(private var listener: ListFragmentListener) :
         _binding = null
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        presenter = ListFragmentPresenter(this.requireContext(), this, lifecycleScope)
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-    }
-
     override fun onAppointmentAdded(appointmentClient: AppointmentClient) {
-        TODO("Not yet implemented")
+        presenter.onAppointmentAdded(appointmentClient)
     }
 
     override fun onAppointmentDeleted(appointmentClient: AppointmentClient) {
@@ -69,14 +59,16 @@ class ListFragment(private var listener: ListFragmentListener) :
     }
 
     override fun onAppointmentChanged(appointmentClient: AppointmentClient) {
-        TODO("Not yet implemented")
+        presenter.updateAppointment(appointmentClient)
     }
 
     override fun updatePlaceHolder(isEmpty: Boolean) {
         if (isEmpty) {
             binding.recycler.visibility = View.GONE
+            binding.placeholder.visibility = View.VISIBLE
         } else {
             binding.placeholder.visibility = View.GONE
+            binding.recycler.visibility = View.VISIBLE
         }
     }
 }

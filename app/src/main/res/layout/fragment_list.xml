@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserratbold"
             android:gravity="center_vertical"
-            android:text="@string/today"
+            android:text="@string/table"
             android:textColor="@color/accent"
             android:textSize="24sp"/>
 
@@ -48,7 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:background="@android:color/transparent"
+        android:background="@color/light_black"
+        app:cardBackgroundColor="@color/light_black"
 
         app:cardElevation="0dp"
         app:cardCornerRadius="30dp">

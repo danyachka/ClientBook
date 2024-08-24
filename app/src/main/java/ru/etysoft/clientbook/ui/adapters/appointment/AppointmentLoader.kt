@@ -3,6 +3,7 @@ package ru.etysoft.clientbook.ui.adapters.appointment
 import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.etysoft.clientbook.db.AppDatabase
@@ -50,13 +51,15 @@ abstract class AppointmentLoader(
         isNewestLoaded = newer.size < AppointmentDao.LOADING_COUNT_HALF
         isOldestLoaded = older.size < AppointmentDao.LOADING_COUNT_HALF
 
-        list.addAll(older)
-        list.add(closest)
-        list.addAll(newer)
+        MainScope().launch {
+            list.clear()
 
-        withContext(Dispatchers.Main) {
+            list.addAll(older)
+            list.add(closest)
+            list.addAll(newer)
+
             adapter.notifyDataSetChanged()
-            listener.onLoaded()
+            listener.onLoaded(older.size)
         }
     }
 
@@ -68,11 +71,11 @@ abstract class AppointmentLoader(
 
         isOldestLoaded = older.size < AppointmentDao.LOADING_COUNT_HALF
 
-        withContext(Dispatchers.Main) {
+        MainScope().launch {
             list.addAll(0, older)
             adapter.notifyItemRangeInserted(0, older.size)
 
-            if (list.size < MAX_COUNT) return@withContext
+            if (list.size < MAX_COUNT) return@launch
 
             list.subList(list.size - AppointmentDao.LOADING_COUNT_HALF, list.size).clear()
             adapter.notifyItemRangeRemoved(
@@ -90,11 +93,11 @@ abstract class AppointmentLoader(
 
         isNewestLoaded = newer.size < AppointmentDao.LOADING_COUNT_HALF
 
-        withContext(Dispatchers.Main) {
+        MainScope().launch {
             list.addAll(newer)
             adapter.notifyItemRangeInserted(list.size - 1, newer.size)
 
-            if (list.size < MAX_COUNT) return@withContext
+            if (list.size < MAX_COUNT) return@launch
 
             list.subList(0, AppointmentDao.LOADING_COUNT_HALF).clear()
             adapter.notifyItemRangeRemoved(
@@ -165,7 +168,7 @@ class ClientActivityLoader(
 
 interface AppointmentLoaderListener {
 
-    fun onLoaded()
+    fun onLoaded(centerPos: Int)
 
     fun onOlderLoaded()
 

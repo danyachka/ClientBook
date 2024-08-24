@@ -3,6 +3,7 @@
 
     <string name="appointment">Appointment</string>
 
+    <string name="table">Table</string>
 
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
@@ -42,13 +43,15 @@
 
 
     <string name="appointment_creation_title">New Task</string>
+    <string name="appointment_creation_title_error">Enter title</string>
     <string name="appointment_creation_text">Task name</string>
     <string name="appointment_creation_cost">Task cost</string>
-    <string name="appointment_creation_cost_error">Enter value</string>
-    <string name="appointment_creation_choose_client">Choose client</string>
+    <string name="appointment_creation_cost_error">Enter cost</string>
+    <string name="appointment_creation_choose_client">Choose a client</string>
     <string name="appointment_creation_start">Start time</string>
     <string name="appointment_creation_time">Time</string>
     <string name="appointment_creation_duration">Task duration</string>
     <string name="appointment_creation_date" translatable="false">%w, %d %m %y</string>
+    <string name="appointment_creation_date_error">You already have appointment at this time: %t, %c, %s-%e</string>
 
 </resources>

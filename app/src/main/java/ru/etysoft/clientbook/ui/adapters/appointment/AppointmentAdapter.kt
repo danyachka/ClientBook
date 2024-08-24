@@ -10,6 +10,7 @@ import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolder
+import ru.etysoft.clientbook.utils.Logger
 
 class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
 
@@ -35,11 +36,16 @@ class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
         return AppointmentViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int {
+        Logger.logDebug(AppointmentAdapter::class.java.simpleName, "getItemCount called: ${list.size}")
+        return list.size
+    }
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
+        Logger.logDebug(AppointmentAdapter::class.java.simpleName, "Binding appointment element at pos = $position")
+
         val appointment = list[position]
-        val previous = if (position == 0) appointment else list[position - 1]
+        val previous = if (position == 0) null else list[position - 1]
 
         notifyListeners(position, appointment)
 

@@ -13,6 +13,7 @@ import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.ui.activities.appointment_creation.AppointmentCreationContract
 import ru.etysoft.clientbook.ui.activities.ClientCreationActivity
 import ru.etysoft.clientbook.ui.activities.MainActivity
+import ru.etysoft.clientbook.utils.Logger
 
 class SelectorBottomSheet: BottomSheetDialogFragment() {
 
@@ -32,7 +33,9 @@ class SelectorBottomSheet: BottomSheetDialogFragment() {
         dialog!!.window!!.attributes.windowAnimations = R.style.DialogAnimation
 
         resultLauncher = registerForActivityResult(AppointmentCreationContract()) { result ->
+            Logger.logDebug("AppointmentResultLauncher", "Result launcher called: isResultNull: ${result == null}")
             if (result != null) (activity as MainActivity).onNewAppointment(result)
+            dismiss()
         }
 
         initButtons()
@@ -55,7 +58,6 @@ class SelectorBottomSheet: BottomSheetDialogFragment() {
         view.findViewById<LinearLayout>(R.id.create_appointment).setOnClickListener {
             //Start activity for result
             resultLauncher.launch(null)
-            dismiss()
         }
     }
 

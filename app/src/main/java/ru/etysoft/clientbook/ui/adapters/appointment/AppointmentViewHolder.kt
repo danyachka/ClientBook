@@ -30,11 +30,14 @@ class AppointmentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         notificationIcon = itemView.findViewById(R.id.notification_indicator)
     }
 
-    fun bind(appointment: AppointmentClient, previous: AppointmentClient) {
+    fun bind(appointment: AppointmentClient, previous: AppointmentClient?) {
 
-        dateText.visibility = if (appointment.appointment.isSameDay(previous.appointment)) GONE
-                                else VISIBLE
-        dateText.text = appointment.appointment.dateText
+        dateText.visibility =
+                if (previous == null) VISIBLE
+                else if (appointment.appointment.isSameDay(previous.appointment)) GONE
+                else VISIBLE
+
+        if (dateText.visibility == VISIBLE) dateText.text = appointment.appointment.dateText
 
         timeText.text = appointment.appointment.timeText
 

@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Client Book</string>
     <string name="appointment">Запись</string>
+    <string name="table">Таблица</string>
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="yesterday">Вчера</string>
@@ -28,6 +29,7 @@
     <string name="sunday">Вс</string>
     <string name="no_appointments">Тут пока пусто</string>
     <string name="appointment_creation_title">Новая запись</string>
+    <string name="appointment_creation_title_error">Напишите заголовок</string>
     <string name="appointment_creation_text">Название</string>
     <string name="appointment_creation_cost">Стоимость</string>
     <string name="appointment_creation_cost_error">Введите стоимость</string>
@@ -35,5 +37,6 @@
     <string name="appointment_creation_duration">Продолжительность</string>
     <string name="appointment_creation_choose_client">Выберите клиента</string>
     <string name="appointment_creation_start">Время начала</string>
+    <string name="appointment_creation_date_error">Время совпадает с другой записью: %t, %c, %s-%e</string>
 
 </resources>

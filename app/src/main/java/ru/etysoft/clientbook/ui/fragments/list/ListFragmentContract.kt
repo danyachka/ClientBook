@@ -18,9 +18,11 @@ interface ListFragmentContract {
 
     interface Presenter {
 
-        fun deleteAppointment(appointment: Appointment)
+        fun deleteAppointment(appointmentClient: AppointmentClient)
 
-        fun updateAppointment(appointment: Appointment)
+        fun updateAppointment(appointmentClient: AppointmentClient)
+
+        fun onAppointmentAdded(appointmentClient: AppointmentClient)
 
     }
 }
