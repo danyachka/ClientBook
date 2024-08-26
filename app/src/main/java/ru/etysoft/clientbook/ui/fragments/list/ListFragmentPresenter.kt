@@ -3,17 +3,18 @@ package ru.etysoft.clientbook.ui.fragments.list
 import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
-import ru.etysoft.clientbook.db.daos.AppointmentDao
 import ru.etysoft.clientbook.db.entities.AppointmentClient
-import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoaderListener
+import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentObserver
+import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
 import ru.etysoft.clientbook.ui.adapters.appointment.MainFragmentLoader
 import ru.etysoft.clientbook.utils.Logger
 
 class ListFragmentPresenter: ListFragmentContract.Presenter,
-        ScrollListener<AppointmentClient>, AppointmentLoaderListener {
+        ScrollListener<AppointmentClient>, AppointmentLoaderListener,
+        GlobalAppointmentsChangingListener {
 
     private val view: ListFragmentContract.View
 
@@ -47,61 +48,41 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
         recyclerView.adapter = adapter
 
         loader.loadNear(System.currentTimeMillis())
+
+        GlobalAppointmentObserver.instance.registerListener(this)
     }
 
-    override fun deleteAppointment(appointmentClient: AppointmentClient) {
+    override fun release() {
+        GlobalAppointmentObserver.instance.removeListener(this)
+    }
+
+    override fun onAppointmentRemoved(appointmentClient: AppointmentClient) {
         TODO("Not yet implemented")
     }
 
-    override fun updateAppointment(appointmentClient: AppointmentClient) {
-        for (i: Int in 0..<list.size) {
-            val ac = list[i]
-            if (ac.appointment.id != appointmentClient.appointment.id) continue
-
-            list.removeAt(i)
-            adapter.notifyItemRemoved(i)
-            break
-        }
+    override fun onAppointmentChanged(appointmentClient: AppointmentClient) {
+        removeFromList(
+                appointmentClient = appointmentClient,
+                list = list,
+                adapter = adapter)
 
         onAppointmentAdded(appointmentClient)
     }
 
     override fun onAppointmentAdded(appointmentClient: AppointmentClient) {
         Logger.logDebug(ListFragmentPresenter::class.java.simpleName, "Appointment added")
-        val appointment = appointmentClient.appointment
-        if (list.size > AppointmentDao.LOADING_COUNT_HALF) {
-            if (appointment.startTime < list.first().appointment.startTime) {
-                loader.isOldestLoaded = false
-                return
-            } else if (appointment.startTime > list.last().appointment.startTime) {
-                loader.isNewestLoaded = false
-                return
-            }
-        }
 
-        var isAdded: Boolean = false;
-        for (i: Int in 0..<list.size) {
-            val thisAppointment = list[i].appointment
-
-            if (thisAppointment.startTime > appointment.startTime) {
-                list.add(i, appointmentClient)
-                adapter.notifyItemInserted(i)
-                isAdded = true
-                break
-            }
-        }
-
-        if (!isAdded) {
-            if (appointment.startTime < list.first().appointment.startTime) {
-                list.add(0, appointmentClient)
-                adapter.notifyItemInserted(0)
-            } else if (appointment.startTime > list.last().appointment.startTime) {
-                list.add(appointmentClient)
-                adapter.notifyItemInserted(list.size - 1)
-            }
-        }
+        processListAddition(
+                appointmentClient = appointmentClient,
+                loader = loader,
+                list = list,
+                adapter = adapter)
 
         view.updatePlaceHolder(list.isEmpty())
+    }
+
+    override fun loadNear(time: Long) {
+        loader.loadNear(time)
     }
 
     override fun onFirstScrolled(dataHolder: AppointmentClient) {
@@ -112,9 +93,24 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
 
     }
 
-    override fun onLoaded(centerPos: Int) {
+    override fun onLoaded(centerPos: Int, time: Long) {
         Logger.logDebug(ListFragmentPresenter::class.java.simpleName, "onLoaded called: ${list.size}")
         view.updatePlaceHolder(list.isEmpty())
+
+        if (list.isEmpty()) return
+
+        var position = 0
+        var closest = list[0].appointment
+        for (i: Int in 0..<list.size) {
+            val appointment = list[i].appointment
+
+            if (kotlin.math.abs(closest.startTime - time) > kotlin.math.abs(appointment.startTime - time)) {
+                position = i
+                closest = appointment
+            }
+        }
+
+        view.scrollTo(position)
     }
 
     override fun onOlderLoaded() {

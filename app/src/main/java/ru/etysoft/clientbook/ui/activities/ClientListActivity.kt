@@ -3,13 +3,10 @@ package ru.etysoft.clientbook.ui.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.ContextCompat
@@ -21,7 +18,6 @@ import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientListBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
-import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.CLIENT_SELECTOR_RESULT
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.IS_CLIENT_SELECTOR
@@ -30,7 +26,6 @@ import ru.etysoft.clientbook.ui.adapters.client.ClientAdapter
 import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolder
 import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolderListener
 import ru.etysoft.clientbook.utils.Logger
-import kotlin.concurrent.thread
 
 
 class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHolderListener {
@@ -202,7 +197,10 @@ class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHold
             finish()
 
         } else {
-            TODO("Start client preview activity")
+            val intent = Intent(this, ClientActivity::class.java)
+
+            intent.putExtra(ClientActivity.CLIENT_JSON, Gson().toJson(client))
+            startActivity(intent)
         }
     }
 }

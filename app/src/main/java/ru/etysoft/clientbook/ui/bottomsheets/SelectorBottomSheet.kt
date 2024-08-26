@@ -17,7 +17,7 @@ import ru.etysoft.clientbook.utils.Logger
 
 class SelectorBottomSheet: BottomSheetDialogFragment() {
 
-    private lateinit var view: View;
+    private lateinit var view: View
 
     private lateinit var resultLauncher: ActivityResultLauncher<AppointmentClient?>
 
@@ -27,14 +27,13 @@ class SelectorBottomSheet: BottomSheetDialogFragment() {
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val v: View = inflater.inflate(R.layout.selector_bottom_sheet, container, true)
         view = v
         dialog!!.window!!.attributes.windowAnimations = R.style.DialogAnimation
 
         resultLauncher = registerForActivityResult(AppointmentCreationContract()) { result ->
             Logger.logDebug("AppointmentResultLauncher", "Result launcher called: isResultNull: ${result == null}")
-            if (result != null) (activity as MainActivity).onNewAppointment(result)
             dismiss()
         }
 

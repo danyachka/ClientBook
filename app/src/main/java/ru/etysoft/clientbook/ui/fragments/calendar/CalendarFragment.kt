@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.FragmentCalendarBinding
 import ru.etysoft.clientbook.ui.activities.ClientListActivity
+import ru.etysoft.clientbook.ui.activities.MainActivity
 import ru.etysoft.clientbook.ui.components.CalendarWidget
 import ru.etysoft.clientbook.ui.components.CalendarWidgetListener
 import ru.etysoft.clientbook.utils.Logger
@@ -55,6 +53,6 @@ class CalendarFragment: Fragment(R.layout.fragment_calendar), CalendarWidgetList
     }
 
     override fun onCalendarClicked(selectedLocalDate: LocalDate) {
-        TODO("Not yet implemented")
+        (activity as MainActivity).scrollToDate(selectedLocalDate)
     }
 }

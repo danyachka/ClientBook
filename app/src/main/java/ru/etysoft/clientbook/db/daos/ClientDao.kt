@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import ru.etysoft.clientbook.db.entities.Client
-import ru.etysoft.clientbook.db.entities.appointment.Appointment
 
 @Dao
 interface ClientDao {

@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityAppointmentCreationBinding
@@ -21,6 +20,7 @@ import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
+import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentObserver
 import ru.etysoft.clientbook.ui.activities.AppActivity
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract
 import ru.etysoft.clientbook.ui.components.CalendarWidget
@@ -107,7 +107,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
         binding.clientName.text = client.name
         binding.clientPhone.text = client.phoneNumber
 
-        pickedClient = client;
+        pickedClient = client
     }
 
     override fun onCalendarClicked(selectedLocalDate: LocalDate) {
@@ -187,10 +187,13 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
             Logger.logDebug(AppointmentCreationActivity::class.java.simpleName, "Created an Appointment: $appointment")
 
             runOnUiThread {
+                val appointmentClient = AppointmentClient(appointment = appointment, client = pickedClient!!)
+                GlobalAppointmentObserver.instance.notifyAdded(appointmentClient)
+
                 val resultIntent = Intent()
                 val gson = Gson()
                 resultIntent.putExtra(AppointmentCreationContract.APPOINTMENT_CLIENT_RESULT,
-                        gson.toJson(AppointmentClient(appointment = appointment, client = pickedClient!!)))
+                        gson.toJson(appointmentClient))
 
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()

@@ -1,6 +1,5 @@
 package ru.etysoft.clientbook.db.entities;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -10,7 +9,6 @@ import androidx.room.PrimaryKey;
 public class Client {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     private long id;
 
     private String name;
@@ -21,7 +19,7 @@ public class Client {
     @ColumnInfo(defaultValue = "")
     private String picturePath;
 
-    public Client(@NonNull long id, String name, String phoneNumber, String picturePath) {
+    public Client(long id, String name, String phoneNumber, String picturePath) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;

@@ -4,25 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.FragmentListBinding
 import ru.etysoft.clientbook.db.entities.AppointmentClient
-import ru.etysoft.clientbook.db.entities.appointment.Appointment
-import ru.etysoft.clientbook.ui.activities.MainActivity
-import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
+import java.time.LocalDate
+import java.time.ZoneId
 
 class ListFragment(private var listener: ListFragmentListener) :
         Fragment(R.layout.fragment_list), ListFragmentContract.View {
-
-    companion object {
-        const val TIME_TO_SCROLL = "TIME_TO_SCROLL"
-        const val CURRENT: Long = 0
-        const val DO_NOT_SCROLL: Long = 1
-    }
 
     private var _binding: FragmentListBinding? = null
 
@@ -47,19 +39,8 @@ class ListFragment(private var listener: ListFragmentListener) :
     override fun onDestroyView() {
         super.onDestroyView()
 
+        presenter.release()
         _binding = null
-    }
-
-    override fun onAppointmentAdded(appointmentClient: AppointmentClient) {
-        presenter.onAppointmentAdded(appointmentClient)
-    }
-
-    override fun onAppointmentDeleted(appointmentClient: AppointmentClient) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onAppointmentChanged(appointmentClient: AppointmentClient) {
-        presenter.updateAppointment(appointmentClient)
     }
 
     override fun updatePlaceHolder(isEmpty: Boolean) {
@@ -70,5 +51,13 @@ class ListFragment(private var listener: ListFragmentListener) :
             binding.placeholder.visibility = View.GONE
             binding.recycler.visibility = View.VISIBLE
         }
+    }
+
+    override fun scrollTo(position: Int) {
+        binding.recycler.layoutManager!!.scrollToPosition(position)
+    }
+
+    fun goToDate(date: LocalDate) {
+        presenter.loadNear(date.atTime(0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
     }
 }

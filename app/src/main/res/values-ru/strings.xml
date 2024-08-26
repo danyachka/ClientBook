@@ -38,5 +38,7 @@
     <string name="appointment_creation_choose_client">Выберите клиента</string>
     <string name="appointment_creation_start">Время начала</string>
     <string name="appointment_creation_date_error">Время совпадает с другой записью: %t, %c, %s-%e</string>
+    <string name="client_page_next">Записано процедур - %t</string>
+    <string name="client_page_all">Всего процедур  - %t</string>
 
 </resources>

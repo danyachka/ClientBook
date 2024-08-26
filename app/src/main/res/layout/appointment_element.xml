@@ -36,7 +36,7 @@
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/montserratbold"
         android:text="13:00"
-        android:textColor="@color/white"
+        android:textColor="@color/accent_light_light"
         android:textSize="20sp" />
 
 
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
 
         android:background="@drawable/high_rounded"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/accent_light_light"
 
         android:paddingHorizontal="32dp"
 

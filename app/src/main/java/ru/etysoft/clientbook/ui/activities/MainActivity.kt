@@ -1,10 +1,7 @@
 package ru.etysoft.clientbook.ui.activities
 
-import android.graphics.PorterDuff
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityMainBinding
@@ -13,12 +10,9 @@ import ru.etysoft.clientbook.ui.adapters.PagerAdapter
 import ru.etysoft.clientbook.ui.bottomsheets.SelectorBottomSheet
 import ru.etysoft.clientbook.ui.fragments.list.ListFragmentListener
 import ru.etysoft.clientbook.utils.Logger
+import java.time.LocalDate
 
 class MainActivity : AppActivity(), ListFragmentListener {
-
-    companion object {
-        const val CLIENT_CREATION_CODE = 12
-    }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -32,6 +26,7 @@ class MainActivity : AppActivity(), ListFragmentListener {
         setContentView(binding.root)
 
         createPager()
+        initBar()
     }
 
     private fun initBar() {
@@ -53,7 +48,7 @@ class MainActivity : AppActivity(), ListFragmentListener {
     }
 
     private fun createPager() {
-        var viewPager = binding.pager
+        val viewPager = binding.pager
 
         pagerAdapter = PagerAdapter(supportFragmentManager, lifecycle, this)
         viewPager.adapter = pagerAdapter
@@ -71,12 +66,10 @@ class MainActivity : AppActivity(), ListFragmentListener {
         })
 
         viewPager.currentItem = 1
-
-        initBar()
     }
 
     override fun showCreateBottomSheet() {
-        val selectorBottomSheet = SelectorBottomSheet();
+        val selectorBottomSheet = SelectorBottomSheet()
         selectorBottomSheet.show(supportFragmentManager, "selector_bottom_sheet")
     }
 
@@ -94,8 +87,9 @@ class MainActivity : AppActivity(), ListFragmentListener {
         Logger.logDebug(MainActivity::class.java.simpleName + "_bar", "Calendar is shown")
     }
 
-    fun onNewAppointment(appointmentClient: AppointmentClient) {
-        pagerAdapter.listFragment.onAppointmentAdded(appointmentClient)
+    fun scrollToDate(date: LocalDate) {
+        binding.pager.currentItem = 1
+        pagerAdapter.listFragment.goToDate(date)
     }
 
 }

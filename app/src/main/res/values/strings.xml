@@ -55,4 +55,9 @@
     <string name="appointment_creation_date" translatable="false">%w, %d %m %y</string>
     <string name="appointment_creation_date_error">You already have appointment at this time: %t, %c, %s-%e</string>
 
+    <string name="client_page_next">Future tasks - %t</string>
+    <string name="client_page_all">All tasks - %t</string>
+
+    <string name="large_text" translatable="false"></string>
+
 </resources>

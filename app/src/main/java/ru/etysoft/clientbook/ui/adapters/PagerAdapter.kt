@@ -1,6 +1,5 @@
 package ru.etysoft.clientbook.ui.adapters
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -27,9 +26,7 @@ class PagerAdapter: FragmentStateAdapter {
         listFragment = ListFragment(listFragmentListener)
     }
 
-    override fun getItemCount(): Int {
-        return 2;
-    }
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
 

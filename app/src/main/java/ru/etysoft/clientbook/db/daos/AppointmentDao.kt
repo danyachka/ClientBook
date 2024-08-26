@@ -38,15 +38,19 @@ interface AppointmentDao {
     suspend fun getNewerClient(startTime: Long, clientId: Long): List<Appointment>
 
     // AppointmentClient
+    @Transaction
     @Query("SELECT * FROM appointment ORDER BY ABS(startTime - :startTime) LIMIT 1")
     suspend fun getClosestACByTime(startTime: Long): AppointmentClient?
 
+    @Transaction
     @Query("SELECT * FROM appointment WHERE startTime > :startTime AND endTime < :endTime")
     suspend fun getBetween(startTime: Long, endTime: Long): AppointmentClient?
 
+    @Transaction
     @Query("SELECT * FROM appointment WHERE clientId = :clientId ORDER BY ABS(startTime - :startTime) LIMIT 1")
     suspend fun getClosestACByTimeAndClient(startTime: Long, clientId: Long): AppointmentClient?
 
+    @Transaction
     @Query("SELECT * FROM appointment WHERE id = :id")
     suspend fun getACById(id: Long): AppointmentClient?
 
@@ -64,4 +68,10 @@ interface AppointmentDao {
 
     @Query("SELECT * FROM appointment WHERE clientId = :clientId")
     suspend fun getAllByClientId(clientId: Long): List<Appointment>
+
+    @Query("SELECT COUNT(*) FROM appointment WHERE clientId = :clientId AND startTime > :time")
+    suspend fun countNewerForClient(clientId: Long, time: Long): Int
+
+    @Query("SELECT COUNT(*) FROM appointment WHERE clientId = :clientId AND startTime <= :time")
+    suspend fun countOlderForClient(clientId: Long, time: Long): Int
 }

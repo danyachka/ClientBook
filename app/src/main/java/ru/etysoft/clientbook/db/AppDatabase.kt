@@ -2,7 +2,6 @@ package ru.etysoft.clientbook.db
 
 import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.etysoft.clientbook.db.daos.AppointmentDao
 import ru.etysoft.clientbook.db.daos.ClientDao

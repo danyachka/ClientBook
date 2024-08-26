@@ -14,9 +14,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 class AppointmentViewHolder(itemView: View,
-                            private val yesterday: LocalDate,
                             private val today: LocalDate,
-                            private val tomorrow: LocalDate,
                             private val zoneId: ZoneId): RecyclerView.ViewHolder(itemView) {
 
     private val dateText: TextView
@@ -43,6 +41,8 @@ class AppointmentViewHolder(itemView: View,
                 else if (appointment.appointment.isSameDay(previous.appointment, zoneId)) GONE
                 else VISIBLE
 
+        val yesterday = today.minusDays(1)
+        val tomorrow = today.plusDays(1)
         if (dateText.visibility == VISIBLE) dateText.text = appointment.appointment
                 .getDateText(itemView.context, today, tomorrow, yesterday, zoneId)
 

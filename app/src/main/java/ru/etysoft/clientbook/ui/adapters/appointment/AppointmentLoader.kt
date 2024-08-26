@@ -2,10 +2,8 @@ package ru.etysoft.clientbook.ui.adapters.appointment
 
 import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.AppointmentDao
 import ru.etysoft.clientbook.db.entities.AppointmentClient
@@ -59,7 +57,7 @@ abstract class AppointmentLoader(
             list.addAll(newer)
 
             adapter.notifyDataSetChanged()
-            listener.onLoaded(older.size)
+            listener.onLoaded(older.size, time)
         }
     }
 
@@ -119,12 +117,12 @@ class MainFragmentLoader(
 ) :
         AppointmentLoader(list, context, adapter, scope, listener) {
 
-    override suspend fun loadNewer(startTime: Long): ArrayList<AppointmentClient> {
-        return ArrayList(appointmentDao.getACNewer(startTime))
+    override suspend fun loadNewer(id: Long): ArrayList<AppointmentClient> {
+        return ArrayList(appointmentDao.getACNewer(id))
     }
 
-    override suspend fun loadOlder(startTime: Long): ArrayList<AppointmentClient> {
-        return ArrayList(appointmentDao.getACOlder(startTime))
+    override suspend fun loadOlder(id: Long): ArrayList<AppointmentClient> {
+        return ArrayList(appointmentDao.getACOlder(id))
     }
 
     override suspend fun getClosest(time: Long): AppointmentClient? {
@@ -142,14 +140,14 @@ class ClientActivityLoader(
 ) :
         AppointmentLoader(list, context, adapter, scope, listener) {
 
-    override suspend fun loadNewer(startTime: Long): ArrayList<AppointmentClient> {
-        val answer = appointmentDao.getNewerClient(startTime, client.id)
+    override suspend fun loadNewer(id: Long): ArrayList<AppointmentClient> {
+        val answer = appointmentDao.getNewerClient(id, client.id)
 
         return convert(answer)
     }
 
-    override suspend fun loadOlder(startTime: Long): ArrayList<AppointmentClient> {
-        val answer = appointmentDao.getOlderByClient(startTime, client.id)
+    override suspend fun loadOlder(id: Long): ArrayList<AppointmentClient> {
+        val answer = appointmentDao.getOlderByClient(id, client.id)
 
         return convert(answer)
     }
@@ -164,11 +162,15 @@ class ClientActivityLoader(
         for (appointment in answer) result.add(AppointmentClient(appointment, client))
         return result
     }
+
+    suspend fun loadNewerCount(time: Long): Int = appointmentDao.countNewerForClient(client.id, time)
+
+    suspend fun loadOlderCount(time: Long): Int = appointmentDao.countOlderForClient(client.id, time)
 }
 
 interface AppointmentLoaderListener {
 
-    fun onLoaded(centerPos: Int)
+    fun onLoaded(centerPos: Int, time: Long)
 
     fun onOlderLoaded()
 

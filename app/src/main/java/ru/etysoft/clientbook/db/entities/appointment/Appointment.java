@@ -120,14 +120,18 @@ public class Appointment {
         this.notificationStatus = notificationStatus;
     }
 
+    public LocalDate getLocalDate(ZoneId zoneId) {
+        return Instant.ofEpochMilli(startTime).atZone(zoneId).toLocalDate();
+    }
+
     public boolean isSameDay(Appointment appointment, ZoneId zoneId) {
-        LocalDate thisTime = Instant.ofEpochMilli(startTime).atZone(zoneId).toLocalDate();
-        LocalDate other = Instant.ofEpochMilli(appointment.startTime).atZone(zoneId).toLocalDate();
+        LocalDate thisTime = getLocalDate(zoneId);
+        LocalDate other = appointment.getLocalDate(zoneId);
         return thisTime.isEqual(other);
     }
 
     public String getDateText(Context context, LocalDate now, LocalDate tomorrow, LocalDate yesterday, ZoneId timeZoneId) {
-        LocalDate thisTime = Instant.ofEpochMilli(startTime).atZone(timeZoneId).toLocalDate();
+        LocalDate thisTime = getLocalDate(timeZoneId);
 
         if (thisTime.isEqual(yesterday)) {
             return ContextCompat.getString(context, R.string.yesterday);
