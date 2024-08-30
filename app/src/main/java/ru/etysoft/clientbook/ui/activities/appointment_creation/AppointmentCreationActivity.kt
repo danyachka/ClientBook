@@ -22,6 +22,8 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
 import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.activities.AppActivity
+import ru.etysoft.clientbook.ui.activities.ClientCreationActivity
+import ru.etysoft.clientbook.ui.activities.ClientCreationContract
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract
 import ru.etysoft.clientbook.ui.components.CalendarWidget
 import ru.etysoft.clientbook.ui.components.CalendarWidgetListener
@@ -41,6 +43,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
     private var isCalendarShown = true
 
     private lateinit var resultLauncher: ActivityResultLauncher<Client?>
+    private lateinit var resultLauncherCreation: ActivityResultLauncher<Client?>
 
     private var startTime = Time(14, 0)
     private var duration = Time(1, 0)
@@ -79,6 +82,10 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
             if (result != null) onClientPicked(result)
         }
 
+        resultLauncherCreation = registerForActivityResult(ClientCreationContract()) { result ->
+            if (result != null) onClientPicked(result)
+        }
+
         binding.calendarButton.setOnClickListener {
             if (isCalendarShown) return@setOnClickListener
             isCalendarShown = true
@@ -88,6 +95,10 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
 
         binding.clientPicker.setOnClickListener {
             resultLauncher.launch(null)
+        }
+
+        binding.createClient.setOnClickListener {
+            resultLauncherCreation.launch(null)
         }
 
         binding.buttonBack.setOnClickListener {
@@ -101,7 +112,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
     }
 
     private fun onClientPicked(client: Client) {
-        binding.clientPicker.visibility = View.GONE
+        binding.clientChooser.visibility = View.GONE
         binding.clientChosenLayout.visibility = View.VISIBLE
 
         binding.clientName.text = client.name

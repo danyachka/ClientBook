@@ -21,6 +21,8 @@ import ru.etysoft.clientbook.databinding.ActivityClientListBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
 import ru.etysoft.clientbook.db.entities.Client
+import ru.etysoft.clientbook.gloable_observe.GlobalClientChangingListener
+import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.CLIENT_SELECTOR_RESULT
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.IS_CLIENT_SELECTOR
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
@@ -30,7 +32,8 @@ import ru.etysoft.clientbook.ui.adapters.client.ClientViewHolderListener
 import ru.etysoft.clientbook.utils.Logger
 
 
-class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHolderListener {
+class ClientListActivity : AppActivity(), ScrollListener<Client>,
+        ClientViewHolderListener, GlobalClientChangingListener {
 
     private lateinit var binding: ActivityClientListBinding
 
@@ -55,6 +58,8 @@ class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHold
         setContentView(binding.root)
 
         isClientSelector = intent.getBooleanExtra(IS_CLIENT_SELECTOR, false)
+
+        GlobalDataChangeNotifier.instance.registerClientsListener(this)
 
         clientDao = AppDatabase.getDatabase(this).getClientDao()
 
@@ -100,6 +105,11 @@ class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHold
         })
 
         Logger.logDebug(javaClass.simpleName, "Launch time: ${System.currentTimeMillis() - start}")
+    }
+
+    override fun onDestroy() {
+        GlobalDataChangeNotifier.instance.registerClientsListener(this)
+        super.onDestroy()
     }
 
     private fun onNewSearch() = lifecycleScope.launch {
@@ -203,6 +213,18 @@ class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHold
             intent.putExtra(ClientActivity.CLIENT_JSON, Gson().toJson(client))
             startActivity(intent)
         }
+    }
+
+    override fun onClientRemoved(client: Client) {
+        onNewSearch()
+    }
+
+    override fun onClientAdded(client: Client) {
+        // pass
+    }
+
+    override fun onClientChanged(client: Client) {
+        onNewSearch()
     }
 }
 

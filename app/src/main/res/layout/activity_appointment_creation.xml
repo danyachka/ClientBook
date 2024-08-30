@@ -113,33 +113,57 @@
                 android:textSize="14sp"/>
 
             <LinearLayout
-                android:id="@+id/client_picker"
-                android:layout_width="wrap_content"
+                android:id="@+id/client_chooser"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
+                android:orientation="horizontal">
 
-                android:background="@drawable/high_rounded"
-                android:backgroundTint="@color/accent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_person"
-                    app:tint="@color/accent_dark_dark"/>
-
-                <TextView
+                <LinearLayout
+                    android:id="@+id/client_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserratsemibold"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/appointment_creation_choose_client"
-                    android:textColor="@color/accent_dark_dark"
-                    android:layout_gravity="center"
-                    android:textSize="18sp" />
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
 
+                    android:background="@drawable/high_rounded"
+                    android:backgroundTint="@color/accent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_person"
+                        app:tint="@color/accent_dark_dark"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserratsemibold"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/appointment_creation_choose_client"
+                        android:ellipsize="end"
+                        android:textColor="@color/accent_dark_dark"
+                        android:layout_gravity="center"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/create_client"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+
+                    android:layout_gravity="end"
+
+                    android:src="@drawable/ic_add"
+                    app:tint="@color/accent_dark_dark"
+
+                    android:background="@drawable/high_rounded"
+                    android:backgroundTint="@color/accent"/>
             </LinearLayout>
 
             <TextView

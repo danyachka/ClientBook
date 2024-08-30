@@ -58,6 +58,6 @@ class ListFragment(private var listener: ListFragmentListener) :
     }
 
     fun goToDate(date: LocalDate) {
-        presenter.loadNear(date.atTime(0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+        presenter.loadNear(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
     }
 }

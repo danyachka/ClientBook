@@ -63,6 +63,13 @@ class GlobalDataChangeNotifier {
         }
     }
 
+    fun notifyClientsChanged(client: Client) {
+        Logger.logDebug(GlobalDataChangeNotifier::class.java.simpleName, "Notifying changed: ${client.name}")
+        for (listener in clientsListeners) {
+            listener.onClientChanged(client)
+        }
+    }
+
     fun notifyClientsRemoved(client: Client) {
         Logger.logDebug(GlobalDataChangeNotifier::class.java.simpleName, "Notifying added: ${client.name}")
         for (listener in clientsListeners) {

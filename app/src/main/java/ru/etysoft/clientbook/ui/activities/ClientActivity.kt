@@ -18,14 +18,17 @@ import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoaderListener
 import ru.etysoft.clientbook.ui.adapters.appointment.ClientActivityLoader
 import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
+import ru.etysoft.clientbook.gloable_observe.GlobalClientChangingListener
+import ru.etysoft.clientbook.gloable_observe.processListAddition
+import ru.etysoft.clientbook.gloable_observe.removeFromList
 import ru.etysoft.clientbook.utils.Logger
 import ru.etysoft.clientbook.utils.TimeUtils
 
 class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
-        AppointmentLoaderListener, GlobalAppointmentsChangingListener {
+        AppointmentLoaderListener, GlobalAppointmentsChangingListener, GlobalClientChangingListener {
 
     companion object {
-        val CLIENT_JSON = "CLIENT_JSON"
+        const val CLIENT_JSON = "CLIENT_JSON"
     }
 
     private lateinit var binding: ActivityClientBinding
@@ -43,7 +46,12 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         binding = ActivityClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        GlobalDataChangeNotifier.instance.registerAppointmentsListener(this)
+        GlobalDataChangeNotifier.instance.registerClientsListener(this)
+
         client = Gson().fromJson(intent.getStringExtra(CLIENT_JSON), Client::class.java)
+        binding.phone.text = client.phoneNumber
+        binding.title.text = client.name
 
         binding.recycler.layoutManager = LinearLayoutManager(this)
 
@@ -59,13 +67,15 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
 
         loader.loadNear(System.currentTimeMillis())
 
-        GlobalDataChangeNotifier.instance.registerAppointmentsListener(this)
-
         initCount()
-        binding.phone.text = client.phoneNumber
 
         binding.buttonBack.setOnClickListener {
             finish()
+        }
+
+        val editLauncher = registerForActivityResult(ClientCreationContract()) { _ -> }
+        binding.edit.setOnClickListener {
+            editLauncher.launch(client)
         }
     }
 
@@ -73,6 +83,7 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         super.onDestroy()
 
         GlobalDataChangeNotifier.instance.removeAppointmentsListener(this)
+        GlobalDataChangeNotifier.instance.removeClientsListener(this)
     }
 
     private fun initCount() {
@@ -125,7 +136,13 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
 
     override fun onAppointmentRemoved(appointmentClient: AppointmentClient) {
         if (appointmentClient.client.id != client.id) return
-        TODO("Not yet implemented")
+
+        removeFromList(
+                appointmentClient = appointmentClient,
+                list = list,
+                adapter = adapter)
+
+        updatePlaceHolder(list.isEmpty())
     }
 
     override fun onAppointmentAdded(appointmentClient: AppointmentClient) {
@@ -150,5 +167,21 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
                 adapter = adapter)
 
         onAppointmentAdded(appointmentClient)
+    }
+
+    override fun onClientRemoved(client: Client) {
+        // wtf?
+    }
+
+    override fun onClientAdded(client: Client) {
+        // pass
+    }
+
+    override fun onClientChanged(client: Client) {
+        if (client.id != this.client.id) return
+        this.client = client
+
+        binding.phone.text = client.phoneNumber
+        binding.title.text = client.name
     }
 }

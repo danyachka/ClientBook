@@ -1,26 +1,42 @@
 package ru.etysoft.clientbook.ui.activities
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientCreationBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
 import ru.etysoft.clientbook.db.entities.Client
-import ru.etysoft.clientbook.utils.Logger
+import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 
 
 class ClientCreationActivity : AppActivity() {
 
     private lateinit var binding: ActivityClientCreationBinding
 
+    private var isClientUpdating: Boolean = false
+    private var client: Client? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClientCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (intent.hasExtra(ClientCreationContract.CLIENT_UPDATE)) {
+            val client = Gson().fromJson(intent.getStringExtra(ClientCreationContract.CLIENT_UPDATE), Client::class.java)
+            this.client = client
+            binding.name.setText(client.name)
+            binding.phoneNumber.setText(client.phoneNumber)
+            isClientUpdating = true
+        }
 
         binding.phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
@@ -49,8 +65,8 @@ class ClientCreationActivity : AppActivity() {
 
         lifecycleScope.launch {
 
-            val nameClient = clientDao.getByName(newName)
-            val phoneClient = clientDao.getByPhone(newPhoneNumber)
+            val nameClient = if (isClientUpdating) null else clientDao.getByName(newName)
+            val phoneClient = if (isClientUpdating) null else clientDao.getByPhone(newPhoneNumber)
 
             runOnUiThread {
                 var isFinishAvailable = true
@@ -78,13 +94,64 @@ class ClientCreationActivity : AppActivity() {
 
     private fun saveAndFinish(newName: String, newPhone: String, clientDao: ClientDao) {
         lifecycleScope.launch {
-            val client = Client(newName, newPhone)
+            val newClient: Client
 
-            clientDao.insertAll(client)
+            if (isClientUpdating) {
+                newClient = client!!
+                client!!.apply {
+                    name = newName
+                    phoneNumber = newPhone
+                }
+                clientDao.update(newClient)
+            } else {
+                newClient = Client(newName, newPhone)
+                clientDao.insertAll(newClient)
+            }
 
             runOnUiThread {
+                if (isClientUpdating) {
+                    GlobalDataChangeNotifier.instance.notifyClientsChanged(newClient)
+                } else {
+                    GlobalDataChangeNotifier.instance.notifyClientsAdded(newClient)
+                }
+
+                val intent = Intent()
+                intent.putExtra(
+                        ClientCreationContract.CLIENT_RESULT, Gson().toJson(newClient))
+
+                setResult(Activity.RESULT_OK, intent)
                 finish()
             }
         }
     }
+}
+
+class ClientCreationContract: ActivityResultContract<Client?, Client?>() {
+
+    companion object {
+        const val CLIENT_RESULT = "CLIENT_RESULT"
+        const val CLIENT_UPDATE = "CLIENT_UPDATE"
+    }
+
+    override fun createIntent(context: Context, input: Client?): Intent {
+        val intent = Intent(context, ClientCreationActivity::class.java)
+
+        val gson = Gson()
+        intent.putExtra(CLIENT_UPDATE, gson.toJson(input))
+
+        return intent
+    }
+
+    override fun parseResult(resultCode: Int, intent: Intent?): Client? {
+
+        if (resultCode != Activity.RESULT_OK) return null
+
+        if (intent == null) return null
+
+        val gson = Gson()
+        val json = intent.getStringExtra(CLIENT_RESULT)
+
+        return gson.fromJson(json, Client::class.java)
+    }
+
 }

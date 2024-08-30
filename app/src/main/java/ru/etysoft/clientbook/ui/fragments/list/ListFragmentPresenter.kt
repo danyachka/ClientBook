@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
+import ru.etysoft.clientbook.gloable_observe.processListAddition
+import ru.etysoft.clientbook.gloable_observe.removeFromList
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoaderListener
@@ -58,7 +60,12 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
     }
 
     override fun onAppointmentRemoved(appointmentClient: AppointmentClient) {
-        TODO("Not yet implemented")
+        removeFromList(
+                appointmentClient = appointmentClient,
+                list = list,
+                adapter = adapter)
+
+        view.updatePlaceHolder(list.isEmpty())
     }
 
     override fun onAppointmentChanged(appointmentClient: AppointmentClient) {
@@ -100,7 +107,13 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
 
         if (list.isEmpty()) return
 
-        val firstPositionOfDay = TimeUtils().getFirstPositionOfDay(list, System.currentTimeMillis())
+        val centerAppointment = if (centerPos == list.size) {
+            list.last()
+        } else {
+            list[centerPos]
+        }
+
+        val firstPositionOfDay = TimeUtils().getFirstPositionOfDay(list, centerAppointment.appointment.startTime)
 
         view.scrollTo(firstPositionOfDay)
     }
