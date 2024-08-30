@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -85,18 +87,17 @@ class ClientListActivity : AppActivity(), ScrollListener<Client>, ClientViewHold
             }
         }
 
-        binding.search.setOnEditorActionListener { _: TextView, actionId: Int, _: KeyEvent? ->
-            Logger.logDebug(this.javaClass.simpleName, "Action0 = $actionId")
-            if (actionId != EditorInfo.IME_ACTION_SEARCH) return@setOnEditorActionListener false
-            Logger.logDebug(this.javaClass.simpleName, "Action1 = $actionId")
-            if (isLoadingNow) return@setOnEditorActionListener false
-            Logger.logDebug(this.javaClass.simpleName, "Action2 = $actionId")
+        binding.search.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
 
-            onNewSearch()
-            hideKeyboard()
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
 
-            return@setOnEditorActionListener true
-        }
+            override fun afterTextChanged(s: Editable) {
+                onNewSearch()
+            }
+        })
 
         Logger.logDebug(javaClass.simpleName, "Launch time: ${System.currentTimeMillis() - start}")
     }

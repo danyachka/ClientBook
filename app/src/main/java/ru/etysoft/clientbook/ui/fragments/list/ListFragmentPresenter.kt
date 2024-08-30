@@ -4,13 +4,14 @@ import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.db.entities.AppointmentClient
+import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
+import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoaderListener
-import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentObserver
-import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
 import ru.etysoft.clientbook.ui.adapters.appointment.MainFragmentLoader
 import ru.etysoft.clientbook.utils.Logger
+import ru.etysoft.clientbook.utils.TimeUtils
 
 class ListFragmentPresenter: ListFragmentContract.Presenter,
         ScrollListener<AppointmentClient>, AppointmentLoaderListener,
@@ -49,11 +50,11 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
 
         loader.loadNear(System.currentTimeMillis())
 
-        GlobalAppointmentObserver.instance.registerListener(this)
+        GlobalDataChangeNotifier.instance.registerAppointmentsListener(this)
     }
 
     override fun release() {
-        GlobalAppointmentObserver.instance.removeListener(this)
+        GlobalDataChangeNotifier.instance.removeAppointmentsListener(this)
     }
 
     override fun onAppointmentRemoved(appointmentClient: AppointmentClient) {
@@ -99,18 +100,9 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
 
         if (list.isEmpty()) return
 
-        var position = 0
-        var closest = list[0].appointment
-        for (i: Int in 0..<list.size) {
-            val appointment = list[i].appointment
+        val firstPositionOfDay = TimeUtils().getFirstPositionOfDay(list, System.currentTimeMillis())
 
-            if (kotlin.math.abs(closest.startTime - time) > kotlin.math.abs(appointment.startTime - time)) {
-                position = i
-                closest = appointment
-            }
-        }
-
-        view.scrollTo(position)
+        view.scrollTo(firstPositionOfDay)
     }
 
     override fun onOlderLoaded() {

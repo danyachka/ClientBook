@@ -9,7 +9,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import ru.etysoft.clientbook.notification.Notifier;
-import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentObserver;
+import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier;
 
 public class CBApplication extends Application implements LifecycleObserver {
 
@@ -28,7 +28,7 @@ public class CBApplication extends Application implements LifecycleObserver {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        GlobalAppointmentObserver.Companion.getInstance().release();
+        GlobalDataChangeNotifier.Companion.getInstance().release();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

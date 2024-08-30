@@ -58,6 +58,4 @@
     <string name="client_page_next">Future tasks - %t</string>
     <string name="client_page_all">All tasks - %t</string>
 
-    <string name="large_text" translatable="false"></string>
-
 </resources>

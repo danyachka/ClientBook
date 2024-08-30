@@ -12,14 +12,14 @@ import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientBinding
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
-import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentObserver
+import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoaderListener
 import ru.etysoft.clientbook.ui.adapters.appointment.ClientActivityLoader
 import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
-import ru.etysoft.clientbook.ui.fragments.list.ListFragmentPresenter
 import ru.etysoft.clientbook.utils.Logger
+import ru.etysoft.clientbook.utils.TimeUtils
 
 class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         AppointmentLoaderListener, GlobalAppointmentsChangingListener {
@@ -43,8 +43,6 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         binding = ActivityClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-
         client = Gson().fromJson(intent.getStringExtra(CLIENT_JSON), Client::class.java)
 
         binding.recycler.layoutManager = LinearLayoutManager(this)
@@ -61,31 +59,36 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
 
         loader.loadNear(System.currentTimeMillis())
 
-        GlobalAppointmentObserver.instance.registerListener(this)
+        GlobalDataChangeNotifier.instance.registerAppointmentsListener(this)
 
         initCount()
+        binding.phone.text = client.phoneNumber
+
+        binding.buttonBack.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        GlobalAppointmentObserver.instance.removeListener(this)
+        GlobalDataChangeNotifier.instance.removeAppointmentsListener(this)
     }
 
     private fun initCount() {
-      lifecycleScope.launch {
-          val time = System.currentTimeMillis()
-          val newer = loader.loadNewerCount(time)
-          val older = loader.loadOlderCount(time)
+        lifecycleScope.launch {
+            val time = System.currentTimeMillis()
+            val newer = loader.loadNewerCount(time)
+            val older = loader.loadOlderCount(time)
 
-          runOnUiThread {
-              binding.next.text = ContextCompat.getString(this@ClientActivity, R.string.client_page_next)
-                      .replaceFirst("%t", "$newer")
+            runOnUiThread {
+                binding.next.text = ContextCompat.getString(this@ClientActivity, R.string.client_page_next)
+                        .replaceFirst("%t", "$newer")
 
-              binding.all.text = ContextCompat.getString(this@ClientActivity, R.string.client_page_all)
-                      .replaceFirst("%t", "${newer + older}")
-          }
-      }
+                binding.all.text = ContextCompat.getString(this@ClientActivity, R.string.client_page_all)
+                        .replaceFirst("%t", "${newer + older}")
+            }
+        }
     }
 
     private fun updatePlaceHolder(isEmpty: Boolean) {
@@ -105,6 +108,10 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
     }
 
     override fun onLoaded(centerPos: Int, time: Long) {
+        val firstPositionOfDay = TimeUtils().getFirstPositionOfDay(list, System.currentTimeMillis())
+
+        binding.recycler.layoutManager!!.scrollToPosition(firstPositionOfDay)
+
         updatePlaceHolder(list.isEmpty())
     }
 

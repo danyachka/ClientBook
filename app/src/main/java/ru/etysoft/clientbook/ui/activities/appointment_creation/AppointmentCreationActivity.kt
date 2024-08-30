@@ -20,7 +20,7 @@ import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
-import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentObserver
+import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.activities.AppActivity
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract
 import ru.etysoft.clientbook.ui.components.CalendarWidget
@@ -188,7 +188,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
 
             runOnUiThread {
                 val appointmentClient = AppointmentClient(appointment = appointment, client = pickedClient!!)
-                GlobalAppointmentObserver.instance.notifyAdded(appointmentClient)
+                GlobalDataChangeNotifier.instance.notifyAppointmentsAdded(appointmentClient)
 
                 val resultIntent = Intent()
                 val gson = Gson()

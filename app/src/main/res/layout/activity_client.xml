@@ -1,165 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_black"
-    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".ui.activities.ClientActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:background="@color/light_black"
+        android:fitsSystemWindows="false"
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+
+        app:layout_collapseMode="pin">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:gravity="center_vertical"
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            android:orientation="horizontal"
+
+            android:paddingHorizontal="32dp">
+
+            <ImageView
+                android:id="@+id/button_back"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_back"
+                app:tint="@color/accent" />
+
+            <TextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserratbold"
+                android:text="Челик"
+                android:textColor="@color/accent"
+                android:textSize="28sp" />
 
-                android:background="@color/light_black"
-                app:contentInsetStart="0dp"
-
-                app:layout_collapseMode="pin"
-
-                android:fitsSystemWindows="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:orientation="horizontal"
-
-                    android:paddingHorizontal="32dp"
-
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/button_back"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_back"
-                        app:tint="@color/accent"/>
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/montserratbold"
-                        android:layout_marginLeft="12dp"
-                        android:text="Челик"
-                        android:ellipsize="end"
-                        android:textColor="@color/accent"
-                        android:textSize="28sp" />
-
-                    <ImageView
-                        android:id="@+id/edit"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_weight="0"
-                        android:src="@drawable/ic_edit"
-                        app:tint="@color/accent" />
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_weight="0"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/accent" />
 
 
-                </LinearLayout>
+        </LinearLayout>
 
-            </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-                android:layout_marginTop="80dp"
+        android:layout_marginHorizontal="32dp"
+        android:orientation="vertical"
 
-                android:orientation="vertical"
+        app:layout_collapseMode="none">
 
-                android:layout_marginHorizontal="32dp"
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserratbold"
+            android:text="+7-555-222-11-00"
+            android:textColor="@color/accent_medium"
+            android:textSize="20sp" />
 
-                app:layout_collapseMode="none">
+        <TextView
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserratbold"
+            android:text="@string/client_page_next"
+            android:textColor="@color/accent_medium"
+            android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserratbold"
-                    android:text="+7-555-222-11-00"
-                    android:ellipsize="end"
-                    android:textColor="@color/accent_medium"
-                    android:textSize="20sp" />
+        <TextView
+            android:id="@+id/all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserratbold"
+            android:text="@string/client_page_all"
+            android:textColor="@color/accent_medium"
+            android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/next"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserratbold"
-                    android:text="@string/client_page_next"
-                    android:ellipsize="end"
-                    android:textColor="@color/accent_medium"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/all"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserratbold"
-                    android:text="@string/client_page_all"
-                    android:ellipsize="end"
-                    android:textColor="@color/accent_medium"
-                    android:textSize="20sp" />
-
-
-
-            </LinearLayout>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         android:background="@color/light_black"
-        app:cardBackgroundColor="@color/light_black"
+        android:paddingVertical="0dp"
 
-        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/light_black"
         app:cardCornerRadius="30dp"
 
+        app:cardElevation="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@color/light_black"
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:clipToPadding="false"
+            android:paddingBottom="24dp" />
 
         <LinearLayout
             android:id="@+id/placeholder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:padding="100dp"
+            android:gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:padding="100dp">
 
             <ImageView
                 android:layout_width="100dp"
@@ -172,19 +148,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-
                 android:layout_marginTop="10dp"
 
+                android:fontFamily="@font/montserratsemibold"
+
+                android:gravity="center"
+                android:maxLines="3"
                 android:text="@string/no_appointments"
                 android:textColor="@color/accent_medium"
-                android:maxLines="3"
-                android:textSize="20sp"
-                android:fontFamily="@font/montserratsemibold"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
+
