@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import ru.etysoft.clientbook.R
 
 class AppAlertDialog(context: Context, private val onYesClicked: OnYesClicked) {

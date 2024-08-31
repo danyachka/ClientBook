@@ -72,7 +72,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
         fillTimeView(binding.duration, duration)
 
         binding.startTimeButton.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(this, { _, hourOfDay, minute ->
+            val timePickerDialog = TimePickerDialog(this, R.style.TimePickerDialogTheme, { _, hourOfDay, minute ->
                 startTime = Time(hourOfDay, minute)
                 fillTimeView(binding.startTime, startTime)
             }, startTime.hour, startTime.minutes, true)

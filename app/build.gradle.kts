@@ -95,4 +95,6 @@ dependencies {
 
     implementation("com.github.skydoves:balloon:1.6.6")
 
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
 }

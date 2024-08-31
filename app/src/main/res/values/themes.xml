@@ -4,6 +4,32 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/light_black</item>
+        <item name="colorPrimaryDark">@color/light_black</item>
+        <item name="colorAccent">@color/accent_medium</item>
+        <item name="android:windowBackground">@color/light_black</item>
+        <item name="android:statusBarColor">@color/light_black</item>
+    </style>
+
+    <style name="TimePickerDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/accent_medium</item>
+        <item name="android:textColor">@color/accent_medium</item>
+<!--        <item name="colorControlActivated">@color/dark_dark_gray</item>-->
+        <item name="android:textColorPrimary">@color/accent</item>
+        <item name="android:textColorSecondary">@color/accent</item>
+        <item name="android:backgroundTint">@color/dark_dark_gray</item>
+        <item name="colorSurface">@color/black_trans</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:title">@color/accent</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/accent_medium</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/accent_medium</item>
     </style>
 
     <style name="Theme.ClientBook" parent="Base.Theme.ClientBook" />
