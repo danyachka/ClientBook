@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.db.entities.AppointmentClient
@@ -29,6 +30,7 @@ class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
 
     constructor(list: List<AppointmentClient>,
                 scrollListener: ScrollListener<AppointmentClient>,
+                scope: LifecycleCoroutineScope,
                 context: Context, activity: Activity) {
         this.list = list
         this.scrollListener = scrollListener
@@ -36,7 +38,7 @@ class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
         today = LocalDate.now()
         zoneId = ZoneId.systemDefault()
 
-        balloonManager = BalloonManagerImplementation(activity)
+        balloonManager = BalloonManagerImplementation(activity, scope)
 
         inflater = LayoutInflater.from(context)
     }

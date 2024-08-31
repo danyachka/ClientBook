@@ -12,6 +12,7 @@ import ru.etysoft.clientbook.R
 import ru.etysoft.clientbook.databinding.ActivityClientBinding
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
+import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
@@ -59,7 +60,8 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
                 list = list,
                 scrollListener = this,
                 context = this,
-                activity = this
+                activity = this,
+                scope = lifecycleScope
         )
 
         loader = ClientActivityLoader(list, this, adapter, client, lifecycleScope, this)
@@ -135,11 +137,11 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         updatePlaceHolder(list.isEmpty())
     }
 
-    override fun onAppointmentRemoved(appointmentClient: AppointmentClient) {
-        if (appointmentClient.client.id != client.id) return
+    override fun onAppointmentRemoved(appointment: Appointment) {
+        if (appointment.clientId != client.id) return
 
         removeFromList(
-                appointmentClient = appointmentClient,
+                appointment = appointment,
                 list = list,
                 adapter = adapter)
 
@@ -163,7 +165,7 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
     override fun onAppointmentChanged(appointmentClient: AppointmentClient) {
         if (appointmentClient.client.id != client.id) return
         removeFromList(
-                appointmentClient = appointmentClient,
+                appointment = appointmentClient.appointment,
                 list = list,
                 adapter = adapter)
 

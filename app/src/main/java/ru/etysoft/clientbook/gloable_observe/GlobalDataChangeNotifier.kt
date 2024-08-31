@@ -2,6 +2,7 @@ package ru.etysoft.clientbook.gloable_observe
 
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
+import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.utils.Logger
 
 
@@ -56,8 +57,8 @@ class GlobalDataChangeNotifier {
         }
     }
 
-    fun notifyAppointmentsRemoved(appointment: AppointmentClient) {
-        Logger.logDebug(GlobalDataChangeNotifier::class.java.simpleName, "Notifying added: ${appointment.appointment}")
+    fun notifyAppointmentsRemoved(appointment: Appointment) {
+        Logger.logDebug(GlobalDataChangeNotifier::class.java.simpleName, "Notifying removed: ${appointment.id}")
         for (listener in appointmentsListeners) {
             listener.onAppointmentRemoved(appointment)
         }

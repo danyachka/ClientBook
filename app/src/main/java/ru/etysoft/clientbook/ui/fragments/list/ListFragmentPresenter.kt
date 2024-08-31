@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.db.entities.AppointmentClient
+import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
 import ru.etysoft.clientbook.gloable_observe.processListAddition
@@ -46,7 +47,8 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
                 list = list,
                 scrollListener = this,
                 context = context,
-                activity = activity
+                activity = activity,
+                scope = scope
         )
 
         loader = MainFragmentLoader(list, context, adapter, scope, this)
@@ -62,9 +64,9 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
         GlobalDataChangeNotifier.instance.removeAppointmentsListener(this)
     }
 
-    override fun onAppointmentRemoved(appointmentClient: AppointmentClient) {
+    override fun onAppointmentRemoved(appointment: Appointment) {
         removeFromList(
-                appointmentClient = appointmentClient,
+                appointment = appointment,
                 list = list,
                 adapter = adapter)
 
@@ -73,7 +75,7 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
 
     override fun onAppointmentChanged(appointmentClient: AppointmentClient) {
         removeFromList(
-                appointmentClient = appointmentClient,
+                appointment = appointmentClient.appointment,
                 list = list,
                 adapter = adapter)
 

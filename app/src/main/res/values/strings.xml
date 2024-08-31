@@ -64,4 +64,9 @@
     <string name="remove_appointment">Remove appointment</string>
     <string name="edit_appointment">Edit appointment</string>
 
+    <string name="confirmation">Confirmation</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="sure_delete_appointment">Are you sure want to delete this appointment?</string>
+
 </resources>

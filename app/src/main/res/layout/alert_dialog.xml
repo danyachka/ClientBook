@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/tooltip_drawable"
+    android:layout_marginHorizontal="30dp"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/confirmation"
+        android:fontFamily="@font/montserratbold"
+        android:textStyle="bold"
+        android:textColor="@color/accent_light" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="@string/sure_delete_appointment"
+        android:fontFamily="@font/montserratsemibold"
+        android:textStyle="bold"
+        android:textColor="@color/accent_medium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_positive_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserratbold"
+            android:elevation="0dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="14dp"
+            android:textColor="@color/accent_medium"
+            android:text="@string/yes" />
+
+        <Button
+            android:id="@+id/dialog_negative_button"
+            android:layout_width="0dp"
+            android:elevation="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserratbold"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="14dp"
+            android:textColor="@color/accent_medium"
+            android:text="@string/no" />
+
+    </LinearLayout>
+
+</LinearLayout>

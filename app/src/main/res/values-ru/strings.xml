@@ -44,5 +44,9 @@
     <string name="open_client">К клиентке</string>
     <string name="remove_appointment">Удалить запись</string>
     <string name="edit_appointment">Редактировать запись</string>
+    <string name="confirmation">Подтверждение</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="sure_delete_appointment">Вы действительно хотите удалить запись?</string>
 
 </resources>

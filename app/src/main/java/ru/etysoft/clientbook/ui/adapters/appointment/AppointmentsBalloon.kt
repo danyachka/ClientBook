@@ -3,6 +3,7 @@ package ru.etysoft.clientbook.ui.adapters.appointment
 import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.radius.RadiusLayout
@@ -31,6 +32,7 @@ class AppointmentsBalloon(
         val layout = balloon.getContentView() as RadiusLayout
         layout.isFocusable = false
 
+        layout.background = ContextCompat.getDrawable(view.context, R.drawable.tooltip_drawable)
         val clientOpen = layout.findViewById<LinearLayout>(R.id.client_row)
         val editRow = layout.findViewById<LinearLayout>(R.id.edit_row)
         val deleteRow = layout.findViewById<LinearLayout>(R.id.delete_row)

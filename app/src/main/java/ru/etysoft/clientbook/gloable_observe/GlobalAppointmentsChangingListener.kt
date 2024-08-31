@@ -2,24 +2,25 @@ package ru.etysoft.clientbook.gloable_observe
 
 import ru.etysoft.clientbook.db.daos.AppointmentDao
 import ru.etysoft.clientbook.db.entities.AppointmentClient
+import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoader
 
 interface GlobalAppointmentsChangingListener {
 
-    fun onAppointmentRemoved(appointmentClient: AppointmentClient)
+    fun onAppointmentRemoved(appointment: Appointment)
 
     fun onAppointmentAdded(appointmentClient: AppointmentClient)
 
     fun onAppointmentChanged(appointmentClient: AppointmentClient)
 }
 
-fun removeFromList(appointmentClient: AppointmentClient,
+fun removeFromList(appointment: Appointment,
                    list: ArrayList<AppointmentClient>,
                    adapter: AppointmentAdapter) {
     for (i: Int in 0..<list.size) {
         val ac = list[i]
-        if (ac.appointment.id != appointmentClient.appointment.id) continue
+        if (ac.appointment.id != appointment.id) continue
 
         list.removeAt(i)
         adapter.notifyItemRemoved(i)
