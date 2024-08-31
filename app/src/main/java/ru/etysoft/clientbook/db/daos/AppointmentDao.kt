@@ -47,6 +47,10 @@ interface AppointmentDao {
     suspend fun getBetween(startTime: Long, endTime: Long): AppointmentClient?
 
     @Transaction
+    @Query("SELECT * FROM appointment WHERE startTime > :startTime AND endTime < :endTime AND id != :id")
+    suspend fun getBetweenWhereIdNot(startTime: Long, endTime: Long, id: Long): AppointmentClient?
+
+    @Transaction
     @Query("SELECT * FROM appointment WHERE clientId = :clientId ORDER BY ABS(startTime - :startTime) LIMIT 1")
     suspend fun getClosestACByTimeAndClient(startTime: Long, clientId: Long): AppointmentClient?
 

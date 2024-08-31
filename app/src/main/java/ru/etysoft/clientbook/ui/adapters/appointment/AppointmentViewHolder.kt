@@ -4,6 +4,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +16,10 @@ import java.time.ZoneId
 
 class AppointmentViewHolder(itemView: View,
                             private val today: LocalDate,
-                            private val zoneId: ZoneId): RecyclerView.ViewHolder(itemView) {
+                            private val zoneId: ZoneId,
+                            private val onAppointmentElementClicked: OnAppointmentElementClicked): RecyclerView.ViewHolder(itemView) {
 
+    private val appointmentElement: LinearLayout
     private val dateText: TextView
     private val timeText: TextView
     private val text: TextView
@@ -26,6 +29,7 @@ class AppointmentViewHolder(itemView: View,
     private val notificationIcon: ImageView
 
     init {
+        appointmentElement = itemView.findViewById(R.id.appointment_element)
         dateText = itemView.findViewById(R.id.date_text)
         timeText = itemView.findViewById(R.id.time_text)
         text = itemView.findViewById(R.id.text)
@@ -35,6 +39,10 @@ class AppointmentViewHolder(itemView: View,
     }
 
     fun bind(appointment: AppointmentClient, previous: AppointmentClient?) {
+
+        appointmentElement.setOnClickListener {
+            onAppointmentElementClicked(appointment, itemView)
+        }
 
         dateText.visibility =
                 if (previous == null) VISIBLE
@@ -64,3 +72,5 @@ class AppointmentViewHolder(itemView: View,
     }
 
 }
+
+typealias OnAppointmentElementClicked = (AppointmentClient, View) -> Unit

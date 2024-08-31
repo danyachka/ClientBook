@@ -40,5 +40,9 @@
     <string name="appointment_creation_date_error">Время совпадает с другой записью: %t, %c, %s-%e</string>
     <string name="client_page_next">Записано процедур - %t</string>
     <string name="client_page_all">Всего процедур  - %t</string>
+    <string name="client_update">Редактирование клиентки</string>
+    <string name="open_client">К клиентке</string>
+    <string name="remove_appointment">Удалить запись</string>
+    <string name="edit_appointment">Редактировать запись</string>
 
 </resources>

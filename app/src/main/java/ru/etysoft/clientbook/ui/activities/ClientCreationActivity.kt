@@ -36,6 +36,7 @@ class ClientCreationActivity : AppActivity() {
             binding.name.setText(client.name)
             binding.phoneNumber.setText(client.phoneNumber)
             isClientUpdating = true
+            binding.title.setText(R.string.client_update)
         }
 
         binding.phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())

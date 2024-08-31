@@ -1,5 +1,6 @@
 package ru.etysoft.clientbook.ui.adapters.appointment
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,17 +22,21 @@ class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
 
     lateinit var loader: AppointmentLoader
 
+    private val balloonManager: BalloonManager
+
     private val today: LocalDate
     private val zoneId: ZoneId
 
     constructor(list: List<AppointmentClient>,
                 scrollListener: ScrollListener<AppointmentClient>,
-                context: Context) {
+                context: Context, activity: Activity) {
         this.list = list
         this.scrollListener = scrollListener
 
         today = LocalDate.now()
         zoneId = ZoneId.systemDefault()
+
+        balloonManager = BalloonManagerImplementation(activity)
 
         inflater = LayoutInflater.from(context)
     }
@@ -40,7 +45,9 @@ class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
         val itemView = inflater.inflate(R.layout.appointment_element, parent, false)
         return AppointmentViewHolder(itemView,
                 today = today,
-                zoneId = zoneId)
+                zoneId = zoneId) { appointmentClient, view ->
+            balloonManager.openBall0on(appointmentClient, view)
+        }
     }
 
     override fun getItemCount(): Int {

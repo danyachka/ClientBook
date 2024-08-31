@@ -17,6 +17,7 @@
 
 
     <string name="client_creation">New client</string>
+    <string name="client_update">Client edit</string>
     <string name="client_creation_image">Choose image</string>
     <string name="client_creation_name">Client name</string>
     <string name="client_creation_phone_number">Phone number</string>
@@ -57,5 +58,10 @@
 
     <string name="client_page_next">Future tasks - %t</string>
     <string name="client_page_all">All tasks - %t</string>
+
+
+    <string name="open_client">Open client</string>
+    <string name="remove_appointment">Remove appointment</string>
+    <string name="edit_appointment">Edit appointment</string>
 
 </resources>

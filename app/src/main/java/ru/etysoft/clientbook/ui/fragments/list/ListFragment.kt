@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,8 @@ class ListFragment(private var listener: ListFragmentListener) :
         _binding = FragmentListBinding.inflate(inflater, container, false)
 
         binding.recycler.layoutManager = LinearLayoutManager(context)
-        presenter = ListFragmentPresenter(this.requireContext(), this, lifecycleScope, binding.recycler)
+        presenter = ListFragmentPresenter(this.requireContext(), this,
+                lifecycleScope, binding.recycler, activity = activity as AppCompatActivity)
 
         binding.buttonAdd.setOnClickListener {
             listener.showCreateBottomSheet()

@@ -22,6 +22,8 @@
     <color name="accent_light_light">#FFEBEB</color>
     <color name="accent_light_light_light">#D79B9B</color>
 
+    <color name="appointment_card_color">#FFB8B8</color>
+
     <color name="accent_light_light_trans">#26FFEBEB</color>
 
     <color name="red">#FF2222</color>

@@ -22,7 +22,6 @@ import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
 import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.activities.AppActivity
-import ru.etysoft.clientbook.ui.activities.ClientCreationActivity
 import ru.etysoft.clientbook.ui.activities.ClientCreationContract
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract
 import ru.etysoft.clientbook.ui.components.CalendarWidget
@@ -51,13 +50,23 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
 
     private var pickedClient: Client? = null
 
+    private var isEditing = false
+    private var appointmentClient: AppointmentClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAppointmentCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val appointmentString = intent.getStringExtra(AppointmentCreationContract.APPOINTMENT_CLIENT_UPDATE)
+        appointmentClient = Gson().fromJson(appointmentString, AppointmentClient::class.java)
+        if (appointmentClient != null) {
+            isEditing = true
+            initUpdate()
+        }
+
         updateCalendar()
-        fillDateText(LocalDate.now())
+        fillDateText(selectedLocalDate)
 
         fillTimeView(binding.startTime, startTime)
         fillTimeView(binding.duration, duration)
@@ -97,6 +106,10 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
             resultLauncher.launch(null)
         }
 
+        binding.clientChosenLayout.setOnClickListener {
+            resultLauncher.launch(null)
+        }
+
         binding.createClient.setOnClickListener {
             resultLauncherCreation.launch(null)
         }
@@ -109,6 +122,25 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
             onConfirm()
         }
 
+    }
+
+    private fun initUpdate() {
+        val appointment = appointmentClient!!.appointment
+        binding.text.setText(appointment.text)
+        binding.value.setText(appointment.value.toString())
+
+        val zoneId = ZoneId.systemDefault()
+        selectedLocalDate = appointment.getLocalDate(zoneId)
+
+        val time = Instant.ofEpochMilli(appointment.startTime).atZone(zoneId).toLocalTime()
+        startTime = Time(hour = time.hour, minutes = time.minute)
+
+        val durationMinutes = (appointment.endTime - appointment.startTime).floorDiv(60 * 1000)
+        val hours = durationMinutes.floorDiv(60)
+        val minutes = durationMinutes - hours * 60
+        duration = Time(hour = hours.toInt(), minutes = minutes.toInt())
+
+        onClientPicked(appointmentClient!!.client)
     }
 
     private fun onClientPicked(client: Client) {
@@ -178,7 +210,11 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
             val endTime: Long = startTime + duration.toMillis()
 
             val appointmentDao = AppDatabase.getDatabase(this@AppointmentCreationActivity).getAppointmentDao()
-            val closest = appointmentDao.getBetween(startTime, endTime)
+            val closest = if (isEditing) {
+                appointmentDao.getBetweenWhereIdNot(startTime, endTime, appointmentClient!!.appointment.id)
+            } else {
+                appointmentDao.getBetween(startTime, endTime)
+            }
 
             // if exists
             if (closest != null) {
@@ -192,14 +228,21 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
             val cost: Int = costString.toInt()
 
             val appointment = Appointment(text, cost, pickedClient!!.id, startTime, endTime, NotificationStatus.ENABLED)
-            val id: Long = appointmentDao.insert(appointment)
-            appointment.id = id
+
+            if (isEditing) {
+                appointment.id = appointmentClient!!.appointment.id
+                appointmentDao.update(appointment)
+            } else {
+                val id: Long = appointmentDao.insert(appointment)
+                appointment.id = id
+            }
 
             Logger.logDebug(AppointmentCreationActivity::class.java.simpleName, "Created an Appointment: $appointment")
 
             runOnUiThread {
                 val appointmentClient = AppointmentClient(appointment = appointment, client = pickedClient!!)
-                GlobalDataChangeNotifier.instance.notifyAppointmentsAdded(appointmentClient)
+                if (isEditing) GlobalDataChangeNotifier.instance.notifyAppointmentsChanged(appointmentClient)
+                else GlobalDataChangeNotifier.instance.notifyAppointmentsAdded(appointmentClient)
 
                 val resultIntent = Intent()
                 val gson = Gson()
@@ -234,13 +277,14 @@ class AppointmentCreationContract: ActivityResultContract<AppointmentClient?, Ap
 
     companion object {
         const val APPOINTMENT_CLIENT_RESULT = "APPOINTMENT_CLIENT_RESULT"
+        const val APPOINTMENT_CLIENT_UPDATE = "APPOINTMENT_CLIENT_UPDATE"
     }
 
     override fun createIntent(context: Context, input: AppointmentClient?): Intent {
         val intent = Intent(context, AppointmentCreationActivity::class.java)
 
         val gson = Gson()
-        intent.putExtra(APPOINTMENT_CLIENT_RESULT, gson.toJson(input))
+        intent.putExtra(APPOINTMENT_CLIENT_UPDATE, gson.toJson(input))
 
         return intent
     }

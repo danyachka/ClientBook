@@ -93,4 +93,6 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10")
 
+    implementation("com.github.skydoves:balloon:1.6.6")
+
 }

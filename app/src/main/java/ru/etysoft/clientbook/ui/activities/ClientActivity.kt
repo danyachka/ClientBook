@@ -58,7 +58,8 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         adapter = AppointmentAdapter(
                 list = list,
                 scrollListener = this,
-                context = this
+                context = this,
+                activity = this
         )
 
         loader = ClientActivityLoader(list, this, adapter, client, lifecycleScope, this)

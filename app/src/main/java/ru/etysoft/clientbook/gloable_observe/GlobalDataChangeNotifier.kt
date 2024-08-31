@@ -49,6 +49,13 @@ class GlobalDataChangeNotifier {
         }
     }
 
+    fun notifyAppointmentsChanged(appointment: AppointmentClient) {
+        Logger.logDebug(GlobalDataChangeNotifier::class.java.simpleName, "Notifying changed: ${appointment.appointment}")
+        for (listener in appointmentsListeners) {
+            listener.onAppointmentChanged(appointment)
+        }
+    }
+
     fun notifyAppointmentsRemoved(appointment: AppointmentClient) {
         Logger.logDebug(GlobalDataChangeNotifier::class.java.simpleName, "Notifying added: ${appointment.appointment}")
         for (listener in appointmentsListeners) {

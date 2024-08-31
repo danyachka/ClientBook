@@ -1,5 +1,6 @@
 package ru.etysoft.clientbook.ui.fragments.list
 
+import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,8 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
     constructor(context: Context,
                 view: ListFragmentContract.View,
                 scope: LifecycleCoroutineScope,
-                recyclerView: RecyclerView) {
+                recyclerView: RecyclerView,
+                activity: Activity) {
         this.context = context
         this.view = view
 
@@ -43,7 +45,8 @@ class ListFragmentPresenter: ListFragmentContract.Presenter,
         adapter = AppointmentAdapter(
                 list = list,
                 scrollListener = this,
-                context = context
+                context = context,
+                activity = activity
         )
 
         loader = MainFragmentLoader(list, context, adapter, scope, this)
