@@ -10,7 +10,7 @@ import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
-import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
+import ru.etysoft.clientbook.global_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.activities.ClientActivity
 import ru.etysoft.clientbook.ui.activities.appointment_creation.AppointmentCreationActivity
 import ru.etysoft.clientbook.ui.activities.appointment_creation.AppointmentCreationContract

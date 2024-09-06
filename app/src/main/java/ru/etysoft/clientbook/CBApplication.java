@@ -9,7 +9,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import ru.etysoft.clientbook.notification.Notifier;
-import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier;
+import ru.etysoft.clientbook.global_observe.GlobalDataChangeNotifier;
 
 public class CBApplication extends Application implements LifecycleObserver {
 

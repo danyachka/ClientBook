@@ -20,7 +20,7 @@ import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
 import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
-import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
+import ru.etysoft.clientbook.global_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.activities.AppActivity
 import ru.etysoft.clientbook.ui.activities.ClientCreationContract
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract
@@ -256,7 +256,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
     }
 
     private fun showTimeError(appointmentClient: AppointmentClient) {
-        val zoneId = ZoneId.systemDefault() // or specify a specific zone, e.g., ZoneId.of("America/New_York")
+        val zoneId = ZoneId.systemDefault()
         val startDateTime: ZonedDateTime = Instant.ofEpochSecond(appointmentClient.appointment.startTime).atZone(zoneId)
         val endDateTime: ZonedDateTime = Instant.ofEpochSecond(appointmentClient.appointment.endTime).atZone(zoneId)
 

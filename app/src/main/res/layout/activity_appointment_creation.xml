@@ -123,6 +123,7 @@
                     android:id="@+id/client_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
 
@@ -151,8 +152,9 @@
 
                 <ImageView
                     android:id="@+id/create_client"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="0"
                     android:layout_marginStart="8dp"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"

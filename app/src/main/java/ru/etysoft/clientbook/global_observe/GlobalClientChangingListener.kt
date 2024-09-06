@@ -1,6 +1,5 @@
-package ru.etysoft.clientbook.gloable_observe
+package ru.etysoft.clientbook.global_observe
 
-import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.Client
 
 interface GlobalClientChangingListener {

@@ -1,4 +1,4 @@
-package ru.etysoft.clientbook.gloable_observe
+package ru.etysoft.clientbook.global_observe
 
 import ru.etysoft.clientbook.db.daos.AppointmentDao
 import ru.etysoft.clientbook.db.entities.AppointmentClient
@@ -56,7 +56,10 @@ fun processListAddition(appointmentClient: AppointmentClient,
     }
 
     if (!isAdded) {
-        if (appointment.startTime < list.first().appointment.startTime) {
+        if (list.isEmpty()) {
+            list.add(appointmentClient)
+            adapter.notifyItemInserted(0)
+        } else if (appointment.startTime < list.first().appointment.startTime) {
             list.add(0, appointmentClient)
             adapter.notifyItemInserted(0)
         } else if (appointment.startTime > list.last().appointment.startTime) {

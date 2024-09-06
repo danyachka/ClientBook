@@ -6,10 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -21,8 +18,8 @@ import ru.etysoft.clientbook.databinding.ActivityClientListBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
 import ru.etysoft.clientbook.db.entities.Client
-import ru.etysoft.clientbook.gloable_observe.GlobalClientChangingListener
-import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
+import ru.etysoft.clientbook.global_observe.GlobalClientChangingListener
+import ru.etysoft.clientbook.global_observe.GlobalDataChangeNotifier
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.CLIENT_SELECTOR_RESULT
 import ru.etysoft.clientbook.ui.activities.ClientSelectorContract.Companion.IS_CLIENT_SELECTOR
 import ru.etysoft.clientbook.ui.adapters.ScrollListener

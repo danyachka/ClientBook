@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import ru.etysoft.clientbook.db.entities.Client
+import ru.etysoft.clientbook.db.entities.appointment.Appointment
 
 @Dao
 interface ClientDao {
@@ -16,6 +17,9 @@ interface ClientDao {
 
     @Insert
     suspend fun insertAll(vararg client: Client)
+
+    @Insert
+    suspend fun insert(client: Client): Long
 
     @Update
     suspend fun update(client: Client)

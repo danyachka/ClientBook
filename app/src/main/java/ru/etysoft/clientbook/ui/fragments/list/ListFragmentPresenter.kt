@@ -6,10 +6,10 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import ru.etysoft.clientbook.db.entities.AppointmentClient
 import ru.etysoft.clientbook.db.entities.appointment.Appointment
-import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
-import ru.etysoft.clientbook.gloable_observe.GlobalAppointmentsChangingListener
-import ru.etysoft.clientbook.gloable_observe.processListAddition
-import ru.etysoft.clientbook.gloable_observe.removeFromList
+import ru.etysoft.clientbook.global_observe.GlobalDataChangeNotifier
+import ru.etysoft.clientbook.global_observe.GlobalAppointmentsChangingListener
+import ru.etysoft.clientbook.global_observe.processListAddition
+import ru.etysoft.clientbook.global_observe.removeFromList
 import ru.etysoft.clientbook.ui.adapters.ScrollListener
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentAdapter
 import ru.etysoft.clientbook.ui.adapters.appointment.AppointmentLoaderListener

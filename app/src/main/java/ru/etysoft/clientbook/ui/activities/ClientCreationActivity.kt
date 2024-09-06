@@ -15,7 +15,7 @@ import ru.etysoft.clientbook.databinding.ActivityClientCreationBinding
 import ru.etysoft.clientbook.db.AppDatabase
 import ru.etysoft.clientbook.db.daos.ClientDao
 import ru.etysoft.clientbook.db.entities.Client
-import ru.etysoft.clientbook.gloable_observe.GlobalDataChangeNotifier
+import ru.etysoft.clientbook.global_observe.GlobalDataChangeNotifier
 
 
 class ClientCreationActivity : AppActivity() {
@@ -30,11 +30,10 @@ class ClientCreationActivity : AppActivity() {
         binding = ActivityClientCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (intent.hasExtra(ClientCreationContract.CLIENT_UPDATE)) {
-            val client = Gson().fromJson(intent.getStringExtra(ClientCreationContract.CLIENT_UPDATE), Client::class.java)
-            this.client = client
-            binding.name.setText(client.name)
-            binding.phoneNumber.setText(client.phoneNumber)
+        this.client = Gson().fromJson(intent.getStringExtra(ClientCreationContract.CLIENT_UPDATE), Client::class.java)
+        if (client != null) {
+            binding.name.setText(client!!.name)
+            binding.phoneNumber.setText(client!!.phoneNumber)
             isClientUpdating = true
             binding.title.setText(R.string.client_update)
         }
@@ -99,14 +98,15 @@ class ClientCreationActivity : AppActivity() {
 
             if (isClientUpdating) {
                 newClient = client!!
-                client!!.apply {
+                newClient.apply {
                     name = newName
                     phoneNumber = newPhone
                 }
                 clientDao.update(newClient)
             } else {
                 newClient = Client(newName, newPhone)
-                clientDao.insertAll(newClient)
+                val id: Long = clientDao.insert(newClient)
+                newClient.id = id
             }
 
             runOnUiThread {
