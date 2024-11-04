@@ -1,8 +1,6 @@
 package ru.etysoft.clientbook.db.entities.appointment;
 
 import android.content.Context;
-import android.icu.util.LocaleData;
-import android.text.format.DateUtils;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -16,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.util.Calendar;
 import java.util.Locale;
 
 import ru.etysoft.clientbook.R;

@@ -148,7 +148,7 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
         binding.clientChosenLayout.visibility = View.VISIBLE
 
         binding.clientName.text = client.name
-        binding.clientPhone.text = client.phoneNumber
+        binding.clientPhone.text = client.formatedPhoneNumber
 
         pickedClient = client
     }

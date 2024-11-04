@@ -33,7 +33,7 @@ class ClientCreationActivity : AppActivity() {
         this.client = Gson().fromJson(intent.getStringExtra(ClientCreationContract.CLIENT_UPDATE), Client::class.java)
         if (client != null) {
             binding.name.setText(client!!.name)
-            binding.phoneNumber.setText(client!!.phoneNumber)
+            binding.phoneNumber.setText(client!!.formatedPhoneNumber)
             isClientUpdating = true
             binding.title.setText(R.string.client_update)
         }

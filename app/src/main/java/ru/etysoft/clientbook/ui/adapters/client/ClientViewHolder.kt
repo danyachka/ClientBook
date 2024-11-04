@@ -28,8 +28,7 @@ class ClientViewHolder(itemView: View,
     fun bind(client: Client) {
         nameText.text = client.name
 
-        val formattedPhoneNumber = PhoneNumberUtils.formatNumber(client.phoneNumber)
-        phoneText.text = formattedPhoneNumber
+        phoneText.text = client.formatedPhoneNumber
 
         itemView.setOnClickListener {
             listener.onViewHolderSelected(client, this)

@@ -51,7 +51,7 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         GlobalDataChangeNotifier.instance.registerClientsListener(this)
 
         client = Gson().fromJson(intent.getStringExtra(CLIENT_JSON), Client::class.java)
-        binding.phone.text = client.phoneNumber
+        binding.phone.text = client.formatedPhoneNumber
         binding.title.text = client.name
 
         binding.recycler.layoutManager = LinearLayoutManager(this)
@@ -184,7 +184,7 @@ class ClientActivity : AppCompatActivity(), ScrollListener<AppointmentClient>,
         if (client.id != this.client.id) return
         this.client = client
 
-        binding.phone.text = client.phoneNumber
+        binding.phone.text = client.formatedPhoneNumber
         binding.title.text = client.name
     }
 }

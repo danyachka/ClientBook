@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import ru.etysoft.clientbook.utils.PhoneUtils;
+
 @Entity
 public class Client {
 
@@ -62,5 +64,9 @@ public class Client {
 
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
+    }
+
+    public String getFormatedPhoneNumber() {
+        return PhoneUtils.INSTANCE.formatPhoneNumberStringJ(phoneNumber);
     }
 }
