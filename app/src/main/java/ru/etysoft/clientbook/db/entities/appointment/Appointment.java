@@ -140,7 +140,8 @@ public class Appointment {
 
         return ContextCompat.getString(context, R.string.date)
                 .replaceFirst("%d", String.valueOf(thisTime.getDayOfMonth()))
-                .replaceFirst("%m", String.valueOf(thisTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru"))));
+                .replaceFirst("%m", String.valueOf(thisTime.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())))
+                .replaceFirst("%w", thisTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
     }
 
     public String getTimeText(ZoneId zoneId) {

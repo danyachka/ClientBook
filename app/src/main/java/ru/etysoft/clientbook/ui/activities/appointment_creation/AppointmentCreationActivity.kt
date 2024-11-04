@@ -175,9 +175,9 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
     private fun fillDateText(date: LocalDate) {
         val s = ContextCompat.getString(this, R.string.appointment_creation_date)
                 .replaceFirst("%w", date.dayOfWeek.
-                    getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru")))
+                    getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault()))
                 .replaceFirst("%d", date.dayOfMonth.toString())
-                .replaceFirst("%m", date.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru")))
+                .replaceFirst("%m", date.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault()))
                 .replaceFirst("%y", date.year.toString())
 
         binding.date.text = s

@@ -72,7 +72,7 @@ fun CalendarWidget(
                 }
 
                 Text(
-                        "${calendar.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru"))} ${calendar.year}",
+                        "${calendar.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault())} ${calendar.year}",
                         fontSize = 18.sp,
                         fontFamily = montserrat,
                         fontWeight = FontWeight.SemiBold

@@ -8,7 +8,7 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="yesterday">Yesterday</string>
-    <string name="date" translatable="false">%d %m</string>
+    <string name="date" translatable="false">%d %m, %w</string>
 
 
     <string name="selector_bottomsheet_title">What do you want to create?</string>
