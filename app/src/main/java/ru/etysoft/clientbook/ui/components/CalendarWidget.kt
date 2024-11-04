@@ -39,9 +39,9 @@ interface CalendarWidgetListener {
 @Composable
 fun CalendarWidget(
         listener: CalendarWidgetListener,
-        modifier: Modifier = Modifier,
         setBottomPadding: Boolean = true,
-        isVisible: Boolean = true
+        isVisible: Boolean = true,
+        isBackgroundVisible: Boolean = true
 ) {
     Logger.logDebug("CalendarWidget", "CalendarWidget's been created")
     val localNow = LocalDate.now()
@@ -49,13 +49,15 @@ fun CalendarWidget(
     var animateContentSize by remember { mutableStateOf(0) }
 
     AnimatedVisibility(visible = isVisible) {
+
+        var columnModifier = Modifier.fillMaxWidth()
+        if (isBackgroundVisible) columnModifier = columnModifier.background(
+            colorResource(id = R.color.accent),
+            shape = RoundedCornerShape(16.dp))
+
+        columnModifier = columnModifier.padding(10.dp).animateContentSize()
         Column(
-                modifier = modifier
-                        .fillMaxWidth()
-                        .padding(6.dp)
-                        .background(colorResource(id = R.color.accent), shape = RoundedCornerShape(16.dp))
-                        .padding(10.dp)
-                        .animateContentSize(),
+                modifier = columnModifier,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
@@ -156,7 +158,7 @@ fun CreateDayElement(day: Int, isCurrent: Boolean, buttonDate: LocalDate, localD
 
         Text(
                 day.toString(),
-                fontSize = 13.sp,
+                fontSize = 11.sp,
                 fontFamily = montserrat,
                 modifier = Modifier.padding(4.dp),
                 fontWeight = if (buttonDate.isEqual(localDate)) FontWeight.ExtraBold
@@ -190,7 +192,7 @@ fun ShowHeaderRow() {
         dayOfWeekStrings.forEach { id ->
             Text(
                     stringResource(id),
-                    fontSize = 15.sp,
+                    fontSize = 14.sp,
                     fontFamily = montserrat,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,

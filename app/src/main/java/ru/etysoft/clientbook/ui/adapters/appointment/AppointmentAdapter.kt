@@ -13,35 +13,22 @@ import ru.etysoft.clientbook.utils.Logger
 import java.time.LocalDate
 import java.time.ZoneId
 
-class AppointmentAdapter : RecyclerView.Adapter<AppointmentViewHolder> {
+class AppointmentAdapter(
+    private val list: List<AppointmentClient>,
+    private val scrollListener: ScrollListener<AppointmentClient>,
+    scope: LifecycleCoroutineScope,
+    context: Context,
+    activity: Activity
+) : RecyclerView.Adapter<AppointmentViewHolder>() {
 
-    private val list: List<AppointmentClient>
-
-    private val inflater: LayoutInflater
-
-    private val scrollListener: ScrollListener<AppointmentClient>
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     lateinit var loader: AppointmentLoader
 
-    private val balloonManager: BalloonManager
+    private val balloonManager: BalloonManager = BalloonManagerImplementation(activity, scope)
 
-    private val today: LocalDate
-    private val zoneId: ZoneId
-
-    constructor(list: List<AppointmentClient>,
-                scrollListener: ScrollListener<AppointmentClient>,
-                scope: LifecycleCoroutineScope,
-                context: Context, activity: Activity) {
-        this.list = list
-        this.scrollListener = scrollListener
-
-        today = LocalDate.now()
-        zoneId = ZoneId.systemDefault()
-
-        balloonManager = BalloonManagerImplementation(activity, scope)
-
-        inflater = LayoutInflater.from(context)
-    }
+    private val zoneId: ZoneId = ZoneId.systemDefault()
+    private val today: LocalDate = LocalDate.now(zoneId)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
         val itemView = inflater.inflate(R.layout.appointment_element, parent, false)

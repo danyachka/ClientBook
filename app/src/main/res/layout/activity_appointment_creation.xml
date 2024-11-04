@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.appointment_creation.AppointmentCreationActivity"
-    android:paddingHorizontal="32dp"
+    android:paddingHorizontal="16dp"
 
     android:background="@color/light_black">
 
@@ -146,7 +146,7 @@
                         android:ellipsize="end"
                         android:textColor="@color/accent_dark_dark"
                         android:layout_gravity="center"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -219,7 +219,7 @@
                         android:fontFamily="@font/montserratbold"
                         android:text="Member"
                         android:textColor="@color/accent_dark_dark"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/client_phone"
@@ -228,7 +228,7 @@
                         android:fontFamily="@font/montserratbold"
                         android:text="+7 (999) 111 1111"
                         android:textColor="@color/accent_dark_dark"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -240,14 +240,15 @@
                 android:background="@drawable/high_rounded"
                 android:backgroundTint="@color/accent"
                 android:paddingTop="16dp"
-                android:paddingHorizontal="16dp"
-                android:paddingBottom="8dp"
+                android:paddingBottom="16dp"
+                android:paddingHorizontal="8dp"
                 android:layout_marginTop="18dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -276,15 +277,14 @@
                 <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/calendar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:paddingTop="18dp"
                 android:orientation="horizontal">
 
@@ -293,6 +293,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
                     android:layout_gravity="bottom">
 
                     <TextView
@@ -307,7 +308,8 @@
                     <LinearLayout
                         android:id="@+id/start_time_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical|start"
 
                         android:layout_marginTop="6dp"
 
@@ -321,9 +323,8 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="40dp"
+                            android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_weight="0"
                             android:src="@drawable/ic_clock"
                             app:tint="@color/accent_dark_dark"
                             android:layout_gravity="center"/>
@@ -331,11 +332,10 @@
                         <TextView
                             android:id="@+id/start_time"
                             android:layout_width="90dp"
-                            android:layout_height="42dp"
+                            android:layout_height="wrap_content"
 
                             android:fontFamily="@font/montserratsemibold"
-
-                            android:gravity="center"
+                            android:textSize="13sp"
 
                             android:text="@string/appointment_creation_time"
 
@@ -367,7 +367,8 @@
                     <LinearLayout
                         android:id="@+id/duration_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical|start"
 
                         android:layout_marginTop="6dp"
 
@@ -381,9 +382,8 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="40dp"
+                            android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_weight="0"
                             android:src="@drawable/ic_duration"
                             app:tint="@color/accent_dark_dark"
                             android:layout_gravity="center"/>
@@ -391,11 +391,10 @@
                         <TextView
                             android:id="@+id/duration"
                             android:layout_width="90dp"
-                            android:layout_height="42dp"
+                            android:layout_height="wrap_content"
 
                             android:fontFamily="@font/montserratsemibold"
-
-                            android:gravity="center"
+                            android:textSize="13sp"
 
                             android:text="@string/appointment_creation_time"
 
@@ -445,8 +444,8 @@
         android:layout_marginBottom="32dp"
 
         android:src="@drawable/ic_done"
-        app:tint="@color/accent_dark_dark"
+        app:tint="@color/accent"
         android:background="@drawable/rect"
-        android:backgroundTint="@color/accent_light_light_light"/>
+        android:backgroundTint="@color/accent_dark"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

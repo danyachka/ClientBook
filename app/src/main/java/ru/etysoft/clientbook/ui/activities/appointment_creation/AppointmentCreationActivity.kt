@@ -164,7 +164,12 @@ class AppointmentCreationActivity : AppActivity(), CalendarWidgetListener {
     }
 
     private fun updateCalendar() = binding.calendar.setContent {
-        CalendarWidget(listener = this, setBottomPadding = false, isVisible = isCalendarShown)
+        CalendarWidget(
+            listener = this,
+            setBottomPadding = false,
+            isVisible = isCalendarShown,
+            isBackgroundVisible = false
+        )
     }
 
     private fun fillDateText(date: LocalDate) {

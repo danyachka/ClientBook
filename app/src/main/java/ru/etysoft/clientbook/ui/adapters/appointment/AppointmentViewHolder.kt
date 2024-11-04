@@ -14,14 +14,16 @@ import ru.etysoft.clientbook.db.entities.appointment.NotificationStatus
 import java.time.LocalDate
 import java.time.ZoneId
 
-class AppointmentViewHolder(itemView: View,
-                            private val today: LocalDate,
-                            private val zoneId: ZoneId,
-                            private val onAppointmentElementClicked: OnAppointmentElementClicked): RecyclerView.ViewHolder(itemView) {
+class AppointmentViewHolder(
+    itemView: View,
+    private val today: LocalDate,
+    private val zoneId: ZoneId,
+    private val onAppointmentElementClicked: OnAppointmentElementClicked
+): RecyclerView.ViewHolder(itemView) {
 
-    private val appointmentElement: LinearLayout
-    private val dateText: TextView
-    private val timeText: TextView
+    private val appointmentElement: LinearLayout = itemView.findViewById(R.id.appointment_element)
+    private val dateText: TextView = itemView.findViewById(R.id.date_text)
+    private val timeText: TextView = itemView.findViewById(R.id.time_text)
     private val text: TextView
     private val clientNameText: TextView
     private val valueText: TextView
@@ -29,9 +31,6 @@ class AppointmentViewHolder(itemView: View,
     private val notificationIcon: ImageView
 
     init {
-        appointmentElement = itemView.findViewById(R.id.appointment_element)
-        dateText = itemView.findViewById(R.id.date_text)
-        timeText = itemView.findViewById(R.id.time_text)
         text = itemView.findViewById(R.id.text)
         clientNameText = itemView.findViewById(R.id.client_name)
         valueText= itemView.findViewById(R.id.value)
